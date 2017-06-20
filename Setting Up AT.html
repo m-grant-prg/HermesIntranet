@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 5.1.6.2 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="2017-03-06T10:13:58.411240283"/>
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-03-06T10:12:11.021385574">
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-03-06T09:54:11.353400309">
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-03-05T14:33:16.858976286">
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-03-05T14:10:05.850950674">
+	<style type="text/css">
+		@page { margin: 2cm }
+		p { margin-bottom: 0.25cm; line-height: 120% }
+		h1 { margin-bottom: 0.21cm }
+		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt }
+		h1.cjk { font-family: "Droid Sans Fallback"; font-size: 18pt }
+		h1.ctl { font-family: "FreeSans"; font-size: 18pt }
+	</style>
+</head>
+<body lang="en-GB" dir="ltr">
+<h1 class="western" align="center">Setting Up AutoTools for a Project</h1>
+<p align="left"><br/>
+<br/>
+
+</p>
+<ol>
+	<li/>
+<p align="left">Establish your project structure with
+	configure.ac and Makefile.am’s.</p>
+	<li/>
+<p align="left">Move to your project root directory, (where
+	the configure.ac and top level Makefile.am are located).</p>
+	<li/>
+<p align="left">Set-up project for GNU Libs and macros. (Other
+	directory options including m4 directory for macros default to
+	satisfactory values.)</p>
+	<ol type="a">
+		<li/>
+<p align="left">‘gnulib-tool --import
+		--source-base=source/progs/c/sysgen/lib
+		--no-conditional-dependencies --no-libtool configmake’</p>
+		<li/>
+<p align="left">Follow any on-screen instructions.</p>
+	</ol>
+	<li/>
+<p align="left">Set-up aclocal m4 macro environment (assumes
+	m4 is the macro directory).</p>
+	<ol type="a">
+		<li/>
+<p align="left">‘aclocal -I m4’</p>
+		<li/>
+<p align="left">Follow any on-screen instructions.</p>
+	</ol>
+	<li/>
+<p align="left">Produce initial configure script.</p>
+	<ol type="a">
+		<li/>
+<p align="left">‘autoconf’</p>
+		<li/>
+<p align="left">Follow any on-screen instructions.</p>
+	</ol>
+	<li/>
+<p align="left">Sort AutoMake.</p>
+	<ol type="a">
+		<li/>
+<p align="left">‘automake --add-missing’</p>
+		<li/>
+<p align="left">Follow any on-screen instructions.</p>
+	</ol>
+</ol>
+</body>
+</html>

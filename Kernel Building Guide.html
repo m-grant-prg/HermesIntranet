@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 5.1.4.2 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="2016-09-15T14:00:03.987806402"/>
+	<style type="text/css">
+		@page { margin: 2cm }
+		p { margin-bottom: 0.25cm; line-height: 120% }
+		h1 { margin-bottom: 0.21cm }
+		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt }
+		h1.cjk { font-family: "Droid Sans Fallback"; font-size: 18pt }
+		h1.ctl { font-family: "FreeSans"; font-size: 18pt }
+	</style>
+</head>
+<body lang="en-GB" dir="ltr">
+<h1 class="western" align="center">Kernel Building Guide</h1>
+<p align="left"><br/>
+<br/>
+
+</p>
+<ol>
+	<li/>
+<p align="left">To build a kernel with a new config file.</p>
+	<ol type="a">
+		<p align="left">To avoid setting up the entire config file by hand
+		it is easiest to use your distribution’s config file as a
+		starting point. This step can be re-run when a new distribution
+		kernel is installed.</p>
+		<p align="left">When building based on a new config file key kernel
+		modules must be loaded, things like CD drivers. So,</p>
+		<li/>
+<p align="left">Insert and open a CD such as the VirtualBox
+		Guest Additions.</p>
+		<li/>
+<p align="left">Attach any NAS needed.</p>
+		<li/>
+<p align="left">kern-bld.sh -nipc
+		/boot/config-4.4.0-36-generic \</p>
+		<ul>
+			<ul>
+				<ul>
+					<p align="left">-s /home/mgrantprg/SWDev/kernel/source \</p>
+					<p align="left">-o  /home/mgrantprg/SWDev/kernel/build \</p>
+					<p align="left">linux-stable</p>
+				</ul>
+			</ul>
+		</ul>
+	</ol>
+</ol>
+<p align="left">		Which is equivalent to:-</p>
+<ol>
+	<ol type="a" start="3">
+		<p align="left">kern-bld.sh –new –install –persist
+		–config-file  /boot/config-4.4.0-36-generic \</p>
+		<ul>
+			<ul>
+				<ul>
+					<p align="left">--source-dir /home/mgrantprg/SWDev/kernel/source
+					\</p>
+					<p align="left">--object-dir  /home/mgrantprg/SWDev/kernel/build
+					\</p>
+					<p align="left">linux-stable</p>
+				</ul>
+			</ul>
+		</ul>
+		<li/>
+<p align="left">As the install option has been specified, you
+		will be prompted for your sudo password prior to installation.</p>
+	</ol>
+</ol>
+<p align="left"><br/>
+<br/>
+
+</p>
+<ol start="2">
+	<li/>
+<p align="left">To build a kernel with an exiting config file.</p>
+	<ol type="a">
+		<li/>
+<p align="left">kern-bld.sh -uipc
+		/boot/config-4.4.0-36-generic \</p>
+		<ul>
+			<ul>
+				<ul>
+					<p align="left">-s /home/mgrantprg/SWDev/kernel/source \</p>
+					<p align="left">-o  /home/mgrantprg/SWDev/kernel/build \</p>
+					<p align="left">linux-stable</p>
+				</ul>
+			</ul>
+		</ul>
+		<p align="left">Which is equivalent to:-</p>
+		<p align="left">kern-bld.sh –update –install –persist
+		–config-file  /boot/config-4.4.0-36-generic \</p>
+		<ul>
+			<ul>
+				<ul>
+					<p align="left">--source-dir /home/mgrantprg/SWDev/kernel/source
+					\</p>
+					<p align="left">--object-dir  /home/mgrantprg/SWDev/kernel/build
+					\</p>
+					<p align="left">linux-stable</p>
+				</ul>
+			</ul>
+		</ul>
+		<li/>
+<p align="left">As the install option has been specified, you
+		will be prompted for your sudo password prior to installation.</p>
+	</ol>
+	<li/>
+<p align="left">On successful installation reboot into the new
+	kernel.</p>
+	<li/>
+<p align="left">If this is a VirtualBox Guest system then
+	re-install the Guest Additions.</p>
+	<li/>
+<p align="left">Cleanup the old kernel.</p>
+	<ol type="a">
+		<li/>
+<p align="left">Remove the old initramfs</p>
+		<p align="left">sudo update-initramfs -dk 4.7.1</p>
+		<p align="left">(Where 4.7.1 is the old kernel version which you
+		are removing).</p>
+		<li/>
+<p align="left">Remove the old kernel modules</p>
+		<p align="left">sudo rm -vr /lib/modules/4.7.1</p>
+		<li/>
+<p align="left">Remove the old kernel files</p>
+		<p align="left">sudo rm -v /boot/*4.7.1*</p>
+		<li/>
+<p align="left">sudo update-grub</p>
+	</ol>
+</ol>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 5.1.4.2 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="2017-02-17T10:46:10.435826553"/>
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-02-17T09:18:13.775317608">
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-01-23T13:38:38.024421342">
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-01-23T13:37:24.788662446">
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-01-23T13:32:52.701100014">
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-01-23T13:31:30.359880813">
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-01-23T13:29:30.393639505">
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-01-23T13:25:39.753318159">
+	<style type="text/css">
+		@page { margin: 2cm }
+		p { margin-bottom: 0.25cm; line-height: 120% }
+		h1 { margin-bottom: 0.21cm }
+		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt }
+		h1.cjk { font-family: "Droid Sans Fallback"; font-size: 18pt }
+		h1.ctl { font-family: "FreeSans"; font-size: 18pt }
+		h2.western { font-family: "Albany", sans-serif; font-size: 16pt }
+		h2.cjk { font-family: "Noto Sans CJK SC Regular"; font-size: 16pt }
+		h2.ctl { font-family: "FreeSans"; font-size: 16pt }
+	</style>
+</head>
+<body lang="en-GB" dir="ltr">
+<h1 class="western" align="center">Valgrind Tips</h1>
+<p align="left"><br/>
+<br/>
+
+</p>
+<h2 class="western">General</h2>
+<p>The default valgrind tool is memcheck so a useful starting point
+is:-</p>
+<p>valgrind --leak-check=yes --track-origins=yes ./my-program</p>
+<p><br/>
+<br/>
+
+</p>
+<h2 class="western">Stackframe Size</h2>
+<p>If the stackframe size is exceeded valgrind will assume a change
+of stack leading to a lot of such messages. To suppress all these
+warnings increase the stackframe size:-</p>
+<p>valgrind --leak-check=yes --track-origins=yes
+--max-stackframe=3500000 ./my-program</p>
+<p><br/>
+<br/>
+
+</p>
+<h2 class="western">Libtool Wrapper Scripts</h2>
+<p>If for example you are running test harnesses against a library in
+development built with libtool, then you are running a libtool
+wrapper script which interferes with the normal running of valgrind.
+This can be avoided by running:</p>
+<p>libtool --mode=execute valgrind --leak-check=yes
+--track-origins=yes ./my-program</p>
+<p><br/>
+<br/>
+
+</p>
+<h2 class="western">Static Libraries</h2>
+<p>If you are running against static libraries, valgrind can be
+informed by running:-</p>
+<p>valgrind --leak-check=yes --track-origins=yes
+--soname-synonyms=somalloc=NONE ./my-program</p>
+</body>
+</html>

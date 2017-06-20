@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 5.0.2.2 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="2015-12-12T13:30:11.140559869"/>
+	<meta name="created" content="2015-12-12T13:00:39.064334650">
+	<meta name="changed" content="2015-12-12T13:24:15.982186037">
+	<style type="text/css">
+		@page { margin: 2cm }
+		p { margin-bottom: 0.25cm; line-height: 120% }
+		h1 { margin-bottom: 0.21cm }
+		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt }
+		h1.cjk { font-family: "Droid Sans Fallback"; font-size: 18pt }
+		h1.ctl { font-family: "FreeSans"; font-size: 18pt }
+		a:link { so-language: zxx }
+	</style>
+</head>
+<body lang="en-GB" dir="ltr">
+<h1 class="western" align="center">General Deployment Installation
+Guide</h1>
+<p align="left"><br/>
+<br/>
+
+</p>
+<ol>
+	<li/>
+<p align="left">If there is an already installed version being
+	superseded:-</p>
+	<ol type="a">
+		<li/>
+<p align="left">Change to the installation source directory.</p>
+		<ul>
+			<li/>
+<p align="left">cd ~/Deployments/agmaint-v1.0.8</p>
+		</ul>
+		<li/>
+<p align="left">As root or via sudo</p>
+		<ul>
+			<li/>
+<p align="left">make uninstall clean</p>
+		</ul>
+		<li/>
+<p align="left">Clean-up.</p>
+		<ul>
+			<li/>
+<p align="left">Change to the parent directory.</p>
+			<ul>
+				<li/>
+<p align="left">cd ..</p>
+				<li/>
+<p align="left">rm -rI agmaint-v1.0.8*</p>
+			</ul>
+		</ul>
+	</ol>
+	<li/>
+<p align="left">Download the deployment.</p>
+	<ol type="a">
+		<li/>
+<p align="left">Change to an appropriate deployment
+		directory.</p>
+		<ul>
+			<li/>
+<p align="left">cd ~/Deployments</p>
+		</ul>
+		<li/>
+<p align="left">Either download the file via the command
+		line:-</p>
+		<ul>
+			<li/>
+<p align="left">wget
+			http://hermes/deployments/agmaint-v1.0.9.tar.gz</p>
+		</ul>
+		<li/>
+<p align="left">Or use a browser:-</p>
+		<ul>
+			<li/>
+<p align="left">Navigate to <a href="http://hermes/deployments/">http://hermes/deployments/</a></p>
+			<li/>
+<p align="left">Right click the tarball and select 'Save
+			Link As'</p>
+			<li/>
+<p align="left">Select the appropriate deployment directory
+			and click 'Save'.</p>
+		</ul>
+	</ol>
+	<li/>
+<p align="left">Extract the tarball.</p>
+	<ol type="a">
+		<li/>
+<p align="left">Either extract via the command line:-</p>
+		<ul>
+			<li/>
+<p align="left">tar xvpf agmaint-v1.0.9.tar.gz</p>
+		</ul>
+		<li/>
+<p align="left">Or, double click the file in a File Manager
+		window and extract</p>
+		<ul>
+			<li/>
+<p align="left">All files.</p>
+			<li/>
+<p align="left">Keep existing directory structure.</p>
+		</ul>
+	</ol>
+	<li/>
+<p align="left">Install the deployment.</p>
+	<ol type="a">
+		<li/>
+<p align="left">Change to the extracted directory.</p>
+		<ul>
+			<li/>
+<p align="left">cd agmaint-v1.0.9</p>
+		</ul>
+		<li/>
+<p align="left">Install</p>
+		<ul>
+			<li/>
+<p align="left">./configure</p>
+			<li/>
+<p align="left">As root or via sudo</p>
+			<ul>
+				<li/>
+<p align="left">make install clean</p>
+			</ul>
+		</ul>
+	</ol>
+</ol>
+<p align="left"><br/>
+<br/>
+
+</p>
+</body>
+</html>
