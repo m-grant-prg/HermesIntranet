@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 5.2.7.2 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="2017-08-17T15:02:08.770139425"/>
+	<style type="text/css">
+		@page { margin: 2cm }
+		p { margin-bottom: 0.25cm; line-height: 120% }
+		h1 { margin-bottom: 0.21cm }
+		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt }
+		h1.cjk { font-family: "Droid Sans Fallback"; font-size: 18pt }
+		h1.ctl { font-family: "FreeSans"; font-size: 18pt }
+	</style>
+</head>
+<body lang="en-GB" dir="ltr">
+<h1 class="western" align="center">Delete An APT Repository
+Distribution</h1>
+<p align="left"><br/>
+<br/>
+
+</p>
+<ol>
+	<li/>
+<p align="left">Edit the distributions file.</p>
+	<ol type="a">
+		<li/>
+<p align="left">sudo vim /srv/aptrepo/conf/distributions</p>
+		<ul>
+			<li/>
+<p align="left">Delete the block of distribution
+			information.</p>
+		</ul>
+	</ol>
+	<li/>
+<p align="left">Get reprepro to tidy up.</p>
+	<ol type="a">
+		<li/>
+<p align="left">sudo reprepro -vb /srv/aptrepo --delete
+		clearvanished</p>
+	</ol>
+</ol>
+</body>
+</html>
