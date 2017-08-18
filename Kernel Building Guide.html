@@ -3,9 +3,11 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title></title>
-	<meta name="generator" content="LibreOffice 5.1.4.2 (Linux)"/>
+	<meta name="generator" content="LibreOffice 5.2.7.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2016-09-15T14:00:03.987806402"/>
+	<meta name="changed" content="2017-08-18T09:56:00.228892949"/>
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2016-09-15T14:00:03.987806402">
 	<style type="text/css">
 		@page { margin: 2cm }
 		p { margin-bottom: 0.25cm; line-height: 120% }
@@ -43,24 +45,24 @@
 			<ul>
 				<ul>
 					<p align="left">-s /home/mgrantprg/SWDev/kernel/source \</p>
-					<p align="left">-o  /home/mgrantprg/SWDev/kernel/build \</p>
+					<p align="left">-o /home/mgrantprg/SWDev/kernel/build \</p>
 					<p align="left">linux-stable</p>
 				</ul>
 			</ul>
 		</ul>
 	</ol>
 </ol>
-<p align="left">		Which is equivalent to:-</p>
+<p align="left">Which is equivalent to:-</p>
 <ol>
 	<ol type="a" start="3">
 		<p align="left">kern-bld.sh –new –install –persist
-		–config-file  /boot/config-4.4.0-36-generic \</p>
+		–config-file /boot/config-4.4.0-36-generic \</p>
 		<ul>
 			<ul>
 				<ul>
 					<p align="left">--source-dir /home/mgrantprg/SWDev/kernel/source
 					\</p>
-					<p align="left">--object-dir  /home/mgrantprg/SWDev/kernel/build
+					<p align="left">--object-dir /home/mgrantprg/SWDev/kernel/build
 					\</p>
 					<p align="left">linux-stable</p>
 				</ul>
@@ -86,20 +88,20 @@
 			<ul>
 				<ul>
 					<p align="left">-s /home/mgrantprg/SWDev/kernel/source \</p>
-					<p align="left">-o  /home/mgrantprg/SWDev/kernel/build \</p>
+					<p align="left">-o /home/mgrantprg/SWDev/kernel/build \</p>
 					<p align="left">linux-stable</p>
 				</ul>
 			</ul>
 		</ul>
 		<p align="left">Which is equivalent to:-</p>
 		<p align="left">kern-bld.sh –update –install –persist
-		–config-file  /boot/config-4.4.0-36-generic \</p>
+		–config-file /boot/config-4.4.0-36-generic \</p>
 		<ul>
 			<ul>
 				<ul>
 					<p align="left">--source-dir /home/mgrantprg/SWDev/kernel/source
 					\</p>
-					<p align="left">--object-dir  /home/mgrantprg/SWDev/kernel/build
+					<p align="left">--object-dir /home/mgrantprg/SWDev/kernel/build
 					\</p>
 					<p align="left">linux-stable</p>
 				</ul>
@@ -110,8 +112,22 @@
 		will be prompted for your sudo password prior to installation.</p>
 	</ol>
 	<li/>
-<p align="left">On successful installation reboot into the new
-	kernel.</p>
+<p align="left">At the time of writing there is a dependency
+	failure on Debian which leads to the crc32c_generic module not being
+	included in initrd. To persistently avoid this problem add the
+	module to the initrd modules file.</p>
+	<ol type="a">
+		<li/>
+<p align="left">sudo vim /etc/initramfs-tools/modules</p>
+		<li/>
+<p align="left">Append the line:-</p>
+		<ul>
+			<li/>
+<p align="left">crc32c_generic</p>
+		</ul>
+	</ol>
+	<li/>
+<p align="left">Reboot into the new kernel.</p>
 	<li/>
 <p align="left">If this is a VirtualBox Guest system then
 	re-install the Guest Additions.</p>
