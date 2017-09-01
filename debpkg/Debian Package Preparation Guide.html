@@ -3,9 +3,11 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title></title>
-	<meta name="generator" content="LibreOffice 5.1.6.2 (Linux)"/>
+	<meta name="generator" content="LibreOffice 5.2.7.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2017-05-11T15:05:04.788919659"/>
+	<meta name="changed" content="2017-08-18T14:28:42.372074454"/>
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-05-11T15:05:04.788919659">
 	<meta name="created" content="00:00:00">
 	<meta name="changed" content="2016-06-13T14:27:55.710324709">
 	<meta name="created" content="00:00:00">
@@ -178,11 +180,12 @@
 <p align="left">cd staging</p>
 		</ul>
 		<li/>
-<p align="left">Load the Debian file to the repository.</p>
+<p align="left">Load the Debian file to the repository for
+		distribution stretch and component stable.</p>
 		<ul>
 			<li/>
-<p align="left">sudo reprepro -vb /srv/aptrepo includedeb
-			wily *.deb</p>
+<p align="left">sudo reprepro -vb /srv/aptrepo -C stable
+			includedeb stretch *.deb</p>
 		</ul>
 		<li/>
 <p align="left">Remove the staged file.</p>

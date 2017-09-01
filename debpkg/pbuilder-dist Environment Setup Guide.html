@@ -5,7 +5,9 @@
 	<title></title>
 	<meta name="generator" content="LibreOffice 5.2.7.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2017-08-17T15:27:16.322418541"/>
+	<meta name="changed" content="2017-08-18T14:26:38.023683795"/>
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-08-17T15:27:16.322418541">
 	<meta name="created" content="00:00:00">
 	<meta name="changed" content="2017-06-20T13:29:03.249866213">
 	<meta name="created" content="00:00:00">
@@ -39,16 +41,16 @@ Guide</h1>
 		variable.</p>
 		<li/>
 <p align="left">OTHERMIRROR=&quot;deb http://hermes/aptrepo
-		wily local&quot;</p>
+		stretch stable&quot;</p>
 		<p align="left">If 2 repositories were added see the example below,
 		(Note the '|' delimiter).</p>
 		<li/>
 <p align="left">OTHERMIRROR=&quot;deb http://hermes/aptrepo
-		vivid local|\</p>
+		zesty stable|\</p>
 		<ul>
 			<ul>
 				<p align="left">deb
-				http://ppa.launchpad.net/m-grant-prg/utils/ubuntu vivid main&quot;</p>
+				http://ppa.launchpad.net/m-grant-prg/utils/ubuntu zesty main&quot;</p>
 			</ul>
 		</ul>
 		<li/>
@@ -58,8 +60,8 @@ Guide</h1>
 <p align="left">Create the distribution base tarball.</p>
 	<ol type="a">
 		<li/>
-<p align="left">pbuilder-dist wily create --override-config
-		--release-only</p>
+<p align="left">pbuilder-dist stretch create
+		--override-config --release-only</p>
 	</ol>
 	<li/>
 <p align="left">Configure the chroot environment.</p>
@@ -81,8 +83,8 @@ Guide</h1>
 <p align="left">Enter the pbuilder chroot.</p>
 		<ul>
 			<li/>
-<p align="left">pbuilder-dist wily login --save-after-login
-			--override-config</p>
+<p align="left">pbuilder-dist stretch login
+			--save-after-login --override-config</p>
 		</ul>
 		<li/>
 <p align="left">If doing this for the first time for a
@@ -92,6 +94,8 @@ Guide</h1>
 <p align="left">apt-get install software-properties-common</p>
 			<li/>
 <p align="left">apt-get install wget</p>
+			<li/>
+<p align="left">apt-get install gnupg2</p>
 		</ul>
 		<li/>
 <p align="left">Add the required PPA repositories.</p>
@@ -105,7 +109,7 @@ Guide</h1>
 		<ul>
 			<li/>
 <p align="left">add-apt-repository 'deb
-			http://hermes/aptrepo/ wily local'</p>
+			http://hermes/aptrepo/ stretch stable'</p>
 		</ul>
 	</ol>
 </ol>
@@ -114,8 +118,8 @@ Guide</h1>
 		<ul>
 			<li/>
 <p align="left">wget -O -
-			<a href="http://hermes/aptrepo/conf/hermes-apt.gpg.key">http://hermes/aptrepo/conf/hermes-apt.gpg.key</a>|sudo
-			apt-key add -</p>
+			<a href="http://hermes/aptrepo/conf/hermes-apt.gpg.key">http://hermes/aptrepo/conf/hermes-apt.gpg.key</a>|apt-key
+			add -</p>
 		</ul>
 	</ol>
 </ol>
@@ -131,7 +135,7 @@ Guide</h1>
 <p align="left">Update the base package.</p>
 		<ul>
 			<li/>
-<p align="left">pbuilder-dist wily update --release-only
+<p align="left">pbuilder-dist stretch update --release-only
 			--override-config</p>
 		</ul>
 	</ol>
