@@ -5,7 +5,11 @@
 	<title></title>
 	<meta name="generator" content="LibreOffice 5.2.7.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2017-08-17T14:55:28.081641237"/>
+	<meta name="changed" content="2017-09-08T15:28:03.873846502"/>
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-09-08T15:26:43.962317631">
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-08-17T14:55:28.081641237">
 	<style type="text/css">
 		@page { margin: 2cm }
 		p { margin-bottom: 0.25cm; line-height: 120% }
@@ -28,7 +32,7 @@ Repository</h1>
 	must be created.</p>
 	<ol type="a">
 		<li/>
-<p align="left">gpg2 –gen-key</p>
+<p align="left">gpg --gen-key</p>
 	</ol>
 	<li/>
 <p align="left">If you are creating a new repository then the
@@ -38,17 +42,28 @@ Repository</h1>
 <p align="left">Create the repo signing key.</p>
 		<ul>
 			<li/>
-<p align="left">gpg2 --output hermes-apt.gpg.key --export
-			m.grant.prg@gmail.com</p>
+<p align="left">gpg --output hermes.gpg --export
+			<a href="mailto:mgrant@hermes.mgent.home">mgrant@hermes.mgent.home</a></p>
+		</ul>
+		<li/>
+<p align="left">reprepro uses sudo so we must make the key
+		available to it as well</p>
+		<ul>
+			<li/>
+<p align="left">gpg --export-secret-keys --output secret</p>
+			<li/>
+<p align="left">sudo gpg --import secret</p>
+			<li/>
+<p align="left">rm secret</p>
 		</ul>
 		<li/>
 <p align="left">Move the key to the desired location in the
 		new repo</p>
 		<ul>
 			<li/>
-<p align="left">sudo cp -v hermes* /srv/aptrepo/conf</p>
+<p align="left">sudo cp -v hermes.gpg /srv/aptrepo/conf</p>
 			<li/>
-<p align="left">rm -v hermes*</p>
+<p align="left">rm hermes.gpg</p>
 		</ul>
 	</ol>
 	<li/>
@@ -90,7 +105,7 @@ Repository</h1>
 		<ul>
 			<li/>
 <p align="left">wget -O -
-			<a href="http://hermes/aptrepo/conf/hermes-apt.gpg.key">http://hermes/aptrepo/conf/hermes-apt.gpg.key</a>|sudo
+			<a href="http://hermes/aptrepo/conf/hermes-apt.gpg.key">http://hermes/aptrepo/conf/hermes.gpg</a>|sudo
 			apt-key add -</p>
 		</ul>
 		<li/>
