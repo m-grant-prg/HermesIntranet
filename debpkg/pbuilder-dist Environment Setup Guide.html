@@ -5,7 +5,11 @@
 	<title></title>
 	<meta name="generator" content="LibreOffice 5.2.7.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2017-09-08T15:30:25.555826964"/>
+	<meta name="changed" content="2018-02-15T15:00:05.201390473"/>
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2018-02-15T14:56:32.083956496">
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-09-08T15:30:25.555826964">
 	<meta name="created" content="00:00:00">
 	<meta name="changed" content="2017-08-18T14:26:38.023683795">
 	<meta name="created" content="00:00:00">
@@ -38,22 +42,35 @@ Guide</h1>
 	<li/>
 <p align="left">Set-up .pbuilderrc in your Home directory.</p>
 	<ol type="a">
-		<p align="left">PPA's can be added later in the chroot environment
-		itself. In this file add other repositories to the OTHERMIRROR
-		variable.</p>
 		<li/>
-<p align="left">OTHERMIRROR=&quot;deb http://hermes/aptrepo
-		stretch stable&quot;</p>
-		<p align="left">If 2 repositories were added see the example below,
-		(Note the '|' delimiter).</p>
-		<li/>
-<p align="left">OTHERMIRROR=&quot;deb http://hermes/aptrepo
-		zesty stable|\</p>
+<p align="left">PPA's can be added later in the chroot
+		environment itself. In this file add other repositories to the
+		OTHERMIRROR variable.</p>
 		<ul>
+			<li/>
+<p align="left">OTHERMIRROR=&quot;deb http://hermes/aptrepo
+			stretch stable&quot;</p>
+			<li/>
+<p align="left">If 2 repositories were added see the example
+			below, (Note the '|' delimiter).</p>
 			<ul>
+				<li/>
+<p align="left">OTHERMIRROR=&quot;deb http://hermes/aptrepo
+				zesty stable|\</p>
 				<p align="left">deb
 				http://ppa.launchpad.net/m-grant-prg/utils/ubuntu zesty main&quot;</p>
 			</ul>
+		</ul>
+		<li/>
+<p align="left">Aptitude is the default dependency resolver
+		for pbuilder but it does not work when cross-building for arm, so
+		use apt:-</p>
+		<ul>
+			<li/>
+<p align="left">PBUILDERSATISFYDEPENDSCMD=/usr/lib/pbuilder/pbuilder-satisfydepends-apt</p>
+			<li/>
+<p align="left">(This also needs the qemu-user-static
+			package installed).</p>
 		</ul>
 		<li/>
 <p align="left">Save the file.</p>
