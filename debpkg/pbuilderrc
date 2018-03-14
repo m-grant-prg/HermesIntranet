@@ -1,0 +1,153 @@
+#! /usr/bin/env bash
+
+#########################################################################
+#									#
+# Script ID: .pbuilderrc						#
+# Author: Copyright (C) 2018  Mark Grant				#
+#									#
+# Released under the GPLv3 only.					#
+# SPDX-License-Identifier: GPL-3.0					#
+#									#
+# Purpose:								#
+# A pbuilderrc file to be specified on the pbuilder command line.	#
+# This file sets up pbuilder to be able to build for OS's,		#
+# distributions and architectures. Defaults for these values are read	#
+# from the .pbuilderrc.conf file. The can be overridden on the command	#
+# line. E.g.								#
+#	sudo os=raspbian dist=stretch arch=armhf pbuilder --create \	#
+#			--configfile ../.pbuilderrc			#
+#									#
+#########################################################################
+
+#########################################################################
+#									#
+# Changelog								#
+#									#
+# Date		Author	Version	Description				#
+#									#
+# 22/02/2018	MG	1.0.1	Created.				#
+#									#
+#########################################################################
+
+
+#############################
+# Exit immediately on error #
+#############################
+set -e
+
+
+########################################################
+# OTHERMIRROR may be added to later so initialise here #
+########################################################
+OTHERMIRROR="deb http://hermes/aptrepo stretch beta stable"
+APTKEYRINGS=("/var/cache/pbuilder/keyrings/hermes.gpg")
+
+
+########################
+# OS specific settings #
+########################
+case $OS in
+debian)
+	MIRRORSITE="http://ftp.uk.debian.org/debian/"
+#	COMPONENTS="main contrib non-free"
+	DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" 
+		"--keyring=/usr/share/keyrings/debian-archive-keyring.gpg")
+	;;
+raspbian)
+	MIRRORSITE="http://mirrordirector.raspbian.org/raspbian/"
+#	COMPONENTS="main contrib non-free"
+	DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}"
+		"--keyring=/usr/share/keyrings/raspbian-archive-keyring.gpg")
+	;;
+ubuntu)
+	MIRRORSITE="https://launchpad.net/ubuntu/+mirror/ubuntu.mirrors.uk2.net-archive/"
+#	COMPONENTS="main restricted universe multiverse"
+	DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}"
+		"--keyring=/usr/share/keyrings/ubuntu-archive-keyring.gpg")
+	OTHERMIRROR="$OTHERMIRROR | deb http://ppa.launchpad.net/m-grant-prg/utils/ubuntu artful main"
+	;;
+*)
+	echo "Unknown OS: $OS"
+	exit 1
+	;;
+esac
+
+
+##############################################
+# Check we now have a value of DIST and ARCH #
+##############################################
+if [ "$DIST" == "" ]; then
+	echo "DIST is not set"
+	exit 1
+fi
+
+if [ "$ARCH" == "" ]; then
+	echo "ARCH is not set"
+	exit 1
+fi
+
+
+#####################################################
+# We always need these packages in the base tarball #
+#####################################################
+EXTRAPACKAGES="$EXTRAPACKAGES software-properties-common wget gnupg2 dirmngr"
+
+
+###################################
+# Deal with potential cross-build #
+###################################
+if [ "$ARCH" == "armel" ] && [ "$(dpkg --print-architecture)" != "armel" ]; then
+    DEBOOTSTRAP="qemu-debootstrap"
+fi
+if [ "$ARCH" == "armhf" ] && [ "$(dpkg --print-architecture)" != "armhf" ]; then
+    DEBOOTSTRAP="qemu-debootstrap"
+fi
+
+
+########################
+# Add the Architecture #
+########################
+DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--arch=$ARCH")
+
+
+####################
+# Self explanatory #
+####################
+BASETGZ="/var/cache/pbuilder/$OS-$DIST-$ARCH-base.tgz"
+
+DISTRIBUTION="$DIST"
+
+PBUILDERSATISFYDEPENDSCMD=/usr/lib/pbuilder/pbuilder-satisfydepends-apt
+
+BUILDRESULT="/home/mgrantprg/SWDev/pbuilder/$OS-$DIST-$ARCH-result/"
+
+APTCACHE="/var/cache/pbuilder/aptcache/$OS-$DIST-$ARCH/"
+
+
+##########################################################################
+# Hook scripts are executed during chroot setup, before packaging begins #
+##########################################################################
+HOOKDIR="/home/mgrantprg/SWDev/pbuilder/hook.d/"
+
+
+#####################
+# Now log the setup #
+#####################
+psetuplog="$BUILDRESULT""pbuilderrc-setup.log"
+
+echo "OS = $OS" > $psetuplog
+echo "Distribution = $DIST" >> $psetuplog
+echo "Arch = $ARCH" >> $psetuplog
+echo "Mirrorsite = $MIRRORSITE" >> $psetuplog
+echo "Components = $COMPONENTS" >> $psetuplog
+echo "Debootstrapopts = $DEBOOTSTRAPOPTS" >> $psetuplog
+echo "Othermirror = $OTHERMIRROR" >> $psetuplog
+echo "Aptkeyrings = $APTKEYRINGS" >> $psetuplog
+echo "Extrapackages = $EXTRAPACKAGES" >> $psetuplog
+echo "Debootstrap = $DEBOOTSTRAP" >> $psetuplog
+echo "Debootstrapopts = $DEBOOTSTRAPOPTS" >> $psetuplog
+echo "Basetgz = $BASETGZ" >> $psetuplog
+echo "Pbuildersatisfydependscmd = $PBUILDERSATISFYDEPENDSCMD" >> $psetuplog
+echo "Buildresult = $BUILDRESULT" >> $psetuplog
+echo "Aptcache = $APTCACHE" >> $psetuplog
+echo "Hookdir = $HOOKDIR" >> $psetuplog

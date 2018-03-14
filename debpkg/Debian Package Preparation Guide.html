@@ -5,7 +5,13 @@
 	<title></title>
 	<meta name="generator" content="LibreOffice 5.2.7.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2017-08-18T14:28:42.372074454"/>
+	<meta name="changedby" content="Mark Grant"/>
+	<meta name="changed" content="2018-03-13T16:01:06.927912951"/>
+	<meta name="created" content="00:00:00">
+	<meta name="changedby" content="Mark Grant">
+	<meta name="changed" content="2018-03-13T15:55:55.376001058">
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-08-18T14:28:42.372074454">
 	<meta name="created" content="00:00:00">
 	<meta name="changed" content="2017-05-11T15:05:04.788919659">
 	<meta name="created" content="00:00:00">
@@ -128,12 +134,17 @@
 		</ul>
 	</ol>
 	<li/>
-<p align="left">Once per day update the pbuilder base package.</p>
+<p align="left">As needed or once per day update the pbuilder
+	base package. As needed in case you release a dev package which is
+	then needed to build a lib package. If using the pbuilder apt-get
+	update hook documented elsewhere, then once per day is adequate
+	which prevents excessive downloading at build time when the apt-get
+	update hook is run.</p>
 	<ol type="a">
 		<ul>
 			<li/>
-<p align="left">pbuilder-dist 'distribution' update
-			–release-only –override-config</p>
+<p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
+			pbuilder update --override-config</p>
 		</ul>
 	</ol>
 	<li/>
@@ -142,7 +153,8 @@
 	<ol type="a">
 		<ul>
 			<li/>
-<p align="left">pbuilder-dist 'distribution' build *.dsc</p>
+<p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
+			pbuilder build *.dsc</p>
 		</ul>
 	</ol>
 	<li/>

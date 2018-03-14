@@ -1,0 +1,39 @@
+#! /usr/bin/env bash
+
+#########################################################################
+#									#
+# Script ID: E50-trustedkeys-kbx.sh					#
+# Author: Copyright (C) 2018  Mark Grant				#
+#									#
+# Released under the GPLv3 only.					#
+# SPDX-License-Identifier: GPL-3.0					#
+#									#
+# Purpose:								#
+# A hook script to prepare for gpgv.					#
+# The required keybox 'trustedkeys.kbx' is created then it is loaded	#
+# with m.grant.prg@gmail.com public key.				#
+#									#
+# With a script name starting with 'E' this is run during create and	#
+# update after apt-get work is completed. (See man 8 pbuilder (the part	#
+# under --hookdir=)).							#
+#									#
+#########################################################################
+
+#########################################################################
+#									#
+# Changelog								#
+#									#
+# Date		Author	Version	Description				#
+#									#
+# 26/02/2018	MG	1.0.1	Created.				#
+#									#
+#########################################################################
+
+
+echo "Installing gpg key for m.grant.prg@gmail.com"
+
+gpg --no-default-keyring --keyring trustedkeys.kbx --fingerprint
+
+gpg --no-default-keyring --keyring trustedkeys.kbx --recv-keys 20ECF9F0
+
+find /root/.gnupg -type s | xargs rm -fv
