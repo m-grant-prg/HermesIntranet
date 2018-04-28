@@ -3,9 +3,12 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title></title>
-	<meta name="generator" content="LibreOffice 5.1.6.2 (Linux)"/>
+	<meta name="generator" content="LibreOffice 5.2.7.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2017-03-05T15:10:09.151688590"/>
+	<meta name="changedby" content="Mark Grant"/>
+	<meta name="changed" content="2018-04-28T09:06:21.975593905"/>
+	<meta name="created" content="00:00:00">
+	<meta name="changed" content="2017-03-05T15:10:09.151688590">
 	<meta name="created" content="00:00:00">
 	<meta name="changed" content="2017-03-05T14:51:06.695913719">
 	<meta name="created" content="00:00:00">
@@ -46,14 +49,14 @@ Guide</h1>
 		</ul>
 		<li/>
 <p align="left">Either run normal make sequence (with
-		acmbuild installed).</p>
+		acmbuild.sh installed).</p>
 		<ul>
 			<li/>
-<p align="left">‘acmbuild -m (or --make) ..’</p>
+<p align="left">‘acmbuild.sh -m (or --make) ..’</p>
 		</ul>
 		<li/>
-<p align="left">Or run normal make sequence (without acmbuild
-		installed).</p>
+<p align="left">Or run normal make sequence (without
+		acmbuild.sh installed).</p>
 		<ul>
 			<li/>
 <p align="left">‘autoreconf -if ..’</p>
@@ -73,24 +76,24 @@ Guide</h1>
 <p align="left">Test build a distribution and test install.</p>
 	<ol type="a">
 		<li/>
-<p align="left">With acmbuild installed.</p>
+<p align="left">With acmbuild.sh installed.</p>
 		<ul>
 			<li/>
 <p align="left">If the project allows a fakeroot, i.e. it
 			does not hard-code paths (e.g. to /etc/….)</p>
 			<ul>
 				<li/>
-<p align="left">‘acmbuild -c (or --distcheck) ..’</p>
+<p align="left">‘acmbuild.sh -c (or --distcheck) ..’</p>
 			</ul>
 			<li/>
 <p align="left">If the project does do some path hard-coding</p>
 			<ul>
 				<li/>
-<p align="left">‘acmbuild -f (or --distcheckfake) ..’</p>
+<p align="left">‘acmbuild.sh -f (or --distcheckfake) ..’</p>
 			</ul>
 		</ul>
 		<li/>
-<p align="left">Without acmbuild installed.</p>
+<p align="left">Without acmbuild.sh installed.</p>
 		<ul>
 			<li/>
 <p align="left">If the project allows a fakeroot, i.e. it
@@ -149,7 +152,7 @@ Guide</h1>
 			<li/>
 <p align="left">‘git push’</p>
 			<li/>
-<p align="left">‘git tag -a v1.0.1 -m 'Release of version
+<p align="left">‘git tag -as v1.0.1 -m 'Release of version
 			1.0.1'’</p>
 			<li/>
 <p align="left">‘git push –tags’</p>
@@ -162,16 +165,39 @@ Guide</h1>
 		</ul>
 	</ol>
 	<li/>
-<p align="left">Build the distribution tarball.</p>
+<p align="left">To build a source tarball. (For a distribution
+	tarball see the next section).</p>
 	<ol type="a">
 		<li/>
-<p align="left">If acmbuild is installed.</p>
+<p align="left">If acmbuild.sh is installed.</p>
 		<ul>
 			<li/>
-<p align="left">‘acmbuild -D (or --dist) ..’</p>
+<p align="left">‘acmbuild.sh -t (or --source-tarball) ..’</p>
 		</ul>
 		<li/>
-<p align="left">If acmbuild is not installed.</p>
+<p align="left">If acmbuild.sh is not installed.</p>
+		<ul>
+			<li/>
+<p align="left">‘autoreconf -if ..’</p>
+			<li/>
+<p align="left">‘../configure (use
+			--enable-silent-rules=yes if you wish)’</p>
+			<li/>
+<p align="left">‘make (--quiet or -s) srctarball
+			distclean’</p>
+		</ul>
+	</ol>
+	<li/>
+<p align="left">To build a distribution tarball.</p>
+	<ol type="a">
+		<li/>
+<p align="left">If acmbuild.sh is installed.</p>
+		<ul>
+			<li/>
+<p align="left">‘acmbuild.sh -D (or --dist) ..’</p>
+		</ul>
+		<li/>
+<p align="left">If acmbuild.sh is not installed.</p>
 		<ul>
 			<li/>
 <p align="left">‘autoreconf -if ..’</p>
@@ -205,10 +231,19 @@ Guide</h1>
 <p align="left">‘cd staging’</p>
 		</ul>
 		<li/>
-<p align="left">Move the tarball to the deployment directory.</p>
+<p align="left">If it is a source tarball move it to the
+		source deployment directory.</p>
 		<ul>
 			<li/>
-<p align="left">‘sudo cp -v * /srv/deployments’</p>
+<p align="left">‘sudo cp -v * /srv/deployments/source’</p>
+		</ul>
+		<li/>
+<p align="left">If it is a distribution tarball move it to
+		the distribution deployment directory.</p>
+		<ul>
+			<li/>
+<p align="left">‘sudo cp -v *
+			/srv/deployments/distribution’</p>
 		</ul>
 		<li/>
 <p align="left">Remove the staged file.</p>
