@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 5.2.7.2 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changedby" content="Mark Grant"/>
+	<meta name="changed" content="2018-05-28T13:43:19.711759350"/>
+	<style type="text/css">
+		@page { margin: 2cm }
+		p { margin-bottom: 0.25cm; line-height: 120% }
+		td p { margin-bottom: 0.25cm; line-height: 120% }
+		h1 { margin-bottom: 0.21cm }
+		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt }
+		h1.cjk { font-family: "Droid Sans Fallback"; font-size: 18pt }
+		h1.ctl { font-family: "FreeSans"; font-size: 18pt }
+		th p { margin-bottom: 0.25cm; line-height: 120% }
+		h2.western { font-family: "Albany", sans-serif; font-size: 16pt }
+		h2.cjk { font-family: "DejaVu Sans"; font-size: 16pt }
+		h2.ctl { font-family: "FreeSans"; font-size: 16pt }
+		h3.western { font-family: "Albany", sans-serif; font-size: 14pt }
+		h3.cjk { font-family: "DejaVu Sans"; font-size: 14pt }
+		h3.ctl { font-family: "FreeSans"; font-size: 14pt }
+	</style>
+</head>
+<body lang="en-GB" dir="ltr">
+<h1 class="western" align="center">IP Address Scheme and DHCP / DNS
+Setup</h1>
+<p align="left"><br/>
+<br/>
+
+</p>
+<h2 class="western">Network Setup</h2>
+<table width="643" cellpadding="4" cellspacing="0">
+	<col width="176">
+	<col width="223">
+	<col width="218">
+	<thead>
+		<tr valign="top">
+			<th width="176" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0.1cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p><br/>
+
+				</p>
+			</th>
+			<th width="223" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0.1cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p>hermes</p>
+			</th>
+			<th width="218" style="border: 1px solid #000000; padding: 0.1cm">
+				<p>cerberus</p>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr valign="top">
+			<td width="176" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">Static ip</p>
+			</td>
+			<td width="223" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">198.162.62.252</p>
+			</td>
+			<td width="218" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm">
+				<p align="left">192.168.62.250</p>
+				<p align="left">192.168.62.251 (WLAN0)</p>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td width="176" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">Netmask</p>
+			</td>
+			<td width="223" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">255.255.255.0</p>
+			</td>
+			<td width="218" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm">
+				<p align="left">255.255.255.0</p>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td width="176" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">Gateway</p>
+			</td>
+			<td width="223" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">192.168.62.254</p>
+			</td>
+			<td width="218" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm">
+				<p align="left">192.168.62.254</p>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td width="176" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">DHCP Range</p>
+			</td>
+			<td width="223" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">192.168.62.2 – 192.168.62.200</p>
+			</td>
+			<td width="218" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm">
+				<p align="left">192.168.62.2 – 192.168.62.200</p>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td width="176" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">Left for Static IP Addresses</p>
+			</td>
+			<td width="223" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">192.168.62.201 – 192.168.62.254</p>
+			</td>
+			<td width="218" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm">
+				<p align="left">192.168.62.201 – 192.168.62.254</p>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td width="176" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">DNS NameServers</p>
+			</td>
+			<td width="223" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">192.168.62.250</p>
+				<p align="left">192.168.62.251</p>
+				<p align="left">192.168.62.252</p>
+				<p align="left">192.168.62.254</p>
+			</td>
+			<td width="218" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm">
+				<p align="left">192.168.62.252</p>
+				<p align="left">192.168.62.250</p>
+				<p align="left">192.168.62.251</p>
+				<p align="left">192.168.62.254</p>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td width="176" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">Additional name resolution</p>
+			</td>
+			<td width="223" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">resolvconf</p>
+			</td>
+			<td width="218" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm">
+				<p align="left">resolvconf</p>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td width="176" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">Key config files</p>
+			</td>
+			<td width="223" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">/etc/network/interfaces</p>
+				<p align="left">/etc/dnsmasq.conf</p>
+			</td>
+			<td width="218" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm">
+				<p align="left">/etc/dhcpcd.conf</p>
+				<p align="left">/etc/dnsmasq</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p align="left"><br/>
+<br/>
+
+</p>
+<p align="left">Additional equipment with Assigned Static IP
+Addresses</p>
+<table width="100%" cellpadding="4" cellspacing="0">
+	<col width="85*">
+	<col width="85*">
+	<col width="85*">
+	<thead>
+		<tr valign="top">
+			<th width="33%" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0.1cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p>Name</p>
+			</th>
+			<th width="33%" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0.1cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p>IP Address</p>
+			</th>
+			<th width="33%" style="border: 1px solid #000000; padding: 0.1cm">
+				<p>Use</p>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr valign="top">
+			<td width="33%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">Old Netgear Gateway DG814</p>
+			</td>
+			<td width="33%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">192.168.62.253</p>
+			</td>
+			<td width="33%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm">
+				<p align="left">Ethernet switch.</p>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td width="33%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">Netgear Router DGND3700v2</p>
+			</td>
+			<td width="33%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm">
+				<p align="left">192.168.62.254</p>
+			</td>
+			<td width="33%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm">
+				<p align="left">Switch, gateway ADSL modem / router.</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p align="left"><br/>
+<br/>
+
+</p>
+<h2 class="western">DHCP / DNS</h2>
+<p align="left">Hermes and Cerberus can both deliver DHCP / DNS but
+they are not in a failover setup. Services must be shutdown on 1
+machine and started on the other:-</p>
+<h3 class="western">Machine A</h3>
+<p align="left">sudo sytemctl stop dnsmasq</p>
+<p align="left">sudo systemctl disable dnsmasq</p>
+<p align="left"><br/>
+<br/>
+
+</p>
+<h3 class="western">Machine B</h3>
+<p align="left">sudo systemctl enable dnsmasq</p>
+<p align="left">and either reboot or</p>
+<p align="left">sudo systemctl start dnsmasq</p>
+<p align="left"><br/>
+<br/>
+
+</p>
+</body>
+</html>
