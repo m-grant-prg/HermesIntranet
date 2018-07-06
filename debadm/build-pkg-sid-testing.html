@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 5.2.7.2 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changedby" content="Mark Grant"/>
+	<meta name="changed" content="2018-07-06T09:47:57.489843823"/>
+	<meta name="created" content="00:00:00">
+	<meta name="changedby" content="Mark Grant">
+	<meta name="changed" content="2018-07-06T09:41:44.242218149">
+	<style type="text/css">
+		@page { margin: 2cm }
+		p { margin-bottom: 0.25cm; line-height: 120% }
+		h1 { margin-bottom: 0.21cm }
+		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt }
+		h1.cjk { font-family: "Droid Sans Fallback"; font-size: 18pt }
+		h1.ctl { font-family: "FreeSans"; font-size: 18pt }
+		h2.western { font-family: "Albany", sans-serif; font-size: 16pt }
+		h2.cjk { font-family: "DejaVu Sans"; font-size: 16pt }
+		h2.ctl { font-family: "FreeSans"; font-size: 16pt }
+	</style>
+</head>
+<body lang="en-GB" dir="ltr">
+<h1 class="western" align="center">Build A Package From sid or
+testing</h1>
+<p align="left"><br/>
+<br/>
+
+</p>
+<h2 class="western">Before you do this!!</h2>
+<p align="left">Backports are better than building from testing or
+sid so look there first.</p>
+<p align="left">https://backports.debian.org/Instructions/</p>
+<p align="left">https://backports.debian.org/Packages/</p>
+<p align="left"><br/>
+<br/>
+
+</p>
+<h2 class="western">Build the package</h2>
+<p align="left">Using thunar as an example package and testing as an
+example source:-</p>
+<p align="left"><br/>
+<br/>
+
+</p>
+<ol>
+	<li/>
+<p align="left">Find available packages</p>
+	<ol type="a">
+		<li/>
+<p align="left">Type ‘rmadison thunar --architecture
+		amd64’.</p>
+		<li/>
+<p align="left">The response will be something like:-</p>
+		<ul>
+			<li/>
+<p align="left">thunar | 1.2.3-4+b1 | oldoldstable | amd64</p>
+			<li/>
+<p align="left">thunar | 1.6.3-2 | oldstable | amd64</p>
+			<li/>
+<p align="left">thunar | 1.6.11-1 | stable | amd64</p>
+			<li/>
+<p align="left">thunar | 1.6.15-1 | testing | amd64</p>
+			<li/>
+<p align="left">thunar | 1.8.1-1 | unstable | amd64</p>
+		</ul>
+	</ol>
+	<li/>
+<p align="left">Locate the package in testing or sid.</p>
+	<ol type="a">
+		<li/>
+<p align="left">Use package tracker.</p>
+		<ul>
+			<li/>
+<p align="left">https://tracker.debian.org/</p>
+			<li/>
+<p align="left">enter thunar.</p>
+		</ul>
+		<li/>
+<p align="left">copy link location of dsc file.</p>
+	</ol>
+	<li/>
+<p align="left">Download the dsc file.</p>
+	<ol type="a">
+		<li/>
+<p align="left">cd to where you want the files stored.</p>
+		<li/>
+<p align="left">Open a terminal.</p>
+		<li/>
+<p align="left">Type dget -x and paste the link location.</p>
+		<ul>
+			<li/>
+<p align="left">dget -x
+			http://deb.debian.org/debian/pool/main/t/thunar/thunar_1.6.15-1.dsc</p>
+		</ul>
+	</ol>
+	<li/>
+<p align="left">Build the package.</p>
+	<ol type="a">
+		<li/>
+<p align="left">Disable the hook for dsc gpg check as we
+		won’t do signing checks.</p>
+		<li/>
+<p align="left">Perform a usual pbuilder on the dsc file.</p>
+		<li/>
+<p align="left">Remember to re-establish dsc gpg check hook.</p>
+	</ol>
+	<li/>
+<p align="left">Publish the .deb files to the repo as normal.</p>
+</ol>
+</body>
+</html>
