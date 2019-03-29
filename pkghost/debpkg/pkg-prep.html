@@ -6,7 +6,13 @@
 	<meta name="generator" content="LibreOffice 5.2.7.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2018-03-13T16:01:06.927912951"/>
+	<meta name="changed" content="2019-03-29T09:08:11.834323001"/>
+	<meta name="created" content="00:00:00">
+	<meta name="changedby" content="Mark Grant">
+	<meta name="changed" content="2019-03-29T08:37:00.423208459">
+	<meta name="created" content="00:00:00">
+	<meta name="changedby" content="Mark Grant">
+	<meta name="changed" content="2018-03-13T16:01:06.927912951">
 	<meta name="created" content="00:00:00">
 	<meta name="changedby" content="Mark Grant">
 	<meta name="changed" content="2018-03-13T15:55:55.376001058">
@@ -161,50 +167,9 @@
 <p align="left">After a successful build, use Bazaar to:</p>
 	<ol type="a">
 		<li/>
-<p align="left">Commit the changes.</p>
+<p align="left">Commit the changes to the trunk branch.</p>
 		<li/>
-<p align="left">Push to any remote repositories.</p>
-	</ol>
-	<li/>
-<p align="left">Change to the pbuilder output directory.</p>
-	<li/>
-<p align="left">Copy the Debian file to the apt repository
-	host. e.g.</p>
-	<ol type="a">
-		<ul>
-			<li/>
-<p align="left">scp *.deb <a href="mailto:mgranthermes@hermes">mgranthermes@hermes</a>:staging</p>
-		</ul>
-	</ol>
-	<li/>
-<p align="left">Install the Debian file in the apt repository.</p>
-	<ol type="a">
-		<li/>
-<p align="left">Logon to the apt repository hosting machine</p>
-		<ul>
-			<li/>
-<p align="left">ssh mgranthermes@hermes</p>
-		</ul>
-		<li/>
-<p align="left">Move to the directory used above.</p>
-		<ul>
-			<li/>
-<p align="left">cd staging</p>
-		</ul>
-		<li/>
-<p align="left">Load the Debian file to the repository for
-		distribution stretch and component stable.</p>
-		<ul>
-			<li/>
-<p align="left">sudo reprepro -vb /srv/aptrepo -C stable
-			includedeb stretch *.deb</p>
-		</ul>
-		<li/>
-<p align="left">Remove the staged file.</p>
-		<ul>
-			<li/>
-<p align="left">rm -v *</p>
-		</ul>
+<p align="left">Push the trunk branch to LaunchPad.</p>
 	</ol>
 </ol>
 </body>
