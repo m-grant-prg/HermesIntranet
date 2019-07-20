@@ -6,7 +6,7 @@
 	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2015-12-12T13:33:41.059217339"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2019-07-20T13:27:45.527382292"/>
+	<meta name="changed" content="2019-07-20T14:02:17.399745307"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -27,8 +27,8 @@
 	<meta name="created" content="00:00:00">
 	<style type="text/css">
 		@page { size: 21cm 29.7cm; margin: 2cm }
-		p { margin-bottom: 0.25cm; line-height: 120%; background: transparent }
-		h1 { margin-bottom: 0.21cm; background: transparent; page-break-after: avoid }
+		p { margin-bottom: 0.25cm; background: transparent; line-height: 120%; background: transparent }
+		h1 { margin-bottom: 0.21cm; background: transparent; background: transparent; page-break-after: avoid }
 		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt; font-weight: bold }
 		h1.cjk { font-family: "Droid Sans Fallback"; font-size: 18pt; font-weight: bold }
 		h1.ctl { font-family: "FreeSans"; font-size: 18pt; font-weight: bold }
@@ -96,6 +96,14 @@ pbuilder Environment Setup Guide</h1>
 		tarball.</p>
 		<li><p align="left">A <a href="http://hermes/debpkg/H50-gpgv-warning">script</a>
 		to print a warning that the standard gpgv check does not work.</p>
+	</ol>
+	<li><p align="left"> To enable Raspbian cross-builds we must install
+	the Raspbian archive keys.</p>
+	<ol type="a">
+		<li><p align="left">wget
+		http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.2_all.deb</p>
+		<li><p align="left">sudo dpkg -i
+		raspbian-archive-keyring_20120528.2_all.deb</p>
 	</ol>
 	<li><p align="left">Create the distribution base tarball.</p>
 	<ol type="a">
