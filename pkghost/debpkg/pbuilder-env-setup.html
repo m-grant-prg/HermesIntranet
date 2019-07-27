@@ -6,7 +6,7 @@
 	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2015-12-12T13:33:41.059217339"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2019-07-20T14:02:17.399745307"/>
+	<meta name="changed" content="2019-07-27T14:13:20.852701474"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -43,7 +43,7 @@ pbuilder Environment Setup Guide</h1>
 
 </p>
 <ol>
-	<li><p align="left">Set-up .pbuilderrc. (See an example <a href="http://hermes/debpkg/pbuilderrc">here</a>.):-</p>
+	<li><p align="left">Set-up .pbuilderrc. (See an example <a href="http://hermes/pkghost/debpkg/pbuilderrc">here</a>.):-</p>
 	<ol type="a">
 		<li><p align="left">pbuilder always needs root privileges so it
 		will look for .pbuilderrc in /root. This is inconvenient, so you
@@ -87,17 +87,17 @@ pbuilder Environment Setup Guide</h1>
 	</ol>
 	<li><p align="left">Create any hook files you want. e.g.:-</p>
 	<ol type="a">
-		<li><p align="left">A <a href="http://hermes/debpkg/D40-gpgv-check-dsc">script</a>
+		<li><p align="left">A <a href="http://hermes/pkghost/debpkg/D40-gpgv-check-dsc">script</a>
 		to run gpgv against all .dsc files prior to build.</p>
-		<li><p align="left">A <a href="http://hermes/debpkg/D60-apt-get-update">script</a>
+		<li><p align="left">A <a href="http://hermes/pkghost/debpkg/D60-apt-get-update">script</a>
 		to run apt-get update before every build.</p>
-		<li><p align="left">A <a href="http://hermes/debpkg/E50-trustedkeys-kbx">script</a>
+		<li><p align="left">A <a href="http://hermes/pkghost/debpkg/E50-trustedkeys-kbx">script</a>
 		to install your own gpg key when creating or updating a base
 		tarball.</p>
-		<li><p align="left">A <a href="http://hermes/debpkg/H50-gpgv-warning">script</a>
+		<li><p align="left">A <a href="http://hermes/pkghost/debpkg/H50-gpgv-warning">script</a>
 		to print a warning that the standard gpgv check does not work.</p>
 	</ol>
-	<li><p align="left"> To enable Raspbian cross-builds we must install
+	<li><p align="left">To enable Raspbian cross-builds we must install
 	the Raspbian archive keys.</p>
 	<ol type="a">
 		<li><p align="left">wget
@@ -110,8 +110,8 @@ pbuilder Environment Setup Guide</h1>
 		<li><p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
 		pbuilder create --override-config</p>
 	</ol>
-	<li><p align="left">If adding a PPA configure the chroot
-	environment.</p>
+	<li><p align="left">If adding a PPA or other repo, configure the
+	chroot environment.</p>
 	<ol type="a">
 		<li><p align="left">If you added the extra packages above skip to
 		4.d. If doing this for the first time for a distribution you will
@@ -120,23 +120,15 @@ pbuilder Environment Setup Guide</h1>
 			<li><p align="left">dpkg-query -S $(which add-apt-repository)</p>
 			<li><p align="left">Output will be like:-</p>
 			<ul>
-				<p align="left">software-properties-common:
+				<li><p align="left">software-properties-common:
 				/usr/bin/add-apt-repository</p>
 			</ul>
 		</ul>
 		<li><p align="left">Enter the pbuilder chroot.</p>
-	</ol>
-</ol>
-<ol>
-	<ol type="a">
 		<ul>
 			<li><p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
 			pbuilder login --save-after-login --override-config</p>
 		</ul>
-	</ol>
-</ol>
-<ol>
-	<ol type="a" start="3">
 		<li><p align="left">If doing this for the first time for a
 		distribution.</p>
 		<ul>
@@ -150,14 +142,26 @@ pbuilder Environment Setup Guide</h1>
 			trustedkeys.kbx --recv-keys 20ECF9F0</p>
 			<li><p align="left">find /root/.gnupg -type s | xargs rm -fv</p>
 		</ul>
-		<li><p align="left">Add the required PPA repositories.</p>
+		<li><p align="left">Add any required PPA repositories.</p>
 		<ul>
 			<li><p align="left">add-apt-repository ppa:m-grant-prg/utils</p>
 		</ul>
-		<li><p align="left">Add the other repositories and get their keys.</p>
+		<li><p align="left">Add any local repositories and get their keys.</p>
 		<ul>
 			<li><p align="left">add-apt-repository 'deb
 			http://hermes/aptrepos/raspbian stretch stable'</p>
+			<li><p align="left">wget -O -
+			<a href="http://hermes/aptrepos/raspbian/conf/hermes.gpg">http://hermes/aptrepos/raspbian/conf/hermes.gpg</a>
+			| apt-key add -</p>
+		</ul>
+		<li><p align="left">Add Bintray if required.</p>
+	</ol>
+</ol>
+<ol>
+	<ol type="a">
+		<ul>
+			<li><p align="left">add-apt-repository 'deb
+			https://dl.bintray.com/mgrantprg/utils stretch stable’</p>
 		</ul>
 	</ol>
 </ol>
@@ -165,22 +169,37 @@ pbuilder Environment Setup Guide</h1>
 	<ol type="a">
 		<ul>
 			<li><p align="left">wget -O -
-			<a href="http://hermes/aptrepos/raspbian/conf/hermes.gpg">http://hermes/aptrepos/raspbian/conf/hermes.gpg</a>
+			https://bintray.com/user/downloadSubjectPublicKey?username=mgrantprg
 			| apt-key add -</p>
 		</ul>
+		<li><p align="left">Add OpenSUSE Build Service if required.</p>
 	</ol>
 </ol>
 <ol>
-	<ol type="a" start="6">
+	<ol type="a">
+		<ul>
+			<li><p align="left">Do not perform this step if you have added the
+			repo vi the pbuilderrc OTHERMIRROR variable, go to the wget.</p>
+			<ul>
+				<li><p align="left">echo 'deb
+				http://download.opensuse.org/repositories/home:/m-grant-prg/Raspbian_9.0/
+				/' &gt; /etc/apt/sources.list.d/home:m-grant-prg.list</p>
+			</ul>
+			<li><p align="left">wget -nv
+			https://download.opensuse.org/repositories/home:m-grant-prg/Raspbian_9.0/Release.key
+			-O Release.key</p>
+			<li><p align="left">apt-key add - &lt; Release.key</p>
+			<li><p align="left">rm Release.key</p>
+		</ul>
+	</ol>
+</ol>
+<ol>
+	<ol type="a">
 		<li><p align="left">Exit chroot environment.</p>
 		<ul>
-			<li><p align="left">exit</p>
+			<li><p align="left">Exit</p>
 		</ul>
 		<li><p align="left">Update the base package.</p>
-	</ol>
-</ol>
-<ol>
-	<ol type="a" start="6">
 		<ul>
 			<li><p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
 			pbuilder update --override-config</p>
