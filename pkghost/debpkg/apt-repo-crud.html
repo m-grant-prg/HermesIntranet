@@ -6,18 +6,21 @@
 	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2019-07-19T10:48:59.682984061"/>
+	<meta name="changed" content="2019-09-09T09:31:48.301986025"/>
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<style type="text/css">
 		@page { size: 21cm 29.7cm; margin: 2cm }
-		p { margin-bottom: 0.25cm; line-height: 120%; background: transparent }
-		h1 { margin-bottom: 0.21cm; background: transparent; page-break-after: avoid }
+		p { margin-bottom: 0.25cm; background: transparent; line-height: 120%; background: transparent }
+		h1 { margin-bottom: 0.21cm; background: transparent; background: transparent; page-break-after: avoid }
 		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt; font-weight: bold }
 		h1.cjk { font-family: "Droid Sans Fallback"; font-size: 18pt; font-weight: bold }
 		h1.ctl { font-family: "FreeSans"; font-size: 18pt; font-weight: bold }
 		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
 	</style>
 </head>
 <body lang="en-GB" link="#000080" vlink="#800000" dir="ltr"><h1 class="western" align="center">
@@ -32,8 +35,23 @@ Create Update And Consume An APT Repository</h1>
 	<ol type="a">
 		<li><p align="left">gpg --gen-key</p>
 	</ol>
-	<li><p align="left">If you are creating a new repository then the
-	repo’s gpg key must be installed.</p>
+	<li><p align="left">If your key has expired or needs editing.</p>
+	<ol type="a">
+		<li><p align="left">gpg --list-keys</p>
+		<ul>
+			<li><p align="left">Observe the pub id</p>
+		</ul>
+		<li><p align="left">gpg --edit-key pub id</p>
+		<ul>
+			<li><p align="left">gpg&gt; expire</p>
+			<ul>
+				<li><p align="left">Follow prompts to enter an expiration length.</p>
+			</ul>
+			<li><p align="left">gpg&gt; save</p>
+		</ul>
+	</ol>
+	<li><p align="left">If you are creating a new repository or have
+	edited the key, then the repo’s gpg key must be installed.</p>
 	<ol type="a">
 		<li><p align="left">Create the repo signing key.</p>
 		<ul>
@@ -73,7 +91,7 @@ Create Update And Consume An APT Repository</h1>
 		<li><p align="left">Generate all index files for the distribution.</p>
 		<ul>
 			<li><p align="left">sudo reprepro -vb
-			/srv/package-repos/apt/debian  export stretch</p>
+			/srv/package-repos/apt/debian export stretch</p>
 		</ul>
 	</ol>
 	<li><p align="left">To use the repository on a client.</p>
