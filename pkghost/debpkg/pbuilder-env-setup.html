@@ -6,7 +6,7 @@
 	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2015-12-12T13:33:41.059217339"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2019-07-27T14:13:20.852701474"/>
+	<meta name="changed" content="2019-09-15T09:09:13.204510228"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -85,6 +85,25 @@ pbuilder Environment Setup Guide</h1>
 		</ul>
 		<li><p align="left">Save the file.</p>
 	</ol>
+	<li><p align="left">If the pbuilderrc file specifies an apt keyring
+	for a local repository eg
+	APTKEYRINGS=(&quot;/var/cache/pbuilder/keyrings/hermes.gpg&quot;)
+	then that file needs to be put in place. This also has to happen if
+	the repo key is updated, maybe because it has expired.</p>
+	<ol type="a">
+		<li><p align="left">For the above example statement, as root type</p>
+	</ol>
+</ol>
+<ol>
+	<ol type="a">
+		<ul>
+			<li><p align="left">wget -O -
+			<a href="http://hermes/aptrepos/raspbian/conf/hermes.gpg">http://hermes/aptrepos/raspbian/conf/hermes.gpg</a>
+			&gt; /<i>var/</i><span style="font-style: normal">cache/pbuilder/keyrings</span></p>
+		</ul>
+	</ol>
+</ol>
+<ol start="3">
 	<li><p align="left">Create any hook files you want. e.g.:-</p>
 	<ol type="a">
 		<li><p align="left">A <a href="http://hermes/pkghost/debpkg/D40-gpgv-check-dsc">script</a>
