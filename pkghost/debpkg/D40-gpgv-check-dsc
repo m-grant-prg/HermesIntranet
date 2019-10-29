@@ -36,3 +36,4 @@ echo "Checking the following .dsc files:-"
 ls /build/*.dsc
 
 gpgv /build/*.dsc
+
