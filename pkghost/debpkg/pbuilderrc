@@ -12,7 +12,7 @@
 # This pbuilderrc file sets up pbuilder to be able to build for OS's,	#
 # distributions and architectures. These values should be passed on the	#
 # command line. E.g.							#
-#	sudo OS=raspbian DIST=stretch ARCH=armhf pbuilder --create \	#
+#	sudo OS=raspbian DIST=stretch ARCH=armhf pbuilder create \	#
 #			--override-config				#
 #									#
 #########################################################################
@@ -31,12 +31,17 @@
 # 04/02/2019	MG	1.0.4	Update OTHERMIRROR for new source	#
 #				tarball repo on hermes.			#
 #				Add vim as an extra package.		#
-# 27/07/2019	MG	1.0.5	Use OS and DIST in OTHERMIRROR.		#
+# 29/07/2019	MG	1.0.5	Use OS and DIST in OTHERMIRROR.		#
 #				Correct example create CL above.	#
 #				Add security & updates to OTHERMIRROR.	#
 #				Remove Ubuntu as not maintained and	#
 #				possibly misleading.			#
 #				Correct Purpose section above.		#
+#				Do not set OTHERMIRROR when creating	#
+#				the archive as it will fail due to	#
+#				missing keys.				#
+# 19/10/2019	MG	1.0.6	Change Bintray Debian repo name. Change	#
+#				Raspbian to use Bintray.		#
 #									#
 #########################################################################
 
@@ -50,9 +55,11 @@ set -e
 ########################################################
 # OTHERMIRROR may be added to later so initialise here #
 ########################################################
-OTHERMIRROR="deb http://hermes.mgent.home/aptrepos/$OS $DIST "
-OTHERMIRROR+="beta stable staging"
-APTKEYRINGS=("/var/cache/pbuilder/keyrings/hermes.gpg")
+if [[ $PBUILDER_OPERATION != create ]]; then
+	OTHERMIRROR="deb http://hermes.mgent.home/aptrepos/$OS $DIST "
+	OTHERMIRROR+="beta stable staging"
+	APTKEYRINGS=("/var/cache/pbuilder/keyrings/hermes.gpg")
+fi
 
 
 ########################
@@ -62,34 +69,28 @@ case $OS in
 debian)
 	MIRRORSITE="https://deb.debian.org/debian/"
 	COMPONENTS="main contrib non-free"
-	OTHERMIRROR+="|deb https://dl.bintray.com/mgrantprg/utils $DIST stable"
-	OTHERMIRROR+="|deb https://deb.debian.org/debian-security/ "
-	OTHERMIRROR+="$DIST/updates main contrib non-free"
-	OTHERMIRROR+="|deb https://deb.debian.org/debian $DIST-updates "
-	OTHERMIRROR+="main contrib non-free"
+	if [[ $PBUILDER_OPERATION != create ]]; then
+		OTHERMIRROR+="|deb https://dl.bintray.com/mgrantprg/"
+		OTHERMIRROR+="debian-utils $DIST stable"
+		OTHERMIRROR+="|deb https://deb.debian.org/debian-security/ "
+		OTHERMIRROR+="$DIST/updates main contrib non-free"
+		OTHERMIRROR+="|deb https://deb.debian.org/debian $DIST-updates "
+		OTHERMIRROR+="main contrib non-free"
+	fi
 	DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}"
 		"--keyring=/usr/share/keyrings/debian-archive-keyring.gpg")
 	;;
 raspbian)
 	MIRRORSITE="http://mirrordirector.raspbian.org/raspbian/"
 	COMPONENTS="main contrib non-free rpi"
-	case $DIST in
-	stretch)
-		OTHERMIRROR+="|deb http://download.opensuse.org/repositories"
-		OTHERMIRROR+="/home:/m-grant-prg/Raspbian_9.0/ /"
-		;;
-	buster)
-		OTHERMIRROR+="|deb http://download.opensuse.org/repositories"
-		OTHERMIRROR+="/home:/m-grant-prg/Raspbian_10/ /"
-		;;
-	*)
-		echo "Unknown DIST: $DIST"
-		exit 1
-		;;
-	esac
-	OTHERMIRROR+="|deb http://raspbian.raspberrypi.org/raspbian/ "
-	OTHERMIRROR+="$DIST main contrib non-free rpi"
-	OTHERMIRROR+="|deb http://archive.raspberrypi.org/debian/ $DIST main ui"
+	if [[ $PBUILDER_OPERATION != create ]]; then
+		OTHERMIRROR+="|deb https://dl.bintray.com/mgrantprg/"
+		OTHERMIRROR+="raspbian-utils $DIST stable"
+		OTHERMIRROR+="|deb http://raspbian.raspberrypi.org/raspbian/ "
+		OTHERMIRROR+="$DIST main contrib non-free rpi"
+		OTHERMIRROR+="|deb http://archive.raspberrypi.org/debian/ "
+		OTHERMIRROR+="$DIST main ui"
+	fi
 	DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}"
 		"--keyring=/usr/share/keyrings/raspbian-archive-keyring.gpg")
 	;;
