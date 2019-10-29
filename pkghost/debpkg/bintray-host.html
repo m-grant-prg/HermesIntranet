@@ -3,41 +3,48 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title></title>
-	<meta name="generator" content="LibreOffice 5.2.7.2 (Linux)"/>
-	<meta name="created" content="00:00:00"/>
+	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
+	<meta name="created" content="2015-12-12T09:37:03.193001702"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2019-03-29T08:59:09.381738387"/>
+	<meta name="changed" content="2019-10-29T08:56:24.053583470"/>
+	<meta name="created" content="00:00:00">
 	<style type="text/css">
-		@page { margin: 2cm }
-		p { margin-bottom: 0.25cm; line-height: 120% }
-		h1 { margin-bottom: 0.21cm }
-		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt }
-		h1.cjk { font-family: "Droid Sans Fallback"; font-size: 18pt }
-		h1.ctl { font-family: "FreeSans"; font-size: 18pt }
-		a:link { so-language: zxx }
+		@page { size: 21cm 29.7cm; margin: 2cm }
+		p { margin-bottom: 0.25cm; line-height: 120%; background: transparent }
+		h1 { margin-bottom: 0.21cm; background: transparent; page-break-after: avoid }
+		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt; font-weight: bold }
+		h1.cjk { font-family: "Droid Sans Fallback"; font-size: 18pt; font-weight: bold }
+		h1.ctl { font-family: "FreeSans"; font-size: 18pt; font-weight: bold }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
 	</style>
 </head>
-<body lang="en-GB" dir="ltr">
-<h1 class="western" align="center">Bintray
-<meta name="created" content="00:00:00"><meta name="changedby" content="Mark Grant"><meta name="changed" content="2019-03-29T08:37:00.423208459"><meta name="created" content="00:00:00"><meta name="changedby" content="Mark Grant"><meta name="changed" content="2018-03-13T16:01:06.927912951"><meta name="created" content="00:00:00"><meta name="changedby" content="Mark Grant"><meta name="changed" content="2018-03-13T15:55:55.376001058"><meta name="created" content="00:00:00"><meta name="changed" content="2017-08-18T14:28:42.372074454"><meta name="created" content="00:00:00"><meta name="changed" content="2017-05-11T15:05:04.788919659"><meta name="created" content="00:00:00"><meta name="changed" content="2016-06-13T14:27:55.710324709"><meta name="created" content="00:00:00"><meta name="changed" content="2015-12-12T10:18:46.511023545"><meta name="created" content="00:00:00"><meta name="changed" content="2015-12-12T10:17:38.337169121"><meta name="created" content="00:00:00"><meta name="changed" content="2015-12-12T10:13:17.065327884"><meta name="created" content="00:00:00"><meta name="changed" content="2015-12-12T10:10:17.039741563"><meta name="created" content="00:00:00"><meta name="changed" content="2015-12-12T10:07:53.216390783"><meta name="created" content="00:00:00"><meta name="changed" content="2015-12-12T10:06:44.719336138"><meta name="created" content="00:00:00"><meta name="changed" content="2015-12-12T10:04:37.502712059"><meta name="created" content="00:00:00"><meta name="changed" content="2015-12-12T10:02:57.483709311"><meta name="created" content="2015-12-12T09:37:03.193001702"><meta name="changed" content="2015-12-12T09:58:54.103027429">Debian
+<body lang="en-GB" link="#000080" vlink="#800000" dir="ltr"><h1 class="western" align="center">
+Bintray <meta name="created" content="00:00:00"><meta name="created" content="00:00:00"><meta name="created" content="00:00:00"><meta name="created" content="00:00:00"><meta name="created" content="00:00:00"><meta name="created" content="00:00:00"><meta name="created" content="00:00:00"><meta name="created" content="00:00:00"><meta name="created" content="00:00:00"><meta name="created" content="00:00:00"><meta name="created" content="00:00:00"><meta name="created" content="00:00:00"><meta name="created" content="00:00:00"><meta name="created" content="00:00:00">Debian
 Package Hosting</h1>
 <p align="left"><br/>
 <br/>
 
 </p>
 <ol>
-	<li/>
-<p align="left">Change to the pbuilder output directory.</p>
-	<li/>
-<p align="left">Upload the Debian package(s) to Bintray.</p>
+	<li><p align="left">Change to the pbuilder output directory.</p>
+	<li><p align="left">Upload the Debian package(s) to Bintray.</p>
 	<ol type="a">
 		<ul>
-			<li/>
-<p align="left">bin-deb-upl.sh</p>
+			<li><p align="left">bin-deb-upl.sh -d or –debian for debian
+			packages</p>
 		</ul>
 	</ol>
-	<li/>
-<p align="left">Ensure the process returns a {Message:Success}
+</ol>
+<ol>
+	<ol type="a">
+		<ul>
+			<li><p align="left">bin-deb-upl.sh -r or –raspbian for raspbian
+			packages</p>
+		</ul>
+	</ol>
+</ol>
+<ol start="3">
+	<li><p align="left">Ensure the process returns a {Message:Success}
 	message.</p>
 </ol>
 </body>
