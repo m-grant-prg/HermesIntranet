@@ -6,7 +6,7 @@
 	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2015-12-12T13:33:41.059217339"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2019-09-15T09:09:13.204510228"/>
+	<meta name="changed" content="2019-10-29T08:38:50.404210516"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -92,18 +92,12 @@ pbuilder Environment Setup Guide</h1>
 	the repo key is updated, maybe because it has expired.</p>
 	<ol type="a">
 		<li><p align="left">For the above example statement, as root type</p>
-	</ol>
-</ol>
-<ol>
-	<ol type="a">
 		<ul>
 			<li><p align="left">wget -O -
 			<a href="http://hermes/aptrepos/raspbian/conf/hermes.gpg">http://hermes/aptrepos/raspbian/conf/hermes.gpg</a>
-			&gt; /<i>var/</i><span style="font-style: normal">cache/pbuilder/keyrings</span></p>
+			&gt; /<i>var/</i><span style="font-variant: normal"><span style="font-style: normal">cache/pbuilder/keyrings</span></span></p>
 		</ul>
 	</ol>
-</ol>
-<ol start="3">
 	<li><p align="left">Create any hook files you want. e.g.:-</p>
 	<ol type="a">
 		<li><p align="left">A <a href="http://hermes/pkghost/debpkg/D40-gpgv-check-dsc">script</a>
@@ -127,7 +121,7 @@ pbuilder Environment Setup Guide</h1>
 	<li><p align="left">Create the distribution base tarball.</p>
 	<ol type="a">
 		<li><p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
-		pbuilder create --override-config</p>
+		pbuilder create</p>
 	</ol>
 	<li><p align="left">If adding a PPA or other repo, configure the
 	chroot environment.</p>
@@ -138,15 +132,15 @@ pbuilder Environment Setup Guide</h1>
 		<ul>
 			<li><p align="left">dpkg-query -S $(which add-apt-repository)</p>
 			<li><p align="left">Output will be like:-</p>
-			<ul>
+			<ol>
 				<li><p align="left">software-properties-common:
 				/usr/bin/add-apt-repository</p>
-			</ul>
+			</ol>
 		</ul>
 		<li><p align="left">Enter the pbuilder chroot.</p>
 		<ul>
 			<li><p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
-			pbuilder login --save-after-login --override-config</p>
+			pbuilder login --save-after-login</p>
 		</ul>
 		<li><p align="left">If doing this for the first time for a
 		distribution.</p>
@@ -174,46 +168,28 @@ pbuilder Environment Setup Guide</h1>
 			| apt-key add -</p>
 		</ul>
 		<li><p align="left">Add Bintray if required.</p>
-	</ol>
-</ol>
-<ol>
-	<ol type="a">
 		<ul>
 			<li><p align="left">add-apt-repository 'deb
-			https://dl.bintray.com/mgrantprg/utils stretch stable’</p>
-		</ul>
-	</ol>
-</ol>
-<ol>
-	<ol type="a">
-		<ul>
+			https://dl.bintray.com/mgrantprg/raspbian-utils stretch stable’</p>
 			<li><p align="left">wget -O -
 			https://bintray.com/user/downloadSubjectPublicKey?username=mgrantprg
 			| apt-key add -</p>
 		</ul>
 		<li><p align="left">Add OpenSUSE Build Service if required.</p>
-	</ol>
-</ol>
-<ol>
-	<ol type="a">
 		<ul>
 			<li><p align="left">Do not perform this step if you have added the
-			repo vi the pbuilderrc OTHERMIRROR variable, go to the wget.</p>
-			<ul>
+			repo via the pbuilderrc OTHERMIRROR variable, go to the wget.</p>
+			<ol>
 				<li><p align="left">echo 'deb
 				http://download.opensuse.org/repositories/home:/m-grant-prg/Raspbian_9.0/
 				/' &gt; /etc/apt/sources.list.d/home:m-grant-prg.list</p>
-			</ul>
+			</ol>
 			<li><p align="left">wget -nv
 			https://download.opensuse.org/repositories/home:m-grant-prg/Raspbian_9.0/Release.key
 			-O Release.key</p>
 			<li><p align="left">apt-key add - &lt; Release.key</p>
 			<li><p align="left">rm Release.key</p>
 		</ul>
-	</ol>
-</ol>
-<ol>
-	<ol type="a">
 		<li><p align="left">Exit chroot environment.</p>
 		<ul>
 			<li><p align="left">Exit</p>
@@ -221,7 +197,7 @@ pbuilder Environment Setup Guide</h1>
 		<li><p align="left">Update the base package.</p>
 		<ul>
 			<li><p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
-			pbuilder update --override-config</p>
+			pbuilder update</p>
 		</ul>
 	</ol>
 </ol>
