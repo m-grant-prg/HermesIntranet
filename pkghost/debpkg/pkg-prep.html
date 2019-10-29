@@ -3,144 +3,103 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title></title>
-	<meta name="generator" content="LibreOffice 5.2.7.2 (Linux)"/>
-	<meta name="created" content="00:00:00"/>
+	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
+	<meta name="created" content="2015-12-12T09:37:03.193001702"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2019-03-29T09:08:11.834323001"/>
+	<meta name="changed" content="2019-10-29T08:53:31.096182692"/>
 	<meta name="created" content="00:00:00">
-	<meta name="changedby" content="Mark Grant">
-	<meta name="changed" content="2019-03-29T08:37:00.423208459">
 	<meta name="created" content="00:00:00">
-	<meta name="changedby" content="Mark Grant">
-	<meta name="changed" content="2018-03-13T16:01:06.927912951">
 	<meta name="created" content="00:00:00">
-	<meta name="changedby" content="Mark Grant">
-	<meta name="changed" content="2018-03-13T15:55:55.376001058">
 	<meta name="created" content="00:00:00">
-	<meta name="changed" content="2017-08-18T14:28:42.372074454">
 	<meta name="created" content="00:00:00">
-	<meta name="changed" content="2017-05-11T15:05:04.788919659">
 	<meta name="created" content="00:00:00">
-	<meta name="changed" content="2016-06-13T14:27:55.710324709">
 	<meta name="created" content="00:00:00">
-	<meta name="changed" content="2015-12-12T10:18:46.511023545">
 	<meta name="created" content="00:00:00">
-	<meta name="changed" content="2015-12-12T10:17:38.337169121">
 	<meta name="created" content="00:00:00">
-	<meta name="changed" content="2015-12-12T10:13:17.065327884">
 	<meta name="created" content="00:00:00">
-	<meta name="changed" content="2015-12-12T10:10:17.039741563">
 	<meta name="created" content="00:00:00">
-	<meta name="changed" content="2015-12-12T10:07:53.216390783">
 	<meta name="created" content="00:00:00">
-	<meta name="changed" content="2015-12-12T10:06:44.719336138">
 	<meta name="created" content="00:00:00">
-	<meta name="changed" content="2015-12-12T10:04:37.502712059">
 	<meta name="created" content="00:00:00">
-	<meta name="changed" content="2015-12-12T10:02:57.483709311">
-	<meta name="created" content="2015-12-12T09:37:03.193001702">
-	<meta name="changed" content="2015-12-12T09:58:54.103027429">
+	<meta name="created" content="00:00:00">
 	<style type="text/css">
-		@page { margin: 2cm }
-		p { margin-bottom: 0.25cm; line-height: 120% }
-		h1 { margin-bottom: 0.21cm }
-		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt }
-		h1.cjk { font-family: "Droid Sans Fallback"; font-size: 18pt }
-		h1.ctl { font-family: "FreeSans"; font-size: 18pt }
-		a:link { so-language: zxx }
+		@page { size: 21cm 29.7cm; margin: 2cm }
+		p { margin-bottom: 0.25cm; background: transparent; line-height: 120%; background: transparent }
+		h1 { margin-bottom: 0.21cm; background: transparent; background: transparent; page-break-after: avoid }
+		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt; font-weight: bold }
+		h1.cjk { font-family: "Droid Sans Fallback"; font-size: 18pt; font-weight: bold }
+		h1.ctl { font-family: "FreeSans"; font-size: 18pt; font-weight: bold }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
 	</style>
 </head>
-<body lang="en-GB" dir="ltr">
-<h1 class="western" align="center">Debian Package Preparation Guide</h1>
+<body lang="en-GB" link="#000080" vlink="#800000" dir="ltr"><h1 class="western" align="center">
+Debian Package Preparation Guide</h1>
 <p align="left"><br/>
 <br/>
 
 </p>
 <ol>
-	<li/>
-<p align="left">Select the Bazaar trunk directory.</p>
-	<li/>
-<p align="left">Once per project at the start</p>
+	<li><p align="left">Select the Bazaar trunk directory.</p>
+	<li><p align="left">Once per project at the start</p>
 	<ol type="a">
 		<ul>
-			<li/>
-<p align="left">bzr dh-make alarmclock 1.0.10
+			<li><p align="left">bzr dh-make alarmclock 1.0.10
 			../alarmclockatdist-v1.0.10-1-g4b2d49b.tar.gz</p>
 		</ul>
 	</ol>
-	<li/>
-<p align="left">To check for and download and merge any new
+	<li><p align="left">To check for and download and merge any new
 	upstream versions with a valid watch file – the easy way.</p>
 	<ol type="a">
-		<li/>
-<p align="left">Remove old .dsc etc files from project root
+		<li><p align="left">Remove old .dsc etc files from project root
 		directory (trunk's parent)</p>
-		<li/>
-<p align="left">bzr merge-upstream</p>
-		<li/>
-<p align="left">Edit the trunk/debian ChangeLog file to
-		ensure correct distribution and Author name and email address which
-		is used for signing.</p>
+		<li><p align="left">bzr merge-upstream</p>
+		<li><p align="left">Edit the trunk/debian ChangeLog file to ensure
+		correct distribution and Author name and email address which is
+		used for signing.</p>
 	</ol>
-	<li/>
-<p align="left">To check for and download and merge any new
+	<li><p align="left">To check for and download and merge any new
 	upstream versions with a valid watch file – the manual way.</p>
 	<ol type="a">
-		<li/>
-<p align="left">uscan (--report-status will just check, not
+		<li><p align="left">uscan (--report-status will just check, not
 		download)</p>
-		<li/>
-<p align="left">Remove old .dsc etc files from project root
+		<li><p align="left">Remove old .dsc etc files from project root
 		directory (trunk's parent)</p>
-		<li/>
-<p align="left">bzr merge-upstream --version 1.0.11
+		<li><p align="left">bzr merge-upstream --version 1.0.11
 		../alarmclockatdist-v1.0.11.tar.gz</p>
-		<li/>
-<p align="left">Edit the trunk/debian ChangeLog file to
-		ensure correct distribution and Author name and email address which
-		is used for signing.</p>
+		<li><p align="left">Edit the trunk/debian ChangeLog file to ensure
+		correct distribution and Author name and email address which is
+		used for signing.</p>
 	</ol>
-	<li/>
-<p align="left">To check for and download and merge any new
+	<li><p align="left">To check for and download and merge any new
 	upstream versions without a valid watch file.</p>
 	<ol type="a">
-		<li/>
-<p align="left">Remove old .dsc etc files from project root
+		<li><p align="left">Remove old .dsc etc files from project root
 		directory (trunk's parent)</p>
-		<li/>
-<p align="left">bzr merge-upstream --version 1.0.11
+		<li><p align="left">bzr merge-upstream --version 1.0.11
 		http://hermes/deployments/alarmclockatdist-v1.0.11.tar.gz</p>
-		<li/>
-<p align="left">Edit the trunk/debian ChangeLog file to
-		ensure correct distribution and Author name and email address which
-		is used for signing.</p>
+		<li><p align="left">Edit the trunk/debian ChangeLog file to ensure
+		correct distribution and Author name and email address which is
+		used for signing.</p>
 	</ol>
-	<li/>
-<p align="left">Now build the .dsc etc files.</p>
+	<li><p align="left">Now build the .dsc etc files.</p>
 	<ol type="a">
-		<li/>
-<p align="left">For an unsigned package:</p>
+		<li><p align="left">For an unsigned package:</p>
 		<ul>
-			<li/>
-<p align="left">bzr builddeb -- -us -uc</p>
+			<li><p align="left">bzr builddeb -- -us -uc</p>
 		</ul>
-		<li/>
-<p align="left">For a signed package:</p>
+		<li><p align="left">For a signed package:</p>
 		<ul>
-			<li/>
-<p align="left">bzr builddeb -S</p>
+			<li><p align="left">bzr builddeb -S</p>
 		</ul>
 	</ol>
-	<li/>
-<p align="left">Move to the project root directory.</p>
+	<li><p align="left">Move to the project root directory.</p>
 	<ol type="a">
 		<ul>
-			<li/>
-<p align="left">cd ..</p>
+			<li><p align="left">cd ..</p>
 		</ul>
 	</ol>
-	<li/>
-<p align="left">As needed or once per day update the pbuilder
+	<li><p align="left">As needed or once per day update the pbuilder
 	base package. As needed in case you release a dev package which is
 	then needed to build a lib package. If using the pbuilder apt-get
 	update hook documented elsewhere, then once per day is adequate
@@ -148,28 +107,33 @@
 	update hook is run.</p>
 	<ol type="a">
 		<ul>
-			<li/>
-<p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
-			pbuilder update --override-config</p>
+			<li><p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
+			pbuilder update</p>
 		</ul>
 	</ol>
-	<li/>
-<p align="left">Build the Debian package in chroot
-	environment.</p>
+	<li><p align="left">Build the Debian package in chroot environment.</p>
 	<ol type="a">
 		<ul>
-			<li/>
-<p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
-			pbuilder build *.dsc</p>
+			<li><p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
+			pbuilder build *deb9*.dsc</p>
 		</ul>
 	</ol>
-	<li/>
-<p align="left">After a successful build, use Bazaar to:</p>
+	<li><p align="left">If supporting other Debian dists repeat from
+	step 3 for the extra dists.</p>
 	<ol type="a">
-		<li/>
-<p align="left">Commit the changes to the trunk branch.</p>
-		<li/>
-<p align="left">Push the trunk branch to LaunchPad.</p>
+		<li><p align="left">If creating such a setup at this point:-</p>
+		<ul>
+			<li><p align="left">Copy a suitable branch to the new branch using
+			Bazaar.</p>
+			<li><p align="left">Edit the .bzr/branch/branch.conf file and
+			remove the line declaring the source of the copy as the parent of
+			this branch.</p>
+		</ul>
+	</ol>
+	<li><p align="left">After a successful build, use Bazaar to:</p>
+	<ol type="a">
+		<li><p align="left">Commit the changes to the trunk branch.</p>
+		<li><p align="left">Push the trunk branch to LaunchPad.</p>
 	</ol>
 </ol>
 </body>
