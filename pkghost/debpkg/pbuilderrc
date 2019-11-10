@@ -12,8 +12,7 @@
 # This pbuilderrc file sets up pbuilder to be able to build for OS's,	#
 # distributions and architectures. These values should be passed on the	#
 # command line. E.g.							#
-#	sudo OS=raspbian DIST=stretch ARCH=armhf pbuilder create \	#
-#			--override-config				#
+#	sudo OS=raspbian DIST=stretch ARCH=armhf pbuilder create	#
 #									#
 #########################################################################
 
@@ -42,6 +41,9 @@
 #				missing keys.				#
 # 19/10/2019	MG	1.0.6	Change Bintray Debian repo name. Change	#
 #				Raspbian to use Bintray.		#
+# 10/11/2019	MG	1.0.7	Change example CL invocation above to	#
+#				remove unnecessary --override-config.	#
+#				Add support for Ubuntu.			#
 #									#
 #########################################################################
 
@@ -56,9 +58,13 @@ set -e
 # OTHERMIRROR may be added to later so initialise here #
 ########################################################
 if [[ $PBUILDER_OPERATION != create ]]; then
-	OTHERMIRROR="deb http://hermes.mgent.home/aptrepos/$OS $DIST "
-	OTHERMIRROR+="beta stable staging"
-	APTKEYRINGS=("/var/cache/pbuilder/keyrings/hermes.gpg")
+	if [[ $OS == ubuntu ]]; then
+		OTHERMIRROR=""
+	else
+		OTHERMIRROR="deb http://hermes.mgent.home/aptrepos/$OS $DIST "
+		OTHERMIRROR+="beta stable staging"
+		APTKEYRINGS=("/var/cache/pbuilder/keyrings/hermes.gpg")
+	fi
 fi
 
 
@@ -93,6 +99,20 @@ raspbian)
 	fi
 	DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}"
 		"--keyring=/usr/share/keyrings/raspbian-archive-keyring.gpg")
+	;;
+ubuntu)
+	MIRRORSITE="http://uk.archive.ubuntu.com/ubuntu/"
+	COMPONENTS="main restricted universe multiverse"
+	if [[ $PBUILDER_OPERATION != create ]]; then
+		OTHERMIRROR+="deb http://uk.archive.ubuntu.com/ubuntu/ "
+		OTHERMIRROR+="$DIST-security "
+		OTHERMIRROR+="main restricted universe multiverse"
+		OTHERMIRROR+="|deb http://uk.archive.ubuntu.com/ubuntu/ "
+		OTHERMIRROR+="$DIST-updates "
+		OTHERMIRROR+="main restricted universe multiverse"
+	fi
+	DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}"
+		"--keyring=/usr/share/keyrings/ubuntu-archive-keyring.gpg")
 	;;
 *)
 	echo "Unknown OS: $OS"
