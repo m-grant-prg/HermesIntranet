@@ -6,7 +6,7 @@
 	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2015-12-12T13:33:41.059217339"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2019-10-29T08:38:50.404210516"/>
+	<meta name="changed" content="2019-11-10T15:01:14.621501749"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -127,7 +127,7 @@ pbuilder Environment Setup Guide</h1>
 	chroot environment.</p>
 	<ol type="a">
 		<li><p align="left">If you added the extra packages above skip to
-		4.d. If doing this for the first time for a distribution you will
+		6.d. If doing this for the first time for a distribution you will
 		need the output of the following command.</p>
 		<ul>
 			<li><p align="left">dpkg-query -S $(which add-apt-repository)</p>
@@ -196,8 +196,10 @@ pbuilder Environment Setup Guide</h1>
 		</ul>
 		<li><p align="left">Update the base package.</p>
 		<ul>
+			<li><p align="left">We need the –override-config in this case to
+			push the changes into the base package.</p>
 			<li><p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
-			pbuilder update</p>
+			pbuilder update --override-config</p>
 		</ul>
 	</ol>
 </ol>
