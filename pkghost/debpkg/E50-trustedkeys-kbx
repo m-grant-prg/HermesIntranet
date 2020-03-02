@@ -3,7 +3,7 @@
 #########################################################################
 #									#
 # Script ID: E50-trustedkeys-kbx.sh					#
-# Author: Copyright (C) 2018-2019  Mark Grant				#
+# Author: Copyright (C) 2018-2020  Mark Grant				#
 #									#
 # Released under the GPLv3 only.					#
 # SPDX-License-Identifier: GPL-3.0					#
@@ -28,8 +28,10 @@
 # 26/02/2018	MG	1.0.1	Created.				#
 # 29/01/2019	NG	1.0.2	Change --recv-keys 20ECF9F0 to		#
 #				--refresh-keys				#
-# 27/07/2019	MG	1.0.2	Use --recv-keys for create and		#
+# 27/07/2019	MG	1.0.3	Use --recv-keys for create and		#
 #				--refresh-keys otherwise.		#
+# 28/02/2020	MG	1.0.4	In create mode add a server from which	#
+#				to receive the key.			#
 #									#
 #########################################################################
 
@@ -39,7 +41,8 @@ echo "Installing gpg key for m.grant.prg@gmail.com"
 gpg --no-default-keyring --keyring trustedkeys.kbx --fingerprint
 
 if [[ $PBUILDER_OPERATION == create ]]; then
-	gpg --no-default-keyring --keyring trustedkeys.kbx --recv-keys 20ECF9F0
+	gpg --no-default-keyring --keyring trustedkeys.kbx \
+		--keyserver hkp://pool.sks-keyservers.net --recv-keys 20ECF9F0
 else
 	gpg --no-default-keyring --keyring trustedkeys.kbx --refresh-keys
 fi

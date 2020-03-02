@@ -6,7 +6,7 @@
 	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2015-12-12T13:33:41.059217339"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2019-11-11T08:54:09.175910855"/>
+	<meta name="changed" content="2020-03-02T09:37:00.167679069"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -32,6 +32,10 @@
 		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt; font-weight: bold }
 		h1.cjk { font-family: "Droid Sans Fallback"; font-size: 18pt; font-weight: bold }
 		h1.ctl { font-family: "FreeSans"; font-size: 18pt; font-weight: bold }
+		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; background: transparent; background: transparent; page-break-after: avoid }
+		h2.western { font-family: "Albany", sans-serif; font-size: 16pt; font-weight: bold }
+		h2.cjk { font-family: "DejaVu Sans"; font-size: 16pt; font-weight: bold }
+		h2.ctl { font-family: "Noto Sans Devanagari"; font-size: 16pt; font-weight: bold }
 		a:link { color: #000080; so-language: zxx; text-decoration: underline }
 		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
 	</style>
@@ -42,166 +46,428 @@ pbuilder Environment Setup Guide</h1>
 <br/>
 
 </p>
+<p align="left">pbuilderrc can contain everything required to create
+a chroot and immediately build a package including third-party, local
+and PPA repositories. On the other hand it can contain the bare
+essentials to create the chroot with everything else being added via
+logging in to the chroot and adding manually. Also, of course, the
+pbuilder command line can be used to pass a lot of configuration
+data.</p>
+<p align="left">Fully populated pbuilderrc and minimally populated
+with manual addition scenarios will be talked about here. (A mix of
+the two is also possible, obviously).</p>
+<p style="margin-top: 0.42cm; margin-bottom: 0.21cm; line-height: 100%; background: transparent; page-break-after: avoid">
+<font face="Albany, sans-serif"><font size="4" style="font-size: 14pt">Some
+terms.</font></font></p>
+<ul>
+	<li><p align="left">hermes is a server hosting; apt caching using
+	apt-cacher-ng, and a local apt repository for my local development
+	for Debian and Raspbian. hermes is not internet-visible so may not
+	be available, so, whether to use these services is indicated to
+	pbuilder by use of the APT_CACHER environment variable set on the
+	pbuilder command line. (If not mentioned, the pbuilderrc script
+	defaults to yes, i.e. use these services).</p>
+	<li><p align="left">Bintray is a package hosting environment
+	providing apt package repositories, in this case, for my software
+	packaged for Debian and Raspbian.</p>
+	<li><p align="left">The PPA mentioned basically provides the same
+	package software as Bintray, but for Ubuntu.</p>
+</ul>
+<p style="margin-top: 0.42cm; margin-bottom: 0.21cm; line-height: 100%; background: transparent; page-break-after: avoid">
+<font face="Albany, sans-serif"><font size="4" style="font-size: 14pt">Common
+command line elements.</font></font></p>
+<p>The pbuilder command line is always of the form:-</p>
+<p>sudo OS=debian DIST=buster ARCH=amd64 APT_CACHER=yes pbuilder ……..</p>
+<p>In my setup; OS can be debian, raspbian or ubuntu, DIST will be
+those to be used in this setup, maybe buster, stretch and bionic, and
+ARCH will be amd64 of armhf.</p>
+<p style="margin-top: 0.42cm; margin-bottom: 0.21cm; line-height: 100%; background: transparent; page-break-after: avoid">
+<font face="Albany, sans-serif"><font size="4" style="font-size: 14pt">pbuilderrc
+location considerations.</font></font></p>
+<p>pbuilder always needs root privileges so it will look for
+.pbuilderrc in /root. This is inconvenient, so you could set up a
+symlink in /root to point at a .pbuilderrc somewhere in your home
+directory.</p>
+<h2 class="western">Setup common to both methods</h2>
 <ol>
-	<li><p align="left">Set-up .pbuilderrc. (See an example <a href="http://hermes/pkghost/debpkg/pbuilderrc">here</a>.):-</p>
+	<li><p align="left">Determine if debootstrap needs upgrading.</p>
 	<ol type="a">
-		<li><p align="left">pbuilder always needs root privileges so it
-		will look for .pbuilderrc in /root. This is inconvenient, so you
-		could set up a symlink in /root to point at a .pbuilderrc somewhere
-		in your home directory.</p>
-		<li><p align="left">PPA's can be added later in the chroot
-		environment itself. In this file add other repositories to the
-		OTHERMIRROR variable.</p>
+		<li><p align="left">Debootstrap has a script for each Debian based
+		distribution release, e.g. buster, stretch, bionic, eoan etc.</p>
+		<li><p align="left">This package in a Debian stable distribution
+		could be up to almost 2 years old and Ubuntu make 2 releases a
+		year, so the package may not know about these latest releases. If
+		this is the case then:-</p>
+		<li><p align="left">Install a newer version from Debian backports.
+		Generic instructions can be found <a href="https://backports.debian.org/Instructions/" name="Deb Backports">here</a>.</p>
+	</ol>
+</ol>
+<h2 class="western">Fully populated pbuilderrc</h2>
+<ol>
+	<li><p align="left">Set-up .pbuilderrc. (See an example <a href="http://hermes/pkghost/debpkg/pbuilderrc-full">here</a>.):-</p>
+	<ol type="a">
+		<li value="1"><p align="left">Setup the main distro repository.</p>
 		<ul>
-			<li><p align="left">OTHERMIRROR=&quot;deb
-			http://hermes/aptrepos/$OS $DIST stable&quot;</p>
+			<li><p align="left">MIRRORSITE should be the URL of the main
+			repository.</p>
+			<li><p align="left">COMPONENTS should be e.g. main contrib
+			non-free.</p>
 		</ul>
-		<li><p align="left">Add any additional APT keyrings.</p>
-		<li><p align="left">Add distribution dependent elements.</p>
+		<li><p align="left">Setup all the other repsotories required. These
+		are in 2 groups; extra official repositories and third-party / your
+		own repositories.</p>
 		<ul>
-			<li><p align="left">Mirrors.</p>
-			<li><p align="left">Components</p>
-			<li><p align="left">DEBOOTSTRAPOPTS such as additional keyrings.</p>
+			<li><p align="left">Add extra official repositories to OTHERMIRROR
+			and add the location of the repository’s key to DEBOOTSTRAPOPTS.</p>
+			<li><p align="left">Add third-party repositories to OTHERMIRROR
+			and add the location of the repositories’ keys to APTKEYRINGS.</p>
 		</ul>
-		<li><p align="left">Add additional packages to be automatically
-		included in the base tarball.</p>
+		<li><p align="left">If running on Debian the keyring will be
+		installed, others not necessarily. To add the keys depends on
+		whether they are available as a package, as they would be for
+		Raspbian for example. So, procure keys:-</p>
 		<ul>
-			<li><p align="left">software-properties-common for adding PPAs.</p>
-			<li><p align="left">wget, gnupg2 and dirmngr for key handling.</p>
+			<li><p align="left">Raspbian produces a package but it is not in
+			the Debian repositories. So get the package from their server,
+			(N.B. Check for a later dated version).</p>
+			<ol>
+				<li><p align="left">wget
+				<a href="http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.2_all.deb">http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.2_all.deb</a></p>
+				<li><p align="left">sudo dpkg -i
+				raspbian-archive-keyring_20120528.2_all.deb</p>
+			</ol>
+			<li><p align="left">Ubuntu has a package in the Debian repository
+			so it is a simple install.</p>
+			<ol>
+				<li><p align="left">sudo apt-get install ubuntu-keyring</p>
+			</ol>
+			<li><p align="left">Bintray needs to be retrieved, imported and
+			exported to produce the correct gpg file in the location entered
+			in the pbuilderrc APTKEYRINGS variable.</p>
+			<ol>
+				<li><p align="left" style="font-variant: normal; font-style: normal">
+				wget -qO -
+				https://bintray.com/user/downloadSubjectPublicKey?username=mgrantprg
+				| gpg --no-default-keyring --keyring ./tmp.gpg --import &amp;&amp;
+				gpg --no-default-keyring --keyring ./tmp.gpg --output
+				/home/mgrantprg/SWDev/pbuilder/aptkeyrings/bintray.gpg --export
+				&amp;&amp; rm ./tmp.gpg</p>
+			</ol>
+			<li><p align="left"><span style="font-variant: normal"><span style="font-style: normal">LaunchPad
+			keys are on the ubuntu keyserver so need to be retrieved</span></span><span style="font-variant: normal">
+			</span><span style="font-variant: normal"><span style="font-style: normal">and
+			exported to the location entered in the pbuilderrc APTKEYRINGS
+			variable.</span></span></p>
+			<ol>
+				<li><p align="left" style="font-variant: normal; font-style: normal">
+				gpg --no-default-keyring --keyring ./tmp.gpg --keyserver
+				hkp://keyserver.ubuntu.com --recv-keys
+				d1946372ba01d17602a2ccd372ddd80b3669565c &amp;&amp; gpg
+				--no-default-keyring --keyring ./tmp.gpg --output
+				/home/mgrantprg/SWDev/pbuilder/aptkeyrings/launchpad.gpg --export
+				&amp;&amp; rm ./tmp.gpg</p>
+			</ol>
 		</ul>
-		<li><p align="left">If supporting cross-builds then set any
-		emulators needed in DEBOOTSTRAP.</p>
+		<li><p align="left" style="font-variant: normal; font-style: normal">
+		Next we need to ensure that a few packages are installed in the
+		base tarball. These packages are just to help editing and adding
+		packages if / when later logged in to the chroot.</p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			So add these packages; dirmngr, gnupg2,
+			software-properties-common, vim and wget to the EXTRAPACKAGES
+			variable.</p>
+		</ul>
+		<li><p align="left" style="font-variant: normal; font-style: normal">
+		If we want to cross build e.g. for a Raspberry Pi, then we need to
+		use an emulator.</p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			sudo apt-get install qemu-user-static</p>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			do a conditional check for ARM architecture, (in $ARCH), and then
+			set DEBOOTSTRAP to qemu-debootstrap.</p>
+		</ul>
 		<li><p align="left">Aptitude is the default dependency resolver for
 		pbuilder but it does not work when cross-building for arm, so use
 		apt:-</p>
 		<ul>
 			<li><p align="left">PBUILDERSATISFYDEPENDSCMD=/usr/lib/pbuilder/pbuilder-satisfydepends-apt</p>
-			<li><p align="left">(This also needs the qemu-user-static package
-			installed).</p>
-		</ul>
-		<li><p align="left">Set up various directories to use, such as:-</p>
-		<ul>
-			<li><p align="left">/var/cache/pbuilder/aptcache/debian-stretch-amd64</p>
-		</ul>
-		<li><p align="left">Save the file.</p>
-	</ol>
-	<li><p align="left">If the pbuilderrc file specifies an apt keyring
-	for a local repository eg
-	APTKEYRINGS=(&quot;/var/cache/pbuilder/keyrings/hermes.gpg&quot;)
-	then that file needs to be put in place. This also has to happen if
-	the repo key is updated, maybe because it has expired.</p>
-	<ol type="a">
-		<li><p align="left">For the above example statement, as root type</p>
-		<ul>
-			<li><p align="left">wget -O -
-			<a href="http://hermes/aptrepos/raspbian/conf/hermes.gpg">http://hermes/aptrepos/raspbian/conf/hermes.gpg</a>
-			&gt; /<i>var/</i><span style="font-variant: normal"><span style="font-style: normal">cache/pbuilder/keyrings</span></span></p>
 		</ul>
 	</ol>
-	<li><p align="left">Create any hook files you want. e.g.:-</p>
+	<li><p align="left" style="font-variant: normal; font-style: normal">
+	Create the directories required for pbuilder.</p>
 	<ol type="a">
-		<li><p align="left">A <a href="http://hermes/pkghost/debpkg/D40-gpgv-check-dsc">script</a>
-		to run gpgv against all .dsc files prior to build.</p>
-		<li><p align="left">A <a href="http://hermes/pkghost/debpkg/D60-apt-get-update">script</a>
-		to run apt-get update before every build.</p>
-		<li><p align="left">A <a href="http://hermes/pkghost/debpkg/E50-trustedkeys-kbx">script</a>
-		to install your own gpg key when creating or updating a base
-		tarball.</p>
-		<li><p align="left">A <a href="http://hermes/pkghost/debpkg/H50-gpgv-warning">script</a>
-		to print a warning that the standard gpgv check does not work.</p>
+		<li><p align="left" style="font-variant: normal; font-style: normal">
+		The pbuilder apt cache.</p>
+		<ul>
+			<li><p align="left"><span style="font-variant: normal"><span style="font-style: normal">sudo
+			mkdir -p /</span></span><span style="font-variant: normal"><i>var/</i></span><span style="font-variant: normal"><span style="font-style: normal">cache/pbuilder/aptcache/$OS-$DIST-$ARCH</span></span></p>
+		</ul>
+		<li><p align="left" style="font-variant: normal; font-style: normal">
+		The output directory,</p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			mkdir -p ~/SWDev/pbuilder/$OS-$DIST-$ARCH-result</p>
+		</ul>
+		<li><p align="left" style="font-variant: normal; font-style: normal">
+		The APTKEYRINGS directory.</p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			mkdir -p ~/SWDev/pbuilder/aptkeyrings</p>
+		</ul>
+		<li><p align="left" style="font-variant: normal; font-style: normal">
+		Create the hook directory.</p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			mkdir -p ~/SWDev/pbuilder/hook.d</p>
+		</ul>
 	</ol>
-	<li><p align="left">To enable Raspbian cross-builds we must install
-	the Raspbian archive keys.</p>
+	<li><p align="left" style="font-variant: normal; font-style: normal">
+	Create the Hooks in the HOOKDIR which should contain the
+	above-mentioned hook directory.</p>
 	<ol type="a">
-		<li><p align="left">wget
-		http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.2_all.deb</p>
-		<li><p align="left">sudo dpkg -i
-		raspbian-archive-keyring_20120528.2_all.deb</p>
+		<li><p align="left"><span style="font-variant: normal"><span style="font-style: normal">Installing
+		<a href="mailto:m.grant.prg@gmail.com">m.grant.prg@gmail.com</a>
+		gpg key. <a href="http://hermes/pkghost/debpkg/E50-trustedkeys-kbx">E50-trustedkeys-kbx.sh</a></span></span></p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			This is my development key. This hook is a bit of a ‘why not?’
+			but may be useful so prevents faffing about.</p>
+		</ul>
+		<li><p align="left"><span style="font-variant: normal"><span style="font-style: normal">Perform
+		an apt-get update before build. <a href="http://hermes/pkghost/debpkg/D60-apt-get-update">D60-apt-get-update.sh</a></span></span></p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			Useful when working on 2 packages at the same time one of which
+			uses the other. So you can chop and change building the packages
+			and don’t have to keep doing a pbuilder update in-between.</p>
+		</ul>
+		<li><p align="left"><span style="font-variant: normal"><span style="font-style: normal">Issue
+		a warning about pbuilder’s gpg package check always failing.
+		<a href="http://hermes/pkghost/debpkg/H50-gpgv-warning">H50-gpgv-warning.sh</a></span></span></p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			When building a package, pbuilder’s gpg check on the dsc file
+			always fails, (don’t know why, not sure I ever did), so show a
+			warning of known behaviour. (The next hook does something about
+			it).</p>
+		</ul>
+		<li><p align="left"><span style="font-variant: normal"><span style="font-style: normal">Perform
+		a gpg check on the dsc files. <a href="http://hermes/pkghost/debpkg/D40-gpgv-check-dsc">D40-gpgv-check-dsc.sh</a></span></span></p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			Checks all dsc files in the build directory.</p>
+		</ul>
 	</ol>
-	<li><p align="left">Create the distribution base tarball.</p>
+	<li><p align="left" style="font-variant: normal; font-style: normal">
+	Now create the chroot.</p>
 	<ol type="a">
-		<li><p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
-		pbuilder create --debootstrapopts --variant=buildd</p>
+		<li><p align="left" style="font-variant: normal; font-style: normal">
+		sudo OS=ubuntu DIST=eoan ARCH=amd64 APT_CACHER=yes pbuilder create
+		--override-config --debootstrapopts –variant=buildd</p>
 	</ol>
-	<li><p align="left">If adding a PPA or other repo, configure the
-	chroot environment.</p>
+	<li><p align="left" style="font-variant: normal; font-style: normal">
+	Updating the chroot.</p>
 	<ol type="a">
-		<li><p align="left">If you added the extra packages above skip to
-		6.d. If doing this for the first time for a distribution you will
-		need the output of the following command.</p>
+		<li><p align="left" style="font-variant: normal; font-style: normal">
+		If you wish to use the configuration of the last chroot, then use:-</p>
 		<ul>
-			<li><p align="left">dpkg-query -S $(which add-apt-repository)</p>
-			<li><p align="left">Output will be like:-</p>
-			<ol>
-				<li><p align="left">software-properties-common:
-				/usr/bin/add-apt-repository</p>
-			</ol>
+			<li><p align="left">sudo OS=ubuntu DIST=eoan ARCH=amd64 pbuilder
+			update</p>
 		</ul>
-		<li><p align="left">Enter the pbuilder chroot.</p>
+		<li><p align="left">If you wish to re-assert the pbuilderrc
+		configuration, or toggle the APT_CACHER setting, then use:-</p>
 		<ul>
-			<li><p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
-			pbuilder login --save-after-login</p>
+			<li><p align="left">sudo OS=ubuntu DIST=eoan ARCH=amd64
+			APT_CACHER=yes pbuilder update –override-config</p>
 		</ul>
-		<li><p align="left">If doing this for the first time for a
-		distribution.</p>
-		<ul>
-			<li><p align="left">apt-get install software-properties-common</p>
-			<li><p align="left">apt-get install wget</p>
-			<li><p align="left">apt-get install gnupg2</p>
-		</ul>
-		<li><p align="left">Get the keys used for signing my dsc files:-</p>
-		<ul>
-			<li><p align="left">gpg --verbose --no-default-keyring --keyring
-			trustedkeys.kbx --recv-keys 20ECF9F0</p>
-			<li><p align="left">find /root/.gnupg -type s | xargs rm -fv</p>
-		</ul>
-		<li><p align="left">Add any required PPA repositories.</p>
-		<ul>
-			<li><p align="left">add-apt-repository ppa:m-grant-prg/utils</p>
-		</ul>
-		<li><p align="left">Add any local repositories and get their keys.</p>
-		<ul>
-			<li><p align="left">add-apt-repository 'deb
-			http://hermes/aptrepos/raspbian stretch stable'</p>
-			<li><p align="left">wget -O -
-			<a href="http://hermes/aptrepos/raspbian/conf/hermes.gpg">http://hermes/aptrepos/raspbian/conf/hermes.gpg</a>
-			| apt-key add -</p>
-		</ul>
-		<li><p align="left">Add Bintray if required.</p>
-		<ul>
-			<li><p align="left">add-apt-repository 'deb
-			https://dl.bintray.com/mgrantprg/raspbian-utils stretch stable’</p>
-			<li><p align="left">wget -O -
-			https://bintray.com/user/downloadSubjectPublicKey?username=mgrantprg
-			| apt-key add -</p>
-		</ul>
-		<li><p align="left">Add OpenSUSE Build Service if required.</p>
-		<ul>
-			<li><p align="left">Do not perform this step if you have added the
-			repo via the pbuilderrc OTHERMIRROR variable, go to the wget.</p>
-			<ol>
-				<li><p align="left">echo 'deb
-				http://download.opensuse.org/repositories/home:/m-grant-prg/Raspbian_9.0/
-				/' &gt; /etc/apt/sources.list.d/home:m-grant-prg.list</p>
-			</ol>
-			<li><p align="left">wget -nv
-			https://download.opensuse.org/repositories/home:m-grant-prg/Raspbian_9.0/Release.key
-			-O Release.key</p>
-			<li><p align="left">apt-key add - &lt; Release.key</p>
-			<li><p align="left">rm Release.key</p>
-		</ul>
-		<li><p align="left">Exit chroot environment.</p>
-		<ul>
-			<li><p align="left">Exit</p>
-		</ul>
-		<li><p align="left">Update the base package.</p>
-		<ul>
-			<li><p align="left">We need the –override-config in this case to
-			push the changes into the base package.</p>
-			<li><p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
-			pbuilder update --override-config</p>
-		</ul>
+		<li><p align="left"><b>NB</b> Using –override-config will
+		overwrite parts of the configuration, notably the apt sources, so,
+		any previous manual changes to these settings <b>will be lost</b>.</p>
 	</ol>
 </ol>
+<h2 class="western">Minimally populated pbuilderrc &amp; manual
+additions</h2>
+<ol>
+	<li value="1"><p align="left">Set-up .pbuilderrc. (See an example
+	<a href="http://hermes/pkghost/debpkg/pbuilderrc-min">here</a>.):-</p>
+	<ol type="a">
+		<li><p align="left">Setup the main distro repository.</p>
+		<ul>
+			<li><p align="left">MIRRORSITE should be the URL of the main
+			repository.</p>
+			<li><p align="left">COMPONENTS should be e.g. main contrib
+			non-free.</p>
+		</ul>
+		<li><p align="left">If running on Debian the keyring will be
+		installed, others not necessarily. To add the keys depends on
+		whether they are available as a package, as they would be for
+		Raspbian for example. So, procure keys:-</p>
+		<ul>
+			<li><p align="left">Raspbian produces a package but it is not in
+			the Debian repositories. So get the package from their server,
+			(N.B. Check for a later dated version).</p>
+			<ul>
+				<li><p align="left">wget
+				<a href="http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.2_all.deb">http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.2_all.deb</a></p>
+				<li><p align="left">sudo dpkg -i
+				raspbian-archive-keyring_20120528.2_all.deb</p>
+			</ul>
+			<li><p align="left">Ubuntu has a package in the Debian repository
+			so it is a simple install.</p>
+			<ul>
+				<li><p align="left">sudo apt-get install ubuntu-keyring</p>
+			</ul>
+		</ul>
+		<li><p align="left" style="font-variant: normal; font-style: normal">
+		If we want to cross build e.g. for a Raspberry Pi, then we need to
+		use an emulator.</p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			sudo apt-get install qemu-user-static</p>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			do a conditional check for ARM architecture, (in $ARCH), and then
+			set DEBOOTSTRAP to qemu-debootstrap.</p>
+		</ul>
+		<li><p align="left">Aptitude is the default dependency resolver for
+		pbuilder but it does not work when cross-building for arm, so use
+		apt:-</p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			PBUILDERSATISFYDEPENDSCMD=/usr/lib/pbuilder/pbuilder-satisfydepends-apt</p>
+		</ul>
+	</ol>
+	<li><p align="left" style="font-variant: normal; font-style: normal">
+	Create the directories required for pbuilder.</p>
+	<ol type="a">
+		<li><p align="left" style="font-variant: normal; font-style: normal">
+		The pbuilder apt cache.</p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			sudo mkdir -p /var/cache/pbuilder/aptcache/$OS-$DIST-$ARCH</p>
+		</ul>
+		<li><p align="left" style="font-variant: normal; font-style: normal">
+		The output directory,</p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			mkdir -p ~/SWDev/pbuilder/$OS-$DIST-$ARCH-result</p>
+		</ul>
+		<li><p align="left" style="font-variant: normal; font-style: normal">
+		The APTKEYRINGS directory.</p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			mkdir -p ~/SWDev/pbuilder/aptkeyrings</p>
+		</ul>
+		<li><p align="left" style="font-variant: normal; font-style: normal">
+		Create the hook directory.</p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			mkdir -p ~/SWDev/pbuilder/hook.d</p>
+		</ul>
+	</ol>
+	<li><p align="left" style="font-variant: normal; font-style: normal">
+	Create the Hooks in the HOOKDIR which should contain the
+	above-mentioned hook directory.</p>
+	<ol type="a">
+		<li><p align="left"><span style="font-variant: normal"><span style="font-style: normal">Installing
+		<a href="mailto:m.grant.prg@gmail.com">m.grant.prg@gmail.com</a>
+		gpg key. <a href="http://hermes/pkghost/debpkg/E50-trustedkeys-kbx">E50-trustedkeys-kbx.sh</a></span></span></p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			This is my development key. This hook is a bit of a ‘why not?’
+			but may be useful so prevents faffing about.</p>
+		</ul>
+		<li><p align="left"><span style="font-variant: normal"><span style="font-style: normal">Perform
+		an apt-get update before build. <a href="http://hermes/pkghost/debpkg/D60-apt-get-update">D60-apt-get-update.sh</a></span></span></p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			Useful when working on 2 packages at the same time one of which
+			uses the other. So you can chop and change building the packages
+			and don’t have to keep doing a pbuilder update in-between.</p>
+		</ul>
+		<li><p align="left"><span style="font-variant: normal"><span style="font-style: normal">Issue
+		a warning about pbuilder’s gpg package check always failing.
+		<a href="http://hermes/pkghost/debpkg/H50-gpgv-warning">H50-gpgv-warning.sh</a></span></span></p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			When building a package, pbuilder’s gpg check on the dsc file
+			always fails, (don’t know why, not sure I ever did), so show a
+			warning of known behaviour. (The next hook does something about
+			it).</p>
+		</ul>
+		<li><p align="left"><span style="font-variant: normal"><span style="font-style: normal">Perform
+		a gpg check on the dsc files. <a href="http://hermes/pkghost/debpkg/D40-gpgv-check-dsc">D40-gpgv-check-dsc.sh</a></span></span></p>
+		<ul>
+			<li><p align="left" style="font-variant: normal; font-style: normal">
+			Checks all dsc files in the build directory.</p>
+		</ul>
+	</ol>
+	<li><p align="left">Now create the chroot.</p>
+	<ol type="a">
+		<li><p align="left">sudo OS=debian DIST=buster ARCH=amd64
+		APT_CACHER=yes pbuilder create --override-config --debootstrapopts
+		–variant=buildd</p>
+	</ol>
+	<li><p>To add further official Debian repositories:-</p>
+	<ol type="a">
+		<li><p>sudo OS=debian DIST=buster ARCH=amd64 pbuilder login
+		–save-after-login</p>
+		<li><p>apt-get install dirmngr gnupg2 software-properties-common
+		vim wget</p>
+		<li><p>add-apt-repository “deb
+		https://deb.debian.org/debian-security/ buster/updates main contrib
+		non-free”</p>
+		<li><p>add-apt-repository “deb https://deb.debian.org/debian
+		buster-updates main contrib non-free”</p>
+		<li><p>exit</p>
+	</ol>
+	<li><p>To add third party repositories:-</p>
+	<ol type="a">
+		<li><p>sudo OS=debian DIST=buster ARCH=amd64 pbuilder login
+		–save-after-login</p>
+		<li><p>add-apt-repository “deb
+		https://dl.bintray.com/mgrantprg/debian-utils buster stable”</p>
+		<li><p>wget -O -
+		https://bintray.com/user/downloadSubjectPublicKey?username=mgrantprg
+		| apt-key add -</p>
+		<li><p>exit</p>
+	</ol>
+	<li><p>To add a PPA:-</p>
+	<ol type="a">
+		<li><p>sudo OS=ubuntu DIST=bionic ARCH=amd64 pbuilder login
+		–save-after-login</p>
+		<li><p>add-apt-repository ppa:m-grant-prg/utils</p>
+		<li><p>exit</p>
+	</ol>
+	<li><p>To add a local apt repository:-</p>
+	<ol type="a">
+		<li><p>sudo OS=debian DIST=buster ARCH=amd64 pbuilder login
+		–save-after-login</p>
+		<li><p>add-apt-repository “deb http://hermes/aptrepos/debian
+		buster stable beta staging”</p>
+		<li><p>wget -O - http://hermes/aptrepos/debian/conf/hermes.gpg |
+		apt-key add -</p>
+		<li><p>exit</p>
+	</ol>
+	<li><p>Get my package signing key:-</p>
+	<ol type="a">
+		<li><p>sudo OS=ubuntu DIST=bionic ARCH=amd64 pbuilder login
+		–save-after-login</p>
+		<li><p>gpg --verbose --no-default-keyring --keyring trustedkeys.kbx
+		--recv-keys 20ECF9F0</p>
+		<li><p>find /root/.gnupg -type s | xargs rm -fv</p>
+		<li><p>exit</p>
+	</ol>
+	<li><p>Update the chroot.</p>
+	<ol type="a">
+		<li><p>sudo OS=debian DIST=buster ARCH=amd64 APT_CACHER=yes
+		pbuilder update</p>
+	</ol>
+</ol>
+<p><br/>
+<br/>
+
+</p>
 </body>
 </html>
