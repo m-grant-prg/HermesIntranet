@@ -6,7 +6,7 @@
 	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2015-12-12T09:37:03.193001702"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2019-11-04T15:18:20.024360443"/>
+	<meta name="changed" content="2020-04-14T14:25:12.487089611"/>
 	<style type="text/css">
 		@page { size: 21cm 29.7cm; margin: 2cm }
 		p { margin-bottom: 0.25cm; background: transparent; line-height: 120%; background: transparent }
@@ -47,28 +47,28 @@ openSUSE Repo CRUD</h1>
 			<li><p align="left">Make sure the directory structure exists</p>
 			<ul>
 				<li><p align="left">sudo mkdir -p
-				/srv/package-repos/rpm/opensuse/leap/15.1/beta/no-arch</p>
+				/srv/repos/package/rpm/opensuse/leap/15.1/beta/no-arch</p>
 				<li><p align="left">sudo mkdir -p
-				/srv/package-repos/rpm/opensuse/leap/15.1/beta/x86_64</p>
+				/srv/repos/package/rpm/opensuse/leap/15.1/beta/x86_64</p>
 			</ul>
 			<li><p align="left">Build the repository</p>
 			<ul>
 				<li><p align="left">sudo createrepo -v
-				/srv/package-repos/rpm/opensuse/leap/15.1/beta</p>
+				/srv/repos/package/rpm/opensuse/leap/15.1/beta</p>
 			</ul>
 			<li><p align="left">Sign the repository</p>
 			<ul>
 				<li><p align="left">sudo gpg -a --detach-sign --default-key
 				&quot;mgrant@hermes.mgent.home&quot;
-				/srv/package-repos/rpm/opensuse/leap/15.1/beta/repodata/repomd.xml</p>
+				/srv/repos/package/rpm/opensuse/leap/15.1/beta/repodata/repomd.xml</p>
 				<li><p align="left">sudo gpg -a --export
 				&quot;mgrant@hermes.mgent.home&quot; &gt; repomd.xml.key</p>
 				<li><p align="left">sudo cp -v repomd.xml.key
-				/srv/package-repos/rpm/opensuse/leap/15.1/beta/repodata</p>
+				/srv/repos/package/rpm/opensuse/leap/15.1/beta/repodata</p>
 				<li><p align="left">rm repomd.xml.key</p>
 			</ul>
 			<li><p align="left">Create a repo file in
-			/srv/package-repos/rpm/opensuse/leap/15.1</p>
+			/srv/repos/package/rpm/opensuse/leap/15.1</p>
 			<ul>
 				<li><p align="left"><a href="http://hermes/pkghost/rpmpkg/hermes-opensuse-beta.repo">example.repo</a></p>
 			</ul>

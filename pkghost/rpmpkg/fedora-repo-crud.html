@@ -6,7 +6,7 @@
 	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2015-12-12T09:37:03.193001702"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2019-11-04T14:56:41.434801923"/>
+	<meta name="changed" content="2020-04-14T14:21:23.446127560"/>
 	<style type="text/css">
 		@page { size: 21cm 29.7cm; margin: 2cm }
 		p { margin-bottom: 0.25cm; background: transparent; line-height: 120%; background: transparent }
@@ -48,17 +48,17 @@ Fedora Repo CRUD</h1>
 			<li><p align="left">Make sure the directory structure exists</p>
 			<ul>
 				<li><p align="left">sudo mkdir -p
-				/srv/package-repos/rpm/fedora/30/beta/no-arch</p>
+				/srv/repos/package/rpm/fedora/30/beta/no-arch</p>
 				<li><p align="left">sudo mkdir -p
-				/srv/package-repos/rpm/fedora/30/beta/x86_64</p>
+				/srv/repos/package/rpm/fedora/30/beta/x86_64</p>
 			</ul>
 			<li><p align="left">Build the repository</p>
 			<ul>
 				<li><p align="left">sudo createrepo -v
-				/srv/package-repos/rpm/fedora/30/beta</p>
+				/srv/repos/package/rpm/fedora/30/beta</p>
 			</ul>
 			<li><p align="left">Create a repo file in
-			/srv/package-repos/rpm/fedora</p>
+			/srv/repos/package/rpm/fedora</p>
 			<ul>
 				<li><p align="left"><a href="http://hermes/pkghost/rpmpkg/hermes-fedora-beta.repo">example.repo</a></p>
 			</ul>
