@@ -6,7 +6,8 @@
 	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2019-09-09T09:31:48.301986025"/>
+	<meta name="changed" content="2020-04-14T10:44:17.638483408"/>
+	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -69,7 +70,7 @@ Create Update And Consume An APT Repository</h1>
 		repo</p>
 		<ul>
 			<li><p align="left">sudo cp -v hermes.gpg
-			/srv/package-repos/apt/debian/conf</p>
+			/srv/repos/package/apt/debian/conf</p>
 			<li><p align="left">rm hermes.gpg</p>
 		</ul>
 	</ol>
@@ -79,7 +80,7 @@ Create Update And Consume An APT Repository</h1>
 		distributions file.</p>
 		<ul>
 			<li><p align="left">sudo vim
-			/srv/package-repos/apt/debian/conf/distributions</p>
+			/srv/repos/package/apt/debian/conf/distributions</p>
 			<li><p align="left">Add the distribution block.</p>
 			<ul>
 				<li><p align="left">Codename: stretch</p>
@@ -91,7 +92,7 @@ Create Update And Consume An APT Repository</h1>
 		<li><p align="left">Generate all index files for the distribution.</p>
 		<ul>
 			<li><p align="left">sudo reprepro -vb
-			/srv/package-repos/apt/debian export stretch</p>
+			/srv/repos/package/apt/debian export stretch</p>
 		</ul>
 	</ol>
 	<li><p align="left">To use the repository on a client.</p>
