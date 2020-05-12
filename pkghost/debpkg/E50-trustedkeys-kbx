@@ -10,8 +10,9 @@
 #									#
 # Purpose:								#
 # A hook script to prepare for gpgv.					#
-# The required keybox 'trustedkeys.kbx' is created if it does not exist	#
-# then it is loaded or refreshed with m.grant.prg@gmail.com public key.	#
+# The keybox 'trustedkeys.kbx' is required by gpgv and is created if it #
+# does not exist, then it is loaded or refreshed with			#
+# m.grant.prg@gmail.com public key.					#
 #									#
 # With a script name starting with 'E' this is run during create and	#
 # update after apt-get work is completed. (See man 8 pbuilder (the part	#
@@ -32,19 +33,24 @@
 #				--refresh-keys otherwise.		#
 # 28/02/2020	MG	1.0.4	In create mode add a server from which	#
 #				to receive the key.			#
+# 03/05/2020	MG	1.0.5	Use the keyserver option as this is a	#
+#				fairly bare implementation in the	#
+#				chroot.					#
 #									#
 #########################################################################
 
 
 echo "Installing gpg key for m.grant.prg@gmail.com"
 
+# The keybox 'trustedkeys.kbx' is required by gpgv.
 gpg --no-default-keyring --keyring trustedkeys.kbx --fingerprint
 
 if [[ $PBUILDER_OPERATION == create ]]; then
 	gpg --no-default-keyring --keyring trustedkeys.kbx \
 		--keyserver hkp://pool.sks-keyservers.net --recv-keys 20ECF9F0
 else
-	gpg --no-default-keyring --keyring trustedkeys.kbx --refresh-keys
+	gpg --no-default-keyring --keyring trustedkeys.kbx \
+		--keyserver hkp://pool.sks-keyservers.net --refresh-keys
 fi
 
 find /root/.gnupg -type s | xargs rm -fv

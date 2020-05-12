@@ -6,7 +6,7 @@
 	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2015-12-12T13:33:41.059217339"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2020-03-02T09:37:00.167679069"/>
+	<meta name="changed" content="2020-05-12T10:20:06.776015022"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -113,14 +113,18 @@ directory.</p>
 			<li><p align="left">COMPONENTS should be e.g. main contrib
 			non-free.</p>
 		</ul>
-		<li><p align="left">Setup all the other repsotories required. These
-		are in 2 groups; extra official repositories and third-party / your
-		own repositories.</p>
+		<li><p align="left">Setup all the other repositories required.
+		These are in 2 groups; extra official repositories and third-party
+		/ your own repositories.</p>
 		<ul>
 			<li><p align="left">Add extra official repositories to OTHERMIRROR
-			and add the location of the repository’s key to DEBOOTSTRAPOPTS.</p>
+			and add the location of the repositories’ key to
+			DEBOOTSTRAPOPTS.</p>
 			<li><p align="left">Add third-party repositories to OTHERMIRROR
-			and add the location of the repositories’ keys to APTKEYRINGS.</p>
+			and add the location of the repositories’ keys to APTKEYRINGS.
+			This location cannot just be anywhere, apt-key add will not
+			cooperate, the best place is in the trusted.gpg.d directory under
+			/<i>etc/</i><span style="font-variant: normal"><span style="font-style: normal">apt.</span></span></p>
 		</ul>
 		<li><p align="left">If running on Debian the keyring will be
 		installed, others not necessarily. To add the keys depends on
@@ -141,40 +145,62 @@ directory.</p>
 			<ol>
 				<li><p align="left">sudo apt-get install ubuntu-keyring</p>
 			</ol>
-			<li><p align="left">Bintray needs to be retrieved, imported and
-			exported to produce the correct gpg file in the location entered
-			in the pbuilderrc APTKEYRINGS variable.</p>
+			<li><p align="left">Bintray needs to be retrieved and added to an
+			apt keyring in the location entered in the pbuilderrc APTKEYRINGS
+			variable.</p>
 			<ol>
 				<li><p align="left" style="font-variant: normal; font-style: normal">
 				wget -qO -
-				https://bintray.com/user/downloadSubjectPublicKey?username=mgrantprg
-				| gpg --no-default-keyring --keyring ./tmp.gpg --import &amp;&amp;
-				gpg --no-default-keyring --keyring ./tmp.gpg --output
-				/home/mgrantprg/SWDev/pbuilder/aptkeyrings/bintray.gpg --export
-				&amp;&amp; rm ./tmp.gpg</p>
+				https://bintray.com/user/downloadSubjectPublicKey?username=mgrantprg|sudo
+				apt-key --keyring /etc/apt/trusted.gpg.d/bintray-keyring.gpg add
+				-</p>
 			</ol>
 			<li><p align="left"><span style="font-variant: normal"><span style="font-style: normal">LaunchPad
 			keys are on the ubuntu keyserver so need to be retrieved</span></span><span style="font-variant: normal">
 			</span><span style="font-variant: normal"><span style="font-style: normal">and
-			exported to the location entered in the pbuilderrc APTKEYRINGS
-			variable.</span></span></p>
+			added to a keyring in</span></span><span style="font-variant: normal">
+			</span><span style="font-variant: normal"><span style="font-style: normal">the
+			location entered in the pbuilderrc APTKEYRINGS variable. Two keys
+			are required, the developer's key and the Launchpad PPA key.</span></span></p>
 			<ol>
 				<li><p align="left" style="font-variant: normal; font-style: normal">
-				gpg --no-default-keyring --keyring ./tmp.gpg --keyserver
-				hkp://keyserver.ubuntu.com --recv-keys
-				d1946372ba01d17602a2ccd372ddd80b3669565c &amp;&amp; gpg
-				--no-default-keyring --keyring ./tmp.gpg --output
-				/home/mgrantprg/SWDev/pbuilder/aptkeyrings/launchpad.gpg --export
-				&amp;&amp; rm ./tmp.gpg</p>
+				sudo apt-key --keyring
+				/etc/apt/trusted.gpg.d/mgrant-utils-ppa-keyring.gpg adv
+				--keyserver keyserver.ubuntu.com --recv-keys
+				d1946372ba01d17602a2ccd372ddd80b3669565c</p>
+				<li><p align="left" style="font-variant: normal; font-style: normal">
+				sudo apt-key --keyring
+				/etc/apt/trusted.gpg.d/mgrant-utils-ppa-keyring.gpg adv
+				--keyserver keyserver.ubuntu.com --recv-keys 8294A6371AB32B66</p>
 			</ol>
 		</ul>
+	</ol>
+</ol>
+<ol>
+	<ol type="a">
+		<ul>
+			<li><p align="left">Raspbian needs an extra repository and hence
+			key to be retrieved and added to an apt keyring in the location
+			entered in the pbuilderrc APTKEYRINGS variable.</p>
+			<ol>
+				<li><p align="left" style="font-variant: normal; font-style: normal">
+				wget -O -
+				https://archive.raspberrypi.org/debian/raspberrypi.gpg.key|sudo
+				apt-key --keyring /etc/apt/trusted.gpg.d/raspberrypi-keyring.gpg
+				add -</p>
+			</ol>
+		</ul>
+	</ol>
+</ol>
+<ol>
+	<ol type="a">
 		<li><p align="left" style="font-variant: normal; font-style: normal">
 		Next we need to ensure that a few packages are installed in the
 		base tarball. These packages are just to help editing and adding
 		packages if / when later logged in to the chroot.</p>
 		<ul>
 			<li><p align="left" style="font-variant: normal; font-style: normal">
-			So add these packages; dirmngr, gnupg2,
+			So add these packages; apt-utils, dirmngr, gnupg2,
 			software-properties-common, vim and wget to the EXTRAPACKAGES
 			variable.</p>
 		</ul>
@@ -211,12 +237,6 @@ directory.</p>
 			mkdir -p ~/SWDev/pbuilder/$OS-$DIST-$ARCH-result</p>
 		</ul>
 		<li><p align="left" style="font-variant: normal; font-style: normal">
-		The APTKEYRINGS directory.</p>
-		<ul>
-			<li><p align="left" style="font-variant: normal; font-style: normal">
-			mkdir -p ~/SWDev/pbuilder/aptkeyrings</p>
-		</ul>
-		<li><p align="left" style="font-variant: normal; font-style: normal">
 		Create the hook directory.</p>
 		<ul>
 			<li><p align="left" style="font-variant: normal; font-style: normal">
@@ -228,8 +248,7 @@ directory.</p>
 	above-mentioned hook directory.</p>
 	<ol type="a">
 		<li><p align="left"><span style="font-variant: normal"><span style="font-style: normal">Installing
-		<a href="mailto:m.grant.prg@gmail.com">m.grant.prg@gmail.com</a>
-		gpg key. <a href="http://hermes/pkghost/debpkg/E50-trustedkeys-kbx">E50-trustedkeys-kbx.sh</a></span></span></p>
+		m.grant.prg@gmail.com gpg key. <a href="http://hermes/pkghost/debpkg/E50-trustedkeys-kbx">E50-trustedkeys-kbx.sh</a></span></span></p>
 		<ul>
 			<li><p align="left" style="font-variant: normal; font-style: normal">
 			This is my development key. This hook is a bit of a ‘why not?’
@@ -354,12 +373,6 @@ additions</h2>
 			mkdir -p ~/SWDev/pbuilder/$OS-$DIST-$ARCH-result</p>
 		</ul>
 		<li><p align="left" style="font-variant: normal; font-style: normal">
-		The APTKEYRINGS directory.</p>
-		<ul>
-			<li><p align="left" style="font-variant: normal; font-style: normal">
-			mkdir -p ~/SWDev/pbuilder/aptkeyrings</p>
-		</ul>
-		<li><p align="left" style="font-variant: normal; font-style: normal">
 		Create the hook directory.</p>
 		<ul>
 			<li><p align="left" style="font-variant: normal; font-style: normal">
@@ -371,8 +384,7 @@ additions</h2>
 	above-mentioned hook directory.</p>
 	<ol type="a">
 		<li><p align="left"><span style="font-variant: normal"><span style="font-style: normal">Installing
-		<a href="mailto:m.grant.prg@gmail.com">m.grant.prg@gmail.com</a>
-		gpg key. <a href="http://hermes/pkghost/debpkg/E50-trustedkeys-kbx">E50-trustedkeys-kbx.sh</a></span></span></p>
+		m.grant.prg@gmail.com gpg key. <a href="http://hermes/pkghost/debpkg/E50-trustedkeys-kbx">E50-trustedkeys-kbx.sh</a></span></span></p>
 		<ul>
 			<li><p align="left" style="font-variant: normal; font-style: normal">
 			This is my development key. This hook is a bit of a ‘why not?’
@@ -413,8 +425,8 @@ additions</h2>
 	<ol type="a">
 		<li><p>sudo OS=debian DIST=buster ARCH=amd64 pbuilder login
 		–save-after-login</p>
-		<li><p>apt-get install dirmngr gnupg2 software-properties-common
-		vim wget</p>
+		<li><p>apt-get install apt-utils dirmngr gnupg2
+		software-properties-common vim wget</p>
 		<li><p>add-apt-repository “deb
 		https://deb.debian.org/debian-security/ buster/updates main contrib
 		non-free”</p>
@@ -446,8 +458,8 @@ additions</h2>
 		–save-after-login</p>
 		<li><p>add-apt-repository “deb http://hermes/aptrepos/debian
 		buster stable beta staging”</p>
-		<li><p>wget -O - http://hermes/aptrepos/debian/conf/hermes.gpg |
-		apt-key add -</p>
+		<li><p>wget -O - <a href="http://hermes/aptrepos/hermes.gpg">http://hermes/aptrepos/hermes.gpg</a>
+		 | apt-key add -</p>
 		<li><p>exit</p>
 	</ol>
 	<li><p>Get my package signing key:-</p>

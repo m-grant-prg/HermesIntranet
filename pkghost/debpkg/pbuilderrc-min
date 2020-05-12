@@ -59,11 +59,23 @@
 #				OTHERMIRROR settings with		#
 #				--override-config.			#
 #				Add PPA to ubuntu OTHERMIRROR.		#
+# 03/05/2020	MG	1.1.1	Ubuntu hermes repository now exists, so	#
+#				use it.					#
+#				Correct aptkeyrings handling.		#
+#				Add extra package apt-utils.		#
+#				Add raspberrypi.org/debian keyring.	#
 #									#
+#########################################################################
+
+#########################################################################
 #									#
-#	THIS IS AN EXAMPLE OF A MINIMAL PBUILDERRC HACKED FROM		#
-#			v1.1.0 AS MENTIONED ABOVE.			#
-#	THIS IS AN EXAMPLE AND HAS NEVER BEEN TESTED!!!!!!!!!!		#
+#	N.B. !!!!!!!!!!!!!!!!!!!!!!!!!!!				#
+#									#
+#		THIS IS AN EXAMPLE OF A MINIMAL PBUILDERRC		#
+#			HACKED FROM v1.1.1				#
+#									#
+#		THIS IS AN EXAMPLE, HAS NEVER BEEN TESTED AND		#
+#		IS NOT INTENDED TO BE A WORKING EXAMPLE!!!!!!!!!!	#
 #									#
 #									#
 #########################################################################

@@ -59,6 +59,11 @@
 #				OTHERMIRROR settings with		#
 #				--override-config.			#
 #				Add PPA to ubuntu OTHERMIRROR.		#
+# 03/05/2020	MG	1.1.1	Ubuntu hermes repository now exists, so	#
+#				use it.					#
+#				Correct aptkeyrings handling.		#
+#				Add extra package apt-utils.		#
+#				Add raspberrypi.org/debian keyring.	#
 #									#
 #########################################################################
 
@@ -104,10 +109,10 @@ esac
 ########################################################
 # OTHERMIRROR may be added to later so initialise here #
 ########################################################
-if [[ $APT_CACHER == yes && $OS != ubuntu ]]; then
+if [[ $APT_CACHER == yes ]]; then
 	OTHERMIRROR="deb http://hermes.mgent.home/aptrepos/$OS $DIST "
 	OTHERMIRROR+="beta stable staging"
-	APTKEYRINGS=("/home/mgrantprg/SWDev/pbuilder/aptkeyrings/hermes.gpg")
+	APTKEYRINGS=("/etc/apt/trusted.gpg.d/hermes-keyring.gpg")
 fi
 
 
@@ -131,7 +136,7 @@ debian)
 	OTHERMIRROR+="|deb $https_prefix/dl.bintray.com/mgrantprg/debian-utils "
 	OTHERMIRROR+="$DIST stable"
 	APTKEYRINGS=("${APTKEYRINGS[@]}"
-		"/home/mgrantprg/SWDev/pbuilder/aptkeyrings/bintray.gpg")
+		"/etc/apt/trusted.gpg.d/bintray-keyring.gpg")
 	;;
 raspbian)
 	MIRRORSITE="$http_prefix/mirrordirector.raspbian.org/raspbian/"
@@ -147,7 +152,8 @@ raspbian)
 	OTHERMIRROR+="|deb $https_prefix/dl.bintray.com/mgrantprg/"
 	OTHERMIRROR+="raspbian-utils $DIST stable"
 	APTKEYRINGS=("${APTKEYRINGS[@]}"
-		"/home/mgrantprg/SWDev/pbuilder/aptkeyrings/bintray.gpg")
+		"/etc/apt/trusted.gpg.d/raspberrypi-keyring.gpg"
+		"/etc/apt/trusted.gpg.d/bintray-keyring.gpg")
 	;;
 ubuntu)
 	MIRRORSITE="$http_prefix/uk.archive.ubuntu.com/ubuntu/"
@@ -167,7 +173,7 @@ ubuntu)
 	OTHERMIRROR+="|deb $http_prefix/ppa.launchpad.net/m-grant-prg/utils/"
 	OTHERMIRROR+="$OS $DIST main"
 	APTKEYRINGS=("${APTKEYRINGS[@]}"
-		"/home/mgrantprg/SWDev/pbuilder/aptkeyrings/launchpad.gpg")
+		"/etc/apt/trusted.gpg.d/mgrant-utils-ppa-keyring.gpg")
 	;;
 *)
 	printf "Unknown OS: %s\n" $OS
@@ -193,7 +199,7 @@ fi
 #####################################################
 # We always need these packages in the base tarball #
 #####################################################
-EXTRAPACKAGES+=" dirmngr gnupg2 software-properties-common vim wget"
+EXTRAPACKAGES+=" apt-utils dirmngr gnupg2 software-properties-common vim wget"
 
 
 ###################################
