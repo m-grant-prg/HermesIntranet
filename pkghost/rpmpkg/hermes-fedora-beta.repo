@@ -7,5 +7,5 @@ metadata_expire=7d
 repo_gpgcheck=0
 type=rpm
 gpgcheck=1
-gpgkey=http://hermes.mgent.home/rpmrepos/mgrantprg.gpg
+gpgkey=http://hermes.mgent.home/rpmrepos/hermes.gpg
 skip_if_unavailable=False
