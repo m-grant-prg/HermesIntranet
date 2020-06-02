@@ -11,10 +11,10 @@
 # SPDX-License-Identifier: GPL-3.0					#
 #									#
 # Purpose:								#
-# This pbuilderrc file sets up pbuilder to be able to build for OS's,	#
-# distributions and architectures. These values should be passed on the	#
-# command line. E.g.							#
-#	sudo OS=raspbian DIST=stretch ARCH=armhf APT_CACHER=yes \	#
+# This pbuilderrc file provides a mechanism for pbuilder to be able to	#
+# build for different distributions, releases and architectures. This	#
+# information is conveyed on the command line. E.g.			#
+#	sudo DIST=raspbian REL=stretch ARCH=armhf APT_CACHER=yes \	#
 #		pbuilder create --override-config \			#
 #		--debootstrapopts --variant=buildd			#
 #									#
@@ -64,6 +64,8 @@
 #				Correct aptkeyrings handling.		#
 #				Add extra package apt-utils.		#
 #				Add raspberrypi.org/debian keyring.	#
+# 02/06/2020	MG	1.1.2	Correct environment variables from OS,	#
+#				DIST and ARCH, to DIST, REL and ARCH.	#
 #									#
 #########################################################################
 
@@ -119,10 +121,10 @@ no)
 esac
 
 
-########################
-# OS specific settings #
-########################
-case $OS in
+##########################
+# DIST specific settings #
+##########################
+case $DIST in
 debian)
 	MIRRORSITE="$https_prefix/deb.debian.org/debian/"
 	COMPONENTS="main contrib non-free"
@@ -130,23 +132,23 @@ debian)
 raspbian)
 	MIRRORSITE="$http_prefix/mirrordirector.raspbian.org/raspbian/"
 	COMPONENTS="main contrib non-free rpi"
-		;;
+	;;
 ubuntu)
 	MIRRORSITE="$http_prefix/uk.archive.ubuntu.com/ubuntu/"
 	COMPONENTS="main restricted universe multiverse"
 	;;
 *)
-	printf "Unknown OS: %s\n" $OS
+	printf "Unknown DIST: %s\n" $DIST
 	exit 1
 	;;
 esac
 
 
-##############################################
-# Check we now have a value of DIST and ARCH #
-##############################################
-if [ "$DIST" == "" ]; then
-	printf "DIST is not set\n"
+#############################################
+# Check we now have a value of REL and ARCH #
+#############################################
+if [ "$REL" == "" ]; then
+	printf "REL is not set\n"
 	exit 1
 fi
 
@@ -176,15 +178,15 @@ DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--arch=$ARCH")
 ####################
 # Self explanatory #
 ####################
-BASETGZ="/var/cache/pbuilder/$OS-$DIST-$ARCH-base.tgz"
+BASETGZ="/var/cache/pbuilder/$DIST-$REL-$ARCH-base.tgz"
 
-DISTRIBUTION="$DIST"
+DISTRIBUTION="$REL"
 
 PBUILDERSATISFYDEPENDSCMD=/usr/lib/pbuilder/pbuilder-satisfydepends-apt
 
-BUILDRESULT="/home/mgrantprg/SWDev/pbuilder/$OS-$DIST-$ARCH-result/"
+BUILDRESULT="/home/mgrantprg/SWDev/pbuilder/$DIST-$REL-$ARCH-result/"
 
-APTCACHE="/var/cache/pbuilder/aptcache/$OS-$DIST-$ARCH/"
+APTCACHE="/var/cache/pbuilder/aptcache/$DIST-$REL-$ARCH/"
 
 AUTOCLEANAPTCACHE=yes
 
@@ -200,8 +202,8 @@ HOOKDIR="/home/mgrantprg/SWDev/pbuilder/hook.d/"
 #####################
 psetuplog="$BUILDRESULT""pbuilderrc-setup.log"
 
-printf "OS = %s\n" "$OS" > $psetuplog
-printf "Distribution = %s\n" "$DIST" >> $psetuplog
+printf "Distribution = %s\n" "$DIST" > $psetuplog
+printf "Release = %s\n" "$REL" >> $psetuplog
 printf "Arch = %s\n" "$ARCH" >> $psetuplog
 printf "APT_CACHER = %s\n" "$APT_CACHER" >> $psetuplog
 printf "Mirrorsite = %s\n" "$MIRRORSITE" >> $psetuplog

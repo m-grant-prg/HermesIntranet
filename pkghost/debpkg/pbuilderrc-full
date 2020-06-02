@@ -11,10 +11,10 @@
 # SPDX-License-Identifier: GPL-3.0					#
 #									#
 # Purpose:								#
-# This pbuilderrc file sets up pbuilder to be able to build for OS's,	#
-# distributions and architectures. These values should be passed on the	#
-# command line. E.g.							#
-#	sudo OS=raspbian DIST=stretch ARCH=armhf APT_CACHER=yes \	#
+# This pbuilderrc file provides a mechanism for pbuilder to be able to	#
+# build for different distributions, releases and architectures. This	#
+# information is conveyed on the command line. E.g.			#
+#	sudo DIST=raspbian REL=stretch ARCH=armhf APT_CACHER=yes \	#
 #		pbuilder create --override-config \			#
 #		--debootstrapopts --variant=buildd			#
 #									#
@@ -64,6 +64,8 @@
 #				Correct aptkeyrings handling.		#
 #				Add extra package apt-utils.		#
 #				Add raspberrypi.org/debian keyring.	#
+# 02/06/2020	MG	1.1.2	Correct environment variables from OS,	#
+#				DIST and ARCH, to DIST, REL and ARCH.	#
 #									#
 #########################################################################
 
@@ -110,16 +112,16 @@ esac
 # OTHERMIRROR may be added to later so initialise here #
 ########################################################
 if [[ $APT_CACHER == yes ]]; then
-	OTHERMIRROR="deb http://hermes.mgent.home/aptrepos/$OS $DIST "
+	OTHERMIRROR="deb http://hermes.mgent.home/aptrepos/$DIST $REL "
 	OTHERMIRROR+="beta stable staging"
 	APTKEYRINGS=("/etc/apt/trusted.gpg.d/hermes-keyring.gpg")
 fi
 
 
-########################
-# OS specific settings #
-########################
-case $OS in
+##########################
+# DIST specific settings #
+##########################
+case $DIST in
 debian)
 	MIRRORSITE="$https_prefix/deb.debian.org/debian/"
 	COMPONENTS="main contrib non-free"
@@ -127,14 +129,14 @@ debian)
 		OTHERMIRROR+="|"
 	fi
 	OTHERMIRROR+="deb $https_prefix/deb.debian.org/debian-security/ "
-	OTHERMIRROR+="$DIST/updates main contrib non-free"
-	OTHERMIRROR+="|deb $https_prefix/deb.debian.org/debian $DIST-updates "
+	OTHERMIRROR+="$REL/updates main contrib non-free"
+	OTHERMIRROR+="|deb $https_prefix/deb.debian.org/debian $REL-updates "
 	OTHERMIRROR+="main contrib non-free"
 	DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}"
 		"--keyring=/usr/share/keyrings/debian-archive-keyring.gpg")
 
 	OTHERMIRROR+="|deb $https_prefix/dl.bintray.com/mgrantprg/debian-utils "
-	OTHERMIRROR+="$DIST stable"
+	OTHERMIRROR+="$REL stable"
 	APTKEYRINGS=("${APTKEYRINGS[@]}"
 		"/etc/apt/trusted.gpg.d/bintray-keyring.gpg")
 	;;
@@ -145,12 +147,12 @@ raspbian)
 		OTHERMIRROR+="|"
 	fi
 	OTHERMIRROR+="deb $http_prefix/archive.raspberrypi.org/debian/ "
-	OTHERMIRROR+="$DIST main ui"
+	OTHERMIRROR+="$REL main ui"
 	DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}"
 		"--keyring=/usr/share/keyrings/raspbian-archive-keyring.gpg")
 
 	OTHERMIRROR+="|deb $https_prefix/dl.bintray.com/mgrantprg/"
-	OTHERMIRROR+="raspbian-utils $DIST stable"
+	OTHERMIRROR+="raspbian-utils $REL stable"
 	APTKEYRINGS=("${APTKEYRINGS[@]}"
 		"/etc/apt/trusted.gpg.d/raspberrypi-keyring.gpg"
 		"/etc/apt/trusted.gpg.d/bintray-keyring.gpg")
@@ -162,31 +164,31 @@ ubuntu)
 		OTHERMIRROR+="|"
 	fi
 	OTHERMIRROR+="deb $http_prefix/uk.archive.ubuntu.com/ubuntu/ "
-	OTHERMIRROR+="$DIST-security "
+	OTHERMIRROR+="$REL-security "
 	OTHERMIRROR+="main restricted universe multiverse"
 	OTHERMIRROR+="|deb $http_prefix/uk.archive.ubuntu.com/ubuntu/ "
-	OTHERMIRROR+="$DIST-updates "
+	OTHERMIRROR+="$REL-updates "
 	OTHERMIRROR+="main restricted universe multiverse"
 	DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}"
 		"--keyring=/usr/share/keyrings/ubuntu-archive-keyring.gpg")
 
 	OTHERMIRROR+="|deb $http_prefix/ppa.launchpad.net/m-grant-prg/utils/"
-	OTHERMIRROR+="$OS $DIST main"
+	OTHERMIRROR+="$DIST $REL main"
 	APTKEYRINGS=("${APTKEYRINGS[@]}"
 		"/etc/apt/trusted.gpg.d/mgrant-utils-ppa-keyring.gpg")
 	;;
 *)
-	printf "Unknown OS: %s\n" $OS
+	printf "Unknown DIST: %s\n" $DIST
 	exit 1
 	;;
 esac
 
 
-##############################################
-# Check we now have a value of DIST and ARCH #
-##############################################
-if [ "$DIST" == "" ]; then
-	printf "DIST is not set\n"
+#############################################
+# Check we now have a value of REL and ARCH #
+#############################################
+if [ "$REL" == "" ]; then
+	printf "REL is not set\n"
 	exit 1
 fi
 
@@ -222,15 +224,15 @@ DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--arch=$ARCH")
 ####################
 # Self explanatory #
 ####################
-BASETGZ="/var/cache/pbuilder/$OS-$DIST-$ARCH-base.tgz"
+BASETGZ="/var/cache/pbuilder/$DIST-$REL-$ARCH-base.tgz"
 
-DISTRIBUTION="$DIST"
+DISTRIBUTION="$REL"
 
 PBUILDERSATISFYDEPENDSCMD=/usr/lib/pbuilder/pbuilder-satisfydepends-apt
 
-BUILDRESULT="/home/mgrantprg/SWDev/pbuilder/$OS-$DIST-$ARCH-result/"
+BUILDRESULT="/home/mgrantprg/SWDev/pbuilder/$DIST-$REL-$ARCH-result/"
 
-APTCACHE="/var/cache/pbuilder/aptcache/$OS-$DIST-$ARCH/"
+APTCACHE="/var/cache/pbuilder/aptcache/$DIST-$REL-$ARCH/"
 
 AUTOCLEANAPTCACHE=yes
 
@@ -246,8 +248,8 @@ HOOKDIR="/home/mgrantprg/SWDev/pbuilder/hook.d/"
 #####################
 psetuplog="$BUILDRESULT""pbuilderrc-setup.log"
 
-printf "OS = %s\n" "$OS" > $psetuplog
-printf "Distribution = %s\n" "$DIST" >> $psetuplog
+printf "Distribution = %s\n" "$DIST" > $psetuplog
+printf "Release = %s\n" "$REL" >> $psetuplog
 printf "Arch = %s\n" "$ARCH" >> $psetuplog
 printf "APT_CACHER = %s\n" "$APT_CACHER" >> $psetuplog
 printf "Mirrorsite = %s\n" "$MIRRORSITE" >> $psetuplog

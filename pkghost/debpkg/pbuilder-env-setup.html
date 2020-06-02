@@ -6,7 +6,7 @@
 	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2015-12-12T13:33:41.059217339"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2020-05-12T10:20:06.776015022"/>
+	<meta name="changed" content="2020-06-02T10:31:40.094588874"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -77,10 +77,11 @@ terms.</font></font></p>
 <font face="Albany, sans-serif"><font size="4" style="font-size: 14pt">Common
 command line elements.</font></font></p>
 <p>The pbuilder command line is always of the form:-</p>
-<p>sudo OS=debian DIST=buster ARCH=amd64 APT_CACHER=yes pbuilder ……..</p>
-<p>In my setup; OS can be debian, raspbian or ubuntu, DIST will be
-those to be used in this setup, maybe buster, stretch and bionic, and
-ARCH will be amd64 of armhf.</p>
+<p>sudo DIST=debian REL=buster ARCH=amd64 APT_CACHER=yes pbuilder
+……..</p>
+<p>In my setup; DIST can be debian, raspbian or ubuntu, REL will be
+releases to be used in this setup, maybe buster, stretch or bionic,
+and ARCH will be amd64 of armhf.</p>
 <p style="margin-top: 0.42cm; margin-bottom: 0.21cm; line-height: 100%; background: transparent; page-break-after: avoid">
 <font face="Albany, sans-serif"><font size="4" style="font-size: 14pt">pbuilderrc
 location considerations.</font></font></p>
@@ -228,13 +229,13 @@ directory.</p>
 		The pbuilder apt cache.</p>
 		<ul>
 			<li><p align="left"><span style="font-variant: normal"><span style="font-style: normal">sudo
-			mkdir -p /</span></span><span style="font-variant: normal"><i>var/</i></span><span style="font-variant: normal"><span style="font-style: normal">cache/pbuilder/aptcache/$OS-$DIST-$ARCH</span></span></p>
+			mkdir -p /</span></span><span style="font-variant: normal"><i>var/</i></span><span style="font-variant: normal"><span style="font-style: normal">cache/pbuilder/aptcache/$DIST-$REL-$ARCH</span></span></p>
 		</ul>
 		<li><p align="left" style="font-variant: normal; font-style: normal">
 		The output directory,</p>
 		<ul>
 			<li><p align="left" style="font-variant: normal; font-style: normal">
-			mkdir -p ~/SWDev/pbuilder/$OS-$DIST-$ARCH-result</p>
+			mkdir -p ~/SWDev/pbuilder/$DIST-$REL-$ARCH-result</p>
 		</ul>
 		<li><p align="left" style="font-variant: normal; font-style: normal">
 		Create the hook directory.</p>
@@ -283,7 +284,7 @@ directory.</p>
 	Now create the chroot.</p>
 	<ol type="a">
 		<li><p align="left" style="font-variant: normal; font-style: normal">
-		sudo OS=ubuntu DIST=eoan ARCH=amd64 APT_CACHER=yes pbuilder create
+		sudo DIST=ubuntu REL=eoan ARCH=amd64 APT_CACHER=yes pbuilder create
 		--override-config --debootstrapopts –variant=buildd</p>
 	</ol>
 	<li><p align="left" style="font-variant: normal; font-style: normal">
@@ -292,13 +293,13 @@ directory.</p>
 		<li><p align="left" style="font-variant: normal; font-style: normal">
 		If you wish to use the configuration of the last chroot, then use:-</p>
 		<ul>
-			<li><p align="left">sudo OS=ubuntu DIST=eoan ARCH=amd64 pbuilder
+			<li><p align="left">sudo DIST=ubuntu REL=eoan ARCH=amd64 pbuilder
 			update</p>
 		</ul>
 		<li><p align="left">If you wish to re-assert the pbuilderrc
 		configuration, or toggle the APT_CACHER setting, then use:-</p>
 		<ul>
-			<li><p align="left">sudo OS=ubuntu DIST=eoan ARCH=amd64
+			<li><p align="left">sudo DIST=ubuntu REL=eoan ARCH=amd64
 			APT_CACHER=yes pbuilder update –override-config</p>
 		</ul>
 		<li><p align="left"><b>NB</b> Using –override-config will
@@ -364,13 +365,13 @@ additions</h2>
 		The pbuilder apt cache.</p>
 		<ul>
 			<li><p align="left" style="font-variant: normal; font-style: normal">
-			sudo mkdir -p /var/cache/pbuilder/aptcache/$OS-$DIST-$ARCH</p>
+			sudo mkdir -p /var/cache/pbuilder/aptcache/$DIST-$REL-$ARCH</p>
 		</ul>
 		<li><p align="left" style="font-variant: normal; font-style: normal">
 		The output directory,</p>
 		<ul>
 			<li><p align="left" style="font-variant: normal; font-style: normal">
-			mkdir -p ~/SWDev/pbuilder/$OS-$DIST-$ARCH-result</p>
+			mkdir -p ~/SWDev/pbuilder/$DIST-$REL-$ARCH-result</p>
 		</ul>
 		<li><p align="left" style="font-variant: normal; font-style: normal">
 		Create the hook directory.</p>
@@ -417,13 +418,13 @@ additions</h2>
 	</ol>
 	<li><p align="left">Now create the chroot.</p>
 	<ol type="a">
-		<li><p align="left">sudo OS=debian DIST=buster ARCH=amd64
+		<li><p align="left">sudo DIST=debian REL=buster ARCH=amd64
 		APT_CACHER=yes pbuilder create --override-config --debootstrapopts
 		–variant=buildd</p>
 	</ol>
 	<li><p>To add further official Debian repositories:-</p>
 	<ol type="a">
-		<li><p>sudo OS=debian DIST=buster ARCH=amd64 pbuilder login
+		<li><p>sudo DIST=debian REL=buster ARCH=amd64 pbuilder login
 		–save-after-login</p>
 		<li><p>apt-get install apt-utils dirmngr gnupg2
 		software-properties-common vim wget</p>
@@ -436,7 +437,7 @@ additions</h2>
 	</ol>
 	<li><p>To add third party repositories:-</p>
 	<ol type="a">
-		<li><p>sudo OS=debian DIST=buster ARCH=amd64 pbuilder login
+		<li><p>sudo DIST=debian REL=buster ARCH=amd64 pbuilder login
 		–save-after-login</p>
 		<li><p>add-apt-repository “deb
 		https://dl.bintray.com/mgrantprg/debian-utils buster stable”</p>
@@ -447,24 +448,24 @@ additions</h2>
 	</ol>
 	<li><p>To add a PPA:-</p>
 	<ol type="a">
-		<li><p>sudo OS=ubuntu DIST=bionic ARCH=amd64 pbuilder login
+		<li><p>sudo DIST=ubuntu REL=bionic ARCH=amd64 pbuilder login
 		–save-after-login</p>
 		<li><p>add-apt-repository ppa:m-grant-prg/utils</p>
 		<li><p>exit</p>
 	</ol>
 	<li><p>To add a local apt repository:-</p>
 	<ol type="a">
-		<li><p>sudo OS=debian DIST=buster ARCH=amd64 pbuilder login
+		<li><p>sudo DIST=debian REL=buster ARCH=amd64 pbuilder login
 		–save-after-login</p>
 		<li><p>add-apt-repository “deb http://hermes/aptrepos/debian
 		buster stable beta staging”</p>
 		<li><p>wget -O - <a href="http://hermes/aptrepos/hermes.gpg">http://hermes/aptrepos/hermes.gpg</a>
-		 | apt-key add -</p>
+		| apt-key add -</p>
 		<li><p>exit</p>
 	</ol>
 	<li><p>Get my package signing key:-</p>
 	<ol type="a">
-		<li><p>sudo OS=ubuntu DIST=bionic ARCH=amd64 pbuilder login
+		<li><p>sudo DIST=ubuntu REL=bionic ARCH=amd64 pbuilder login
 		–save-after-login</p>
 		<li><p>gpg --verbose --no-default-keyring --keyring trustedkeys.kbx
 		--recv-keys 20ECF9F0</p>
@@ -473,7 +474,7 @@ additions</h2>
 	</ol>
 	<li><p>Update the chroot.</p>
 	<ol type="a">
-		<li><p>sudo OS=debian DIST=buster ARCH=amd64 APT_CACHER=yes
+		<li><p>sudo DIST=debian REL=buster ARCH=amd64 APT_CACHER=yes
 		pbuilder update</p>
 	</ol>
 </ol>

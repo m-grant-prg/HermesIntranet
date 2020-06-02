@@ -6,7 +6,7 @@
 	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2015-12-12T09:37:03.193001702"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2019-10-29T08:53:31.096182692"/>
+	<meta name="changed" content="2020-06-02T10:39:58.993836785"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -107,19 +107,19 @@ Debian Package Preparation Guide</h1>
 	update hook is run.</p>
 	<ol type="a">
 		<ul>
-			<li><p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
-			pbuilder update</p>
+			<li><p align="left">sudo DIST=raspbian REL=stretch ARCH=armhf
+			APT_CACHER=yes pbuilder update --override-config</p>
 		</ul>
 	</ol>
 	<li><p align="left">Build the Debian package in chroot environment.</p>
 	<ol type="a">
 		<ul>
-			<li><p align="left">sudo OS=raspbian DIST=stretch ARCH=armhf
-			pbuilder build *deb9*.dsc</p>
+			<li><p align="left">sudo DIST=raspbian REL=stretch ARCH=armhf
+			APT_CACHER=yes pbuilder build *deb9*.dsc</p>
 		</ul>
 	</ol>
-	<li><p align="left">If supporting other Debian dists repeat from
-	step 3 for the extra dists.</p>
+	<li><p align="left">If supporting other Debian releases repeat from
+	step 3 for each one.</p>
 	<ol type="a">
 		<li><p align="left">If creating such a setup at this point:-</p>
 		<ul>
