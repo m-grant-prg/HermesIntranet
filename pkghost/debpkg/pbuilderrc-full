@@ -66,6 +66,7 @@
 #				Add raspberrypi.org/debian keyring.	#
 # 02/06/2020	MG	1.1.2	Correct environment variables from OS,	#
 #				DIST and ARCH, to DIST, REL and ARCH.	#
+# 27/07/2020	MG	1.1.3	Add quirks for xenial.			#
 #									#
 #########################################################################
 
@@ -202,6 +203,9 @@ fi
 # We always need these packages in the base tarball #
 #####################################################
 EXTRAPACKAGES+=" apt-utils dirmngr gnupg2 software-properties-common vim wget"
+if [[ $REL == xenial ]]; then
+	EXTRAPACKAGES+=" aptitude"
+fi
 
 
 ###################################
@@ -228,7 +232,12 @@ BASETGZ="/var/cache/pbuilder/$DIST-$REL-$ARCH-base.tgz"
 
 DISTRIBUTION="$REL"
 
-PBUILDERSATISFYDEPENDSCMD=/usr/lib/pbuilder/pbuilder-satisfydepends-apt
+PBUILDERSATISFYDEPENDSCMD=/usr/lib/pbuilder/
+if [[ $REL = xenial ]]; then
+	PBUILDERSATISFYDEPENDSCMD+=pbuilder-satisfydepends-aptitude
+else
+	PBUILDERSATISFYDEPENDSCMD+=pbuilder-satisfydepends-apt
+fi
 
 BUILDRESULT="/home/mgrantprg/SWDev/pbuilder/$DIST-$REL-$ARCH-result/"
 

@@ -31,12 +31,15 @@
 # 02/05/2020	MG	1.0.2	Update file comment above to include	#
 #				note on the requirement for the		#
 #				trustedkeys.kbx keybox.			#
+# 27/07/2020	MG	1.0.3	Skip checks if building for xenial as	#
+#				old version handles differently.	#
 #									#
 #########################################################################
 
 
-echo "Checking the following .dsc files:-"
-ls /build/*.dsc
-
-gpgv /build/*.dsc
+if [[ $REL != xenial ]]; then
+	echo "Checking the following .dsc files:-"
+	ls /build/*.dsc
+	gpgv /build/*.dsc
+fi
 
