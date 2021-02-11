@@ -6,7 +6,7 @@
 	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2015-12-12T13:33:41.059217339"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2021-02-11T09:50:29.432690135"/>
+	<meta name="changed" content="2021-02-11T10:08:48.610624619"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -300,9 +300,9 @@ directory.</p>
 		configuration, or toggle the APT_CACHER setting, then use:-</p>
 		<ul>
 			<li><p align="left">sudo DIST=ubuntu REL=eoan ARCH=amd64
-			APT_CACHER=yes pbuilder update –override-config</p>
+			APT_CACHER=yes pbuilder update --override-config</p>
 		</ul>
-		<li><p align="left"><b>NB</b> Using –override-config will
+		<li><p align="left"><b>NB</b> Using --override-config will
 		overwrite parts of the configuration, notably the apt sources, so,
 		any previous manual changes to these settings <b>will be lost</b>.</p>
 	</ol>
@@ -425,7 +425,7 @@ additions</h2>
 	<li><p>To add further official Debian repositories:-</p>
 	<ol type="a">
 		<li><p>sudo DIST=debian REL=buster ARCH=amd64 pbuilder login
-		–save-after-login</p>
+		--save-after-login</p>
 		<li><p>apt-get install apt-utils dirmngr gnupg2
 		software-properties-common vim wget</p>
 		<li><p>add-apt-repository “deb
@@ -438,7 +438,7 @@ additions</h2>
 	<li><p>To add third party repositories:-</p>
 	<ol type="a">
 		<li><p>sudo DIST=debian REL=buster ARCH=amd64 pbuilder login
-		–save-after-login</p>
+		--save-after-login</p>
 		<li><p>add-apt-repository “deb
 		http://download.opensuse.org/repositories/home:/m-grant-prg/Debian_10/
 		/”</p>
@@ -451,14 +451,14 @@ additions</h2>
 	<li><p>To add a PPA:-</p>
 	<ol type="a">
 		<li><p>sudo DIST=ubuntu REL=bionic ARCH=amd64 pbuilder login
-		–save-after-login</p>
+		--save-after-login</p>
 		<li><p>add-apt-repository ppa:m-grant-prg/utils</p>
 		<li><p>exit</p>
 	</ol>
 	<li><p>To add a local apt repository:-</p>
 	<ol type="a">
 		<li><p>sudo DIST=debian REL=buster ARCH=amd64 pbuilder login
-		–save-after-login</p>
+		--save-after-login</p>
 		<li><p>add-apt-repository “deb http://hermes/aptrepos/debian
 		buster stable beta staging”</p>
 		<li><p>wget -O - <a href="http://hermes/aptrepos/hermes.gpg">http://hermes/aptrepos/hermes.gpg</a>
@@ -468,7 +468,7 @@ additions</h2>
 	<li><p>Get my package signing key:-</p>
 	<ol type="a">
 		<li><p>sudo DIST=ubuntu REL=bionic ARCH=amd64 pbuilder login
-		–save-after-login</p>
+		--save-after-login</p>
 		<li><p>gpg --verbose --no-default-keyring --keyring trustedkeys.kbx
 		--recv-keys 20ECF9F0</p>
 		<li><p>find /root/.gnupg -type s | xargs rm -fv</p>
