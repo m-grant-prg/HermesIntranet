@@ -6,7 +6,7 @@
 	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2015-12-12T13:33:41.059217339"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2021-02-07T15:25:35.583733979"/>
+	<meta name="changed" content="2021-02-11T09:50:29.432690135"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -67,11 +67,11 @@ terms.</font></font></p>
 	pbuilder by use of the APT_CACHER environment variable set on the
 	pbuilder command line. (If not mentioned, the pbuilderrc script
 	defaults to yes, i.e. use these services).</p>
-	<li><p align="left">Bintray is a package hosting environment
-	providing apt package repositories, in this case, for my software
-	packaged for Debian and Raspbian.</p>
+	<li><p align="left">OpenSUSE Build Service (OBS) is a package
+	building and hosting environment providing apt package repositories,
+	in this case, for my software packaged for Debian and Raspbian.</p>
 	<li><p align="left">The PPA mentioned basically provides the same
-	package software as Bintray, but for Ubuntu.</p>
+	package software as OBS, but for Ubuntu.</p>
 </ul>
 <p style="margin-top: 0.42cm; margin-bottom: 0.21cm; line-height: 100%; background: transparent; page-break-after: avoid">
 <font face="Albany, sans-serif"><font size="4" style="font-size: 14pt">Common
@@ -146,15 +146,15 @@ directory.</p>
 			<ol>
 				<li><p align="left">sudo apt-get install ubuntu-keyring</p>
 			</ol>
-			<li><p align="left">Bintray needs to be retrieved and added to an
-			apt keyring in the location entered in the pbuilderrc APTKEYRINGS
+			<li><p align="left">OBS needs to be retrieved and added to an apt
+			keyring in the location entered in the pbuilderrc APTKEYRINGS
 			variable.</p>
 			<ol>
 				<li><p align="left" style="font-variant: normal; font-style: normal">
 				wget -qO -
-				https://bintray.com/user/downloadSubjectPublicKey?username=mgrantprg|sudo
-				apt-key --keyring /etc/apt/trusted.gpg.d/bintray-keyring.gpg add
-				-</p>
+				https://download.opensuse.org/repositories/home:m-grant-prg/Debian_10/Release.key
+				| gpg --dearmor | sudo apt-key --keyring
+				/etc/apt/trusted.gpg.d/obs-debian-keyring.gpg add -</p>
 			</ol>
 			<li><p align="left"><span style="font-variant: normal"><span style="font-style: normal">LaunchPad
 			keys are on the ubuntu keyserver so need to be retrieved</span></span><span style="font-variant: normal">
@@ -440,10 +440,12 @@ additions</h2>
 		<li><p>sudo DIST=debian REL=buster ARCH=amd64 pbuilder login
 		–save-after-login</p>
 		<li><p>add-apt-repository “deb
-		https://dl.bintray.com/mgrantprg/debian-utils buster stable”</p>
-		<li><p>wget -O -
-		https://bintray.com/user/downloadSubjectPublicKey?username=mgrantprg
-		| apt-key add -</p>
+		http://download.opensuse.org/repositories/home:/m-grant-prg/Debian_10/
+		/”</p>
+		<li><p>wget -qO -
+		https://download.opensuse.org/repositories/home:m-grant-prg/Debian_10/Release.key
+		| gpg --dearmor | apt-key --keyring
+		/etc/apt/trusted.gpg.d/obs-debian-keyring.gpg add -</p>
 		<li><p>exit</p>
 	</ol>
 	<li><p>To add a PPA:-</p>
