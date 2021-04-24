@@ -6,7 +6,7 @@
 	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2015-12-12T13:33:41.059217339"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2021-02-11T10:34:40.500275913"/>
+	<meta name="changed" content="2021-04-24T15:55:34.559432083"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -136,7 +136,7 @@ directory.</p>
 			the Debian repositories. So get the package from their server,
 			(N.B. Check for a later dated version).</p>
 			<ol>
-				<li><p align="left">wget
+				<li><p align="left">curl -fsSLO
 				<a href="http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.2_all.deb">http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.2_all.deb</a></p>
 				<li><p align="left">sudo dpkg -i
 				raspbian-archive-keyring_20120528.2_all.deb</p>
@@ -151,7 +151,7 @@ directory.</p>
 			variable.</p>
 			<ol>
 				<li><p align="left" style="font-variant: normal; font-style: normal">
-				wget -qO -
+				curl -fsSL
 				https://download.opensuse.org/repositories/home:m-grant-prg/Debian_10/Release.key
 				| gpg --dearmor | sudo apt-key --keyring
 				/etc/apt/trusted.gpg.d/obs-debian-keyring.gpg add -</p>
@@ -184,11 +184,11 @@ directory.</p>
 			key to be retrieved and added to an apt keyring in the location
 			entered in the pbuilderrc APTKEYRINGS variable.</p>
 			<ol>
-				<li><p align="left" style="font-variant: normal; font-style: normal">
-				wget -O -
+				<li><p align="left"><span style="font-variant: normal"><span style="font-style: normal">curl</span></span><span style="font-variant: normal"><span style="font-style: normal">
+				-</span></span><span style="font-variant: normal"><span style="font-style: normal">fsSL</span></span><span style="font-variant: normal"><span style="font-style: normal">
 				<a href="https://archive.raspberrypi.org/debian/raspberrypi.gpg.key">https://archive.raspberrypi.org/debian/raspberrypi.gpg.key</a>
 				| sudo apt-key --keyring
-				/etc/apt/trusted.gpg.d/raspberrypi-keyring.gpg add -</p>
+				/etc/apt/trusted.gpg.d/raspberrypi-keyring.gpg add -</span></span></p>
 			</ol>
 		</ul>
 	</ol>
@@ -201,9 +201,8 @@ directory.</p>
 		packages if / when later logged in to the chroot.</p>
 		<ul>
 			<li><p align="left" style="font-variant: normal; font-style: normal">
-			So add these packages; apt-utils, dirmngr, gnupg2,
-			software-properties-common, vim and wget to the EXTRAPACKAGES
-			variable.</p>
+			So add these packages; apt-utils, curl, dirmngr, gnupg2,
+			software-properties-common and vim to the EXTRAPACKAGES variable.</p>
 		</ul>
 		<li><p align="left" style="font-variant: normal; font-style: normal">
 		If we want to cross build e.g. for a Raspberry Pi, then we need to
@@ -329,7 +328,7 @@ additions</h2>
 			the Debian repositories. So get the package from their server,
 			(N.B. Check for a later dated version).</p>
 			<ul>
-				<li><p align="left">wget
+				<li><p align="left">curl -fsSLO
 				<a href="http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.2_all.deb">http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.2_all.deb</a></p>
 				<li><p align="left">sudo dpkg -i
 				raspbian-archive-keyring_20120528.2_all.deb</p>
@@ -426,8 +425,8 @@ additions</h2>
 	<ol type="a">
 		<li><p>sudo DIST=debian REL=buster ARCH=amd64 pbuilder login
 		--save-after-login</p>
-		<li><p>apt-get install apt-utils dirmngr gnupg2
-		software-properties-common vim wget</p>
+		<li><p>apt-get install apt-utils curl dirmngr gnupg2
+		software-properties-common vim</p>
 		<li><p>add-apt-repository “deb
 		https://deb.debian.org/debian-security/ buster/updates main contrib
 		non-free”</p>
@@ -442,7 +441,7 @@ additions</h2>
 		<li><p>add-apt-repository “deb
 		http://download.opensuse.org/repositories/home:/m-grant-prg/Debian_10/
 		/”</p>
-		<li><p>wget -qO -
+		<li><p>curl -fsSL
 		https://download.opensuse.org/repositories/home:m-grant-prg/Debian_10/Release.key
 		| gpg --dearmor | apt-key --keyring
 		/etc/apt/trusted.gpg.d/obs-debian-keyring.gpg add -</p>
@@ -461,7 +460,7 @@ additions</h2>
 		--save-after-login</p>
 		<li><p>add-apt-repository “deb http://hermes/aptrepos/debian
 		buster stable beta staging”</p>
-		<li><p>wget -O - <a href="http://hermes/aptrepos/hermes.gpg">http://hermes/aptrepos/hermes.gpg</a>
+		<li><p>curl -fsSL <a href="http://hermes/aptrepos/hermes.gpg">http://hermes/aptrepos/hermes.gpg</a>
 		| apt-key add -</p>
 		<li><p>exit</p>
 	</ol>
@@ -490,7 +489,7 @@ additions</h2>
 		<li><p>If you are using a fully populated pbuilderrc then:-</p>
 		<ol>
 			<li><p>Follow the instructions under that heading.</p>
-			<li><p>Then login to the chroot and wget the key as detailed in
+			<li><p>Then login to the chroot and curl the key as detailed in
 			the minimal pbuilderrc section.</p>
 		</ol>
 	</ol>

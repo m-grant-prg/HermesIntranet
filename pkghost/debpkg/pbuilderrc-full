@@ -5,7 +5,7 @@
 # Script ID: .pbuilderrc						#
 # Based on an outline by Stein Magnus Jodal				#
 #	https://jodal.no/2015/03/08/building-arm-debs-with-pbuilder/	#
-# Author: Copyright (C) 2018-2020  Mark Grant				#
+# Author: Copyright (C) 2018-2021  Mark Grant				#
 #									#
 # Released under the GPLv3 only.					#
 # SPDX-License-Identifier: GPL-3.0					#
@@ -67,7 +67,13 @@
 # 02/06/2020	MG	1.1.2	Correct environment variables from OS,	#
 #				DIST and ARCH, to DIST, REL and ARCH.	#
 # 27/07/2020	MG	1.1.3	Add quirks for xenial.			#
-# 03/11/2020	MG	1.1.4	Bypass apt-cacher-ng for bintray.	#
+# 15/11/2020	MG	1.1.4	Add alpha component to hermes repos.	#
+# 11/01/2021	MG	1.1.5	Add a non-existent user id for the	#
+#				non-root build and a user name for use	#
+#				by fakeroot.				#
+# 09/02/2021	MG	1.1.6	Move from Bintray to OpenSUSE Build	#
+#				Service.				#
+# 24/04/2021	MG	1.1.7	Prefer curl to wget.			#
 #									#
 #########################################################################
 
@@ -82,6 +88,25 @@ set -e
 # Init variables #
 ##################
 OTHERMIRROR=""
+
+
+##########################################################################
+# OpenSUSE Build Service needs a numeric release for Debian and Raspbian #
+##########################################################################
+case $REL in
+stretch)
+	obs_rel="9.0"
+	;;
+buster)
+	obs_rel="10"
+	;;
+bullseye)
+	obs_rel="11"
+	;;
+bookworm)
+	obs_rel="12"
+	;;
+esac
 
 
 #########################################################################
@@ -115,7 +140,7 @@ esac
 ########################################################
 if [[ $APT_CACHER == yes ]]; then
 	OTHERMIRROR="deb http://hermes.mgent.home/aptrepos/$DIST $REL "
-	OTHERMIRROR+="beta stable staging"
+	OTHERMIRROR+="alpha beta stable staging"
 	APTKEYRINGS=("/etc/apt/trusted.gpg.d/hermes-keyring.gpg")
 fi
 
@@ -137,10 +162,10 @@ debian)
 	DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}"
 		"--keyring=/usr/share/keyrings/debian-archive-keyring.gpg")
 
-	OTHERMIRROR+="|deb https://dl.bintray.com/mgrantprg/debian-utils "
-	OTHERMIRROR+="$REL stable"
+	OTHERMIRROR+="|deb http://download.opensuse.org/repositories/home:"
+	OTHERMIRROR+="/m-grant-prg/Debian_$obs_rel/ /"
 	APTKEYRINGS=("${APTKEYRINGS[@]}"
-		"/etc/apt/trusted.gpg.d/bintray-keyring.gpg")
+		"/etc/apt/trusted.gpg.d/obs-debian-keyring.gpg")
 	;;
 raspbian)
 	MIRRORSITE="$http_prefix/mirrordirector.raspbian.org/raspbian/"
@@ -153,11 +178,11 @@ raspbian)
 	DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}"
 		"--keyring=/usr/share/keyrings/raspbian-archive-keyring.gpg")
 
-	OTHERMIRROR+="|deb https://dl.bintray.com/mgrantprg/"
-	OTHERMIRROR+="raspbian-utils $REL stable"
+	OTHERMIRROR+="|deb http://download.opensuse.org/repositories/home:"
+	OTHERMIRROR+="/m-grant-prg/Raspbian_$obs_rel/ /"
 	APTKEYRINGS=("${APTKEYRINGS[@]}"
 		"/etc/apt/trusted.gpg.d/raspberrypi-keyring.gpg"
-		"/etc/apt/trusted.gpg.d/bintray-keyring.gpg")
+		"/etc/apt/trusted.gpg.d/obs-raspbian-keyring.gpg")
 	;;
 ubuntu)
 	MIRRORSITE="$http_prefix/uk.archive.ubuntu.com/ubuntu/"
@@ -203,7 +228,7 @@ fi
 #####################################################
 # We always need these packages in the base tarball #
 #####################################################
-EXTRAPACKAGES+=" apt-utils dirmngr gnupg2 software-properties-common vim wget"
+EXTRAPACKAGES+=" apt-utils curl dirmngr gnupg2 software-properties-common vim"
 if [[ $REL == xenial ]]; then
 	EXTRAPACKAGES+=" aptitude"
 fi
@@ -224,6 +249,13 @@ fi
 # Add the Architecture #
 ########################
 DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--arch=$ARCH")
+
+
+#############################################################################
+# Non-existent user id for non-root build and user name for use by fakeroot #
+#############################################################################
+BUILDUSERID=1234
+BUILDUSERNAME=pbuilder
 
 
 ####################
@@ -267,6 +299,8 @@ printf "Components = %s\n" "$COMPONENTS" >> $psetuplog
 printf "Othermirror = %s\n" "$OTHERMIRROR" >> $psetuplog
 printf "Aptkeyrings = %s\n" "${APTKEYRINGS[@]}" >> $psetuplog
 printf "Extrapackages = %s\n" "$EXTRAPACKAGES" >> $psetuplog
+printf "Builduserid = %s\n" "$BUILDUSERID" >> $psetuplog
+printf "Buildusername = %s\n" "$BUILDUSERNAME" >> $psetuplog
 printf "Debootstrap = %s\n" "$DEBOOTSTRAP" >> $psetuplog
 printf "Debootstrapopts = %s\n" "${DEBOOTSTRAPOPTS[@]}" >> $psetuplog
 printf "Basetgz = %s\n" "$BASETGZ" >> $psetuplog
