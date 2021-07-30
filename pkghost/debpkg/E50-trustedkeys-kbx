@@ -3,7 +3,7 @@
 #########################################################################
 #									#
 # Script ID: E50-trustedkeys-kbx.sh					#
-# Author: Copyright (C) 2018-2020  Mark Grant				#
+# Author: Copyright (C) 2018-2021  Mark Grant				#
 #									#
 # Released under the GPLv3 only.					#
 # SPDX-License-Identifier: GPL-3.0					#
@@ -36,21 +36,38 @@
 # 03/05/2020	MG	1.0.5	Use the keyserver option as this is a	#
 #				fairly bare implementation in the	#
 #				chroot.					#
+# 25/01/2021	MG	1.0.6	Make the keyserver TLS certificate	#
+#				known to dirmngr.			#
+#				gpg to use hkps servers.		#
+# 08/02/2021	MG	1.0.7	Add quirk for xenial to still use hkp.	#
+# 09/02/2021	MG	1.0.8	Add stretch to xenial quirk.		#
+#				Ensure .gnupg directory exists before	#
+#				invoking dirmngr.			#
+# 30/07/2021	MG	1.0.9	sks-keyservers has been shutdown,	#
+#				replace with keyservers.ubuntu.com	#
 #									#
 #########################################################################
 
 
 echo "Installing gpg key for m.grant.prg@gmail.com"
+# Ensure the .gnupg directory exists.
+gpg --list-keys
+
+if [[ $REL == xenial || $REL == stretch ]]; then
+	keyserver="hkp://keyserver.ubuntu.com"
+else
+	keyserver="hkps://keyserver.ubuntu.com"
+fi
 
 # The keybox 'trustedkeys.kbx' is required by gpgv.
 gpg --no-default-keyring --keyring trustedkeys.kbx --fingerprint
 
 if [[ $PBUILDER_OPERATION == create ]]; then
 	gpg --no-default-keyring --keyring trustedkeys.kbx \
-		--keyserver hkp://pool.sks-keyservers.net --recv-keys 20ECF9F0
+		--keyserver $keyserver --recv-keys 20ECF9F0
 else
 	gpg --no-default-keyring --keyring trustedkeys.kbx \
-		--keyserver hkp://pool.sks-keyservers.net --refresh-keys
+		--keyserver $keyserver --refresh-keys
 fi
 
 find /root/.gnupg -type s | xargs rm -fv
