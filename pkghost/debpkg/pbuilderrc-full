@@ -74,6 +74,8 @@
 # 09/02/2021	MG	1.1.6	Move from Bintray to OpenSUSE Build	#
 #				Service.				#
 # 24/04/2021	MG	1.1.7	Prefer curl to wget.			#
+# 21/08/2021	MG	1.1.8	Debian security suite name change from	#
+#				bullseye onwards.			#
 #									#
 #########################################################################
 
@@ -87,6 +89,7 @@ set -e
 ##################
 # Init variables #
 ##################
+declare -i num_rel	# Numeric release value
 OTHERMIRROR=""
 
 
@@ -96,15 +99,19 @@ OTHERMIRROR=""
 case $REL in
 stretch)
 	obs_rel="9.0"
+	num_rel=9
 	;;
 buster)
 	obs_rel="10"
+	num_rel=10
 	;;
 bullseye)
 	obs_rel="11"
+	num_rel=11
 	;;
 bookworm)
 	obs_rel="12"
+	num_rel=12
 	;;
 esac
 
@@ -156,7 +163,12 @@ debian)
 		OTHERMIRROR+="|"
 	fi
 	OTHERMIRROR+="deb $https_prefix/deb.debian.org/debian-security/ "
-	OTHERMIRROR+="$REL/updates main contrib non-free"
+	# Change of name of the security suite from bullseye onwards
+	if (( $num_rel >= 11 )); then
+		OTHERMIRROR+="$REL-security main contrib non-free"
+	else
+		OTHERMIRROR+="$REL/updates main contrib non-free"
+	fi
 	OTHERMIRROR+="|deb $https_prefix/deb.debian.org/debian $REL-updates "
 	OTHERMIRROR+="main contrib non-free"
 	DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}"
