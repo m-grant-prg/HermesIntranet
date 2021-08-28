@@ -101,11 +101,13 @@ OTHERMIRROR=""
 # The following is valid for stretch onwards with a quirk for the OBS	#
 # stretch version.							#
 #########################################################################
-num_rel=$(distro-info -r --series=$REL)
-if [[ $REL == "stretch" ]]; then
-	obs_rel="9.0"
-else
-	obs_rel=$num_rel
+if [[ $DIST == "debian" || $DIST == "raspbian" ]];then
+	num_rel=$(distro-info -r --series=$REL)
+	if [[ $REL == "stretch" ]]; then
+		obs_rel="9.0"
+	else
+		obs_rel=$num_rel
+	fi
 fi
 
 
