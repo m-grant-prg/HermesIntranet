@@ -76,6 +76,8 @@
 # 24/04/2021	MG	1.1.7	Prefer curl to wget.			#
 # 21/08/2021	MG	1.1.8	Debian security suite name change from	#
 #				bullseye onwards.			#
+# 27/08/2021	MG	1.1.9	Use distro-info command to retrieve	#
+#				numeric value for release codenames.	#
 #									#
 #########################################################################
 
@@ -93,27 +95,18 @@ declare -i num_rel	# Numeric release value
 OTHERMIRROR=""
 
 
-##########################################################################
-# OpenSUSE Build Service needs a numeric release for Debian and Raspbian #
-##########################################################################
-case $REL in
-stretch)
+#########################################################################
+# OpenSUSE Build Service needs a numeric string release for Debian and	#
+# Raspbian and a numeric value is needed for changes such as >= release.#
+# The following is valid for stretch onwards with a quirk for the OBS	#
+# stretch version.							#
+#########################################################################
+num_rel=$(distro-info -r --series=$REL)
+if [[ $REL == "stretch" ]]; then
 	obs_rel="9.0"
-	num_rel=9
-	;;
-buster)
-	obs_rel="10"
-	num_rel=10
-	;;
-bullseye)
-	obs_rel="11"
-	num_rel=11
-	;;
-bookworm)
-	obs_rel="12"
-	num_rel=12
-	;;
-esac
+else
+	obs_rel=$num_rel
+fi
 
 
 #########################################################################
