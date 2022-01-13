@@ -3,10 +3,10 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title></title>
-	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
+	<meta name="generator" content="LibreOffice 7.0.4.2 (Linux)"/>
 	<meta name="created" content="2015-12-12T09:37:03.193001702"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2020-06-02T10:39:58.993836785"/>
+	<meta name="changed" content="2022-01-13T15:31:54.198040680"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -44,7 +44,7 @@ Debian Package Preparation Guide</h1>
 	<li><p align="left">Once per project at the start</p>
 	<ol type="a">
 		<ul>
-			<li><p align="left">bzr dh-make alarmclock 1.0.10
+			<li><p align="left">brz dh-make alarmclock 1.0.10
 			../alarmclockatdist-v1.0.10-1-g4b2d49b.tar.gz</p>
 		</ul>
 	</ol>
@@ -53,7 +53,7 @@ Debian Package Preparation Guide</h1>
 	<ol type="a">
 		<li><p align="left">Remove old .dsc etc files from project root
 		directory (trunk's parent)</p>
-		<li><p align="left">bzr merge-upstream</p>
+		<li><p align="left">brz merge-upstream</p>
 		<li><p align="left">Edit the trunk/debian ChangeLog file to ensure
 		correct distribution and Author name and email address which is
 		used for signing.</p>
@@ -65,7 +65,7 @@ Debian Package Preparation Guide</h1>
 		download)</p>
 		<li><p align="left">Remove old .dsc etc files from project root
 		directory (trunk's parent)</p>
-		<li><p align="left">bzr merge-upstream --version 1.0.11
+		<li><p align="left">brz merge-upstream --version 1.0.11
 		../alarmclockatdist-v1.0.11.tar.gz</p>
 		<li><p align="left">Edit the trunk/debian ChangeLog file to ensure
 		correct distribution and Author name and email address which is
@@ -76,7 +76,7 @@ Debian Package Preparation Guide</h1>
 	<ol type="a">
 		<li><p align="left">Remove old .dsc etc files from project root
 		directory (trunk's parent)</p>
-		<li><p align="left">bzr merge-upstream --version 1.0.11
+		<li><p align="left">brz merge-upstream --version 1.0.11
 		http://hermes/deployments/alarmclockatdist-v1.0.11.tar.gz</p>
 		<li><p align="left">Edit the trunk/debian ChangeLog file to ensure
 		correct distribution and Author name and email address which is
@@ -86,11 +86,11 @@ Debian Package Preparation Guide</h1>
 	<ol type="a">
 		<li><p align="left">For an unsigned package:</p>
 		<ul>
-			<li><p align="left">bzr builddeb -- -us -uc</p>
+			<li><p align="left">brz builddeb -- -us -uc</p>
 		</ul>
 		<li><p align="left">For a signed package:</p>
 		<ul>
-			<li><p align="left">bzr builddeb -S</p>
+			<li><p align="left">brz builddeb -S</p>
 		</ul>
 	</ol>
 	<li><p align="left">Move to the project root directory.</p>
