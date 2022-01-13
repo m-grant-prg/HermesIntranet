@@ -6,7 +6,7 @@
 	<meta name="generator" content="LibreOffice 7.0.4.2 (Linux)"/>
 	<meta name="created" content="2015-12-12T09:37:03.193001702"/>
 	<meta name="changedby" content="Mark Grant"/>
-	<meta name="changed" content="2022-01-12T15:42:26.829649982"/>
+	<meta name="changed" content="2022-01-13T15:43:19.058811608"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -56,8 +56,8 @@ Private Hosting Of rpm Package</h1>
 		<li><p align="left">ssh <a href="mailto:mgrant@hermes">mgrant@hermes</a></p>
 		<li><p align="left">Find the secret key</p>
 		<ul>
-			<li><p align="left">gpg –list-secret-keys</p>
-			<li><p align="left">gpg –export-secret-key
+			<li><p align="left">gpg --list-secret-keys</p>
+			<li><p align="left">gpg --export-secret-key
 			510206ECCB18744A2B93A88E17F85093B76B53C7 &gt; private-key</p>
 		</ul>
 		<li><p align="left">Transfer the key back to client machine</p>
@@ -65,7 +65,7 @@ Private Hosting Of rpm Package</h1>
 			<li><p align="left">sftp the file private-key</p>
 		</ul>
 		<li><p align="left">Back on client machine</p>
-		<li><p align="left">gpg –import private-key</p>
+		<li><p align="left">gpg --import private-key</p>
 		<li><p align="left">Tell rpmsign which key to use</p>
 		<ul>
 			<li><p align="left">vim ~/.rpmmacros</p>
@@ -82,7 +82,7 @@ Private Hosting Of rpm Package</h1>
 	</ol>
 	<li><p align="left">Sign the package.</p>
 	<ol type="a">
-		<li><p align="left">rpmsign –addsign *.rpm</p>
+		<li><p align="left">rpmsign --addsign *.rpm</p>
 	</ol>
 	<li><p align="left">Copy the signed package to the server.</p>
 	<ol type="a">
