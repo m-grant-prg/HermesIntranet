@@ -5,10 +5,10 @@
 # Script ID: .pbuilderrc						#
 # Based on an outline by Stein Magnus Jodal				#
 #	https://jodal.no/2015/03/08/building-arm-debs-with-pbuilder/	#
-# Author: Copyright (C) 2018-2021  Mark Grant				#
+# Author: Copyright (C) 2018-2022  Mark Grant				#
 #									#
 # Released under the GPLv3 only.					#
-# SPDX-License-Identifier: GPL-3.0					#
+# SPDX-License-Identifier: GPL-3.0-only					#
 #									#
 # Purpose:								#
 # This pbuilderrc file provides a mechanism for pbuilder to be able to	#
@@ -78,6 +78,8 @@
 #				bullseye onwards.			#
 # 27/08/2021	MG	1.1.9	Use distro-info command to retrieve	#
 #				numeric value for release codenames.	#
+# 03/12/2021	MG	1.1.10	Tighten SPDX tag.			#
+# 17/01/2022	MG	1.1.11	Use new keyring name for OBS.		#
 #									#
 #########################################################################
 
@@ -172,7 +174,7 @@ debian)
 	OTHERMIRROR+="|deb http://download.opensuse.org/repositories/home:"
 	OTHERMIRROR+="/m-grant-prg/Debian_$obs_rel/ /"
 	APTKEYRINGS=("${APTKEYRINGS[@]}"
-		"/etc/apt/trusted.gpg.d/obs-debian-keyring.gpg")
+		"/etc/apt/trusted.gpg.d/home_m-grant-prg.gpg")
 	;;
 raspbian)
 	MIRRORSITE="$http_prefix/mirrordirector.raspbian.org/raspbian/"
@@ -189,7 +191,7 @@ raspbian)
 	OTHERMIRROR+="/m-grant-prg/Raspbian_$obs_rel/ /"
 	APTKEYRINGS=("${APTKEYRINGS[@]}"
 		"/etc/apt/trusted.gpg.d/raspberrypi-keyring.gpg"
-		"/etc/apt/trusted.gpg.d/obs-raspbian-keyring.gpg")
+		"/etc/apt/trusted.gpg.d/home_m-grant-prg.gpg")
 	;;
 ubuntu)
 	MIRRORSITE="$http_prefix/uk.archive.ubuntu.com/ubuntu/"
