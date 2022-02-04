@@ -80,6 +80,8 @@
 #				numeric value for release codenames.	#
 # 03/12/2021	MG	1.1.10	Tighten SPDX tag.			#
 # 17/01/2022	MG	1.1.11	Use new keyring name for OBS.		#
+# 04/02/2022	MG	1.1.12	raspberrypi.org component ui retired in	#
+#				bullseye.				#
 #									#
 #########################################################################
 
@@ -183,7 +185,10 @@ raspbian)
 		OTHERMIRROR+="|"
 	fi
 	OTHERMIRROR+="deb $http_prefix/archive.raspberrypi.org/debian/ "
-	OTHERMIRROR+="$REL main ui"
+	OTHERMIRROR+="$REL main"
+	if [[ $REL == buster ]] || [[ $REL == stretch ]]; then
+		OTHERMIRROR+=" ui"
+	fi
 	DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}"
 		"--keyring=/usr/share/keyrings/raspbian-archive-keyring.gpg")
 
