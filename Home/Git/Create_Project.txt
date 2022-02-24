@@ -1,0 +1,45 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-21T15:25:12+00:00
+
+====== Create A Git Project ======
+Created Monday 21 February 2022
+
+1. Creating a git project.
+	a. Make your project directory.
+		1. ‘mkdir newproject’
+	b. ‘cd’ to your new directory.
+		1. ‘cd newproject’
+	c. Initialise the directory for git.
+		1. ‘git init’
+2. Create your repository.
+	a. Logon to your server.
+	b. ‘cd’ to your base git directory.
+		1. ‘cd /srv/git’
+	c. Make a directory for the new repo.
+		1. ‘sudo mkdir newproject.git’
+	d. ‘cd’ to your new directory.
+		1. ‘cd newproject.git’
+	e. Initialise the directory for git.
+		1. ‘sudo git init --bare’
+	f. Edit the text description of the new repo.
+		1. ‘sudo vim description’
+	g. Add the owner to the config file.
+		1. ‘sudo vim config’
+			a. Add line ‘[gitweb]’
+			b. Add line owner = Mark Grant
+	h. Change git repo ownership.
+		1. ‘cd ..’
+		2. ‘sudo chown -Rv git:www-data newproject.git’
+	i. Log off the server.
+3. Link the project directory with the git repo.
+	a. Go back to your project directory.
+	b. Add the remote repository.
+		1. ‘git remote add origin git@hermes:/srv/git/newproject.git’
+4. After an initial commit.
+	a. Set-up master branch to track the repo.
+		1. ‘git push --set-upstream origin master’
+	b. Create a new working branch.
+		1. ‘git checkout -b mg’
+	c. Set-up mg branch to track the repo.
+		1. ‘git push --set-upstream origin mg’

@@ -1,0 +1,38 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-21T14:30:05+00:00
+
+====== Build a replacement package from testing or sid. ======
+Created Monday 21 February 2022
+
+===== Before you do this!!! =====
+Backports are better than building from testing or sid so look there first.
+https://backports.debian.org/Instructions/
+https://backports.debian.org/Packages/
+
+===== Build the package =====
+Using thunar as an example package and testing as an example source:-
+
+1. Find available packages
+	a. Type ‘rmadison thunar --architecture amd64’.
+	b. The response will be something like:-
+		1. thunar | 1.2.3-4+b1 | oldoldstable | amd64
+		2. thunar | 1.6.3-2 | oldstable | amd64
+		3. thunar | 1.6.11-1 | stable | amd64
+		4. thunar | 1.6.15-1 | testing | amd64
+		5. thunar | 1.8.1-1 | unstable | amd64
+2. Locate the package in testing or sid.
+	a. Use package tracker.
+		1. https://tracker.debian.org/
+		2. enter thunar.
+	b. copy link location of dsc file.
+3. Download the dsc file.
+	a. cd to where you want the files stored.
+	b. Open a terminal.
+	c. Type dget -x and paste the link location.
+		1. dget -x http://deb.debian.org/debian/pool/main/t/thunar/thunar_1.6.15-1.dsc
+4. Build the package.
+	a. Disable the hook for dsc gpg check as we won’t do signing checks.
+	b. Perform a usual pbuilder on the dsc file.
+	c. Remember to re-establish dsc gpg check hook.
+5. Publish the .deb files to the repo as normal.

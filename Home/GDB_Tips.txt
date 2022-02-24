@@ -1,0 +1,20 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-21T13:34:23+00:00
+
+====== GDB Tips ======
+Created Monday 21 February 2022
+
+===== General =====
+Use the text user interface and redirect target program output to /dev/pts/2. args passes everything after target program name to the target program as args:-
+{{{code: lang="sh" linenumbers="False"
+gdb --tui --tty=/dev/pts/2 --args ./swocserverd --debug
+}}}
+
+
+===== libtool Wrapper Scripts =====
+If for example you are running test harnesses against a library in development built with libtool, then you are running a libtool wrapper script which interferes with the normal running of gdb. This can be avoided by running:
+{{{code: lang="sh" linenumbers="False"
+libtool --mode=execute gdb --tui --tty=/dev/pts/2 --args ./swocserverd --debug
+}}}
+

@@ -1,0 +1,40 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-21T15:27:01+00:00
+
+====== Import A Repo As A Subdirectory ======
+Created Monday 21 February 2022
+
+This covers adding a repo root into another repo. i.e.
+
+{{{code: lang="sh" linenumbers="False"
+full + cli-dev 
+gives
+full	|
+	|- cli-dev
+}}}
+
+
+1. Make a backup.
+2. Go to the target root directory (full)
+	a. cd blah/blah/full
+3. Checkout master.
+	a. git checkout master
+4. Add a remote to the subdirectory repo you wish to add (cli-dev).
+	a. git remote add cli-dev git@hermes:/srv/git/C/libswocclient-dev.git
+5. Get the subdirectory data.
+	a. git fetch cli-dev –no-tags
+6. Checkout a new branch in full which actually contains the subdirectory master branch.
+	a. git checkout -b mg cli-dev/master
+7. Move back to the full master branch.
+	a. git checkout master
+8. Now merge branch mg into subdirectory cli-dev (i.e. full/cli-dev).
+	a. git merge --allow-unrelated-histories -s recursive -Xsubtree=cli-dev mg
+9. Fix conflicts.
+10. Maybe remove cli-dev/.gitignore (old project root).
+11. Maybe run ../bootstrap.sh -mg .. and make distclean.
+12. Commit the merge.
+	a. git commit -sm 'Merge from libswocclient-dev.git'
+13. Remove the temporary parts.
+	a. git remote remove cli-dev
+	b. git branch -d mg

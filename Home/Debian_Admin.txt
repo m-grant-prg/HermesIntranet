@@ -1,0 +1,10 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-21T13:33:03+00:00
+
+====== Debian System Maintenance and Administration. ======
+Created Monday 21 February 2022
+
+[[+Build sid  testing Package|Build a replacement package from testing or sid.]]
+
+[[+IP Address Scheme|mgent.home IP Addressing Scheme and DHCP / DNS Setup.]]

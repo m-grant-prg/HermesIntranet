@@ -1,0 +1,16 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-21T13:33:56+00:00
+
+====== Packaging & Hosting for APT and RPM. ======
+Created Monday 21 February 2022
+
+[[+APT Packaging|APT Packaging and Private and Public Hosting.]]
+
+[[+AutoTools Packaging|AutoTools Packaging and Private and Public Hosting.]]
+
+[[+Java Packaging|Java Packaging Creation Guide.]]
+
+[[+OBS|openSUSE Build Service - Building and Hosting.]]
+
+[[+RPM Packaging|RPM Packaging and Private and Public Hosting.]]

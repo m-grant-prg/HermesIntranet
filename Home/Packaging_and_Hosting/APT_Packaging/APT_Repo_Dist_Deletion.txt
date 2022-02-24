@@ -1,0 +1,12 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-22T09:48:09+00:00
+
+====== APT - Deleting a Distribution. ======
+Created Tuesday 22 February 2022
+
+1. Edit the distributions file.
+	a. sudo vim /srv/repos/package/apt/debian/conf/distributions
+		1. Delete the block of distribution information.
+2. Get reprepro to tidy up.
+	a. sudo reprepro -vb /srv/repos/package/apt/debian --delete clearvanished

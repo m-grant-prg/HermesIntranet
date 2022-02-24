@@ -1,0 +1,10 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-21T13:32:10+00:00
+
+====== AutoTools - Project Setup, Packaging and Package Installation Guides. ======
+Created Monday 21 February 2022
+
+[[+Setup|Setup.]]
+
+[[+Tarball Installation|Tarball Installation.]]

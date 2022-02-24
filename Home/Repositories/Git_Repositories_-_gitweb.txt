@@ -1,0 +1,20 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-23T14:47:25+00:00
+
+====== Git Repositories - Browse via gitweb ======
+Created Wednesday 23 February 2022
+
+[[http://hermes/gitweb/|All Git Repositories]]
+
+[[http://hermes/gitweb/?a=project_list;pf=Bash|Bash Repositories]]
+
+[[http://hermes/gitweb/?a=project_list;pf=C|C Repositories]]
+
+[[http://hermes/gitweb/?a=project_list;pf=HTML|HTML Repositories]]
+
+[[http://hermes/gitweb/?a=project_list;pf=Java|Java Repositories]]
+
+[[http://hermes/gitweb/?a=project_list;pf=Misc|Miscellaneous Repositories]]
+
+[[http://hermes/gitweb/?a=project_list;pf=Windows|Windows Repositories]]

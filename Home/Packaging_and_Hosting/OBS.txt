@@ -1,0 +1,30 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-22T08:44:38+00:00
+
+====== openSUSE Build Service - Building and Hosting. ======
+Created Tuesday 22 February 2022
+
+1. Create / update the <package-name>.spec.in file.
+	a. Ensure version and release fields are updated.
+2. Delete old source files.
+	a. package-1.2.3.tar.gz
+	b. If Debian packaging is being created / hosted:-
+		1. Delete the following obsolete files:-
+			a. package-1.2.3.orig.tar.gz
+			b. package-1.2.3.debian.tar.gz
+			c. package-1.2.3.dsc
+		2. Copy in the latest version of the above files.
+3. Download the latest source tarball.
+4. Sort the dsc files (example):
+	a. Rename package_version-deb10u1.dsc ==> package-Debian_10.dsc
+	b. Copy package-Debian_10.dsc ==> package-Raspbian_10.dsc
+	c. Repeat a) and b) for other dists eg stretch.
+5. Build the package locally at least once to ensure *.spec.in refreshes *.spec. e.g.
+	a. osc-build.sh
+6. Add / remove files within osc.
+	a. osc ar
+7. Update the osc ChangeLog.
+	a. osc vc
+8. Commit the package to the openSUSE Build Service
+	a. osc commit

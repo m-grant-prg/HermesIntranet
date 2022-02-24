@@ -1,0 +1,30 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-21T15:26:00+00:00
+
+====== Extract A Subdirectory As A Repo ======
+Created Monday 21 February 2022
+
+Imagine an existing repo of structure:-
+
+{{{code: lang="sh" linenumbers="False"
+reporoot |
+	 |-dev
+	 |-doc
+	 |-lib
+}}}
+
+
+1. Make a backup. This process promotes the subdirectory into the repo root overwriting everything else.
+2. Checkout master.
+	a. git checkout master
+3. Remove other branches.
+	a. git branch -d mg
+4. Remove remotes
+5. Promote and separate the dev subdirectory based on this master branch.
+	a. git filter-branch --subdirectory-filter dev – master
+6. Delete the old directories (dev doc lib)
+7. Remove some unnecessary git history.
+	a. git update-ref -d refs/original/refs/heads/master
+8. Add remotes and push
+9. Repeat for any other directories.

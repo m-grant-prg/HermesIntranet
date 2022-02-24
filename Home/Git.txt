@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-21T13:33:22+00:00
+
+====== Git - Project Setup, Super Projects and Submodules. ======
+Created Monday 21 February 2022
+
+[[+Create Project|Create A Git Project.]]
+
+[[+Extract Subdir Repo|Extract a Subdirectory as a Repo.]]
+
+[[+Import Subdir Repo|Import a Repo as a Subdirectory.]]
+
+[[+Super and Submodules|Super Project with Submodules Creation.]]

@@ -1,0 +1,34 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-21T15:27:35+00:00
+
+====== Super Project With Submodules Creation ======
+Created Monday 21 February 2022
+
+For example. Add a submodule called lib from a repo called libmgec-lib.git to a super project called libmgec-super.
+
+1. Create the super project.
+	a. mkdir libmgec-super
+	b. cd libmgec-super
+	c. git init
+	d. Probably add a gitignore file and commit.
+	e. Add remotes
+	f. push –set-upstream origin master
+2. Make git status show extra submodule info.
+	a. git config status.submodulesummary 1
+3. Make git diff show commit list for dirty submodules. (This is a global git command so only needs to be done once per user).
+	a. git config --global diff.submodule log
+4. Add submodule. Specify a remote that is most accessible for other contributors, so in this case github.
+	a. git submodule add https://github.com/m-grant-prg/libmgec-lib.git lib
+5. Rather than use github yourself, setup a local remote.
+	a. git config submodule.lib.url git@hermes:/srv/git/C/libmgec-lib.git
+6. Commit
+7. Add / adjust remotes.
+8. push --set-upstream
+9. Adjust the submodule.
+	a. cd lib
+	b. Add / adjust remotes.
+	c. push --set-upstream
+	d. Add desired branches.
+10. Add super project branches.
+11. Repeat for any other submodules.

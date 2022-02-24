@@ -1,0 +1,29 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-21T13:26:38+00:00
+
+====== Hermes Intranet ======
+Created Monday 21 February 2022
+
+[[+AutoTools|AutoTools - Project Setup, Packaging and Package Installation Guides.]]
+
+[[+C Documentation|C Doxygen Documentation.]]
+
+[[+Debian Admin|Debian System Maintenance and Administration.]]
+
+[[+GDB Tips|GDB Tips.]]
+
+[[+Git|Git - Project Setup, Super Projects and Submodules.]]
+
+[[+Kernel Building|Kernel Build Guide.]]
+
+[[+Packaging and Hosting|Packaging & Hosting for APT and RPM.]]
+
+[[+Repositories|Repositories - APT, Deployment, Git and Subversion repositories.]]
+
+[[+Valgrind Tips|Valgrind Tips.]]
+
+
+--------------------
+
+[[../Index.html|Index]]

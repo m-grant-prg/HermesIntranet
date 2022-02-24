@@ -1,0 +1,10 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-22T08:43:28+00:00
+
+====== AutoTools Packaging and Private and Public Hosting. ======
+Created Tuesday 22 February 2022
+
+[[+Github Hosting|GitHub Hosting Of Source And Distribution Tarballs.]]
+
+[[+Private Hosting|Private Hosting Of Source And Distribution Tarballs.]]

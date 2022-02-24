@@ -1,0 +1,19 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-22T09:50:10+00:00
+
+====== Private Hosting. ======
+Created Tuesday 22 February 2022
+
+1. Change to the pbuilder output directory.
+2. Copy the Debian file to the apt repository host. e.g.
+	a. scp *.deb mgrant@hermes:staging
+3. Install the Debian file in the apt repository.
+	a. Logon to the apt repository hosting machine
+		1. ssh mgrant@hermes
+	b. Move to the directory used above.
+		1. cd staging
+	c. Load the Debian file to the repository for distribution stretch and component beta.
+		1. sudo reprepro -vb /srv/repos/package/apt/debian -C beta includedeb stretch *.deb
+	d. Remove the staged file.
+		1. rm -v *

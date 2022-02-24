@@ -1,0 +1,38 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-22T15:46:59+00:00
+
+====== Fedora Repo - Updating Distributions and Client Consumption. ======
+Created Tuesday 22 February 2022
+
+1. Removing a repo is just a question of deleting the .repo file.
+	a. sudo rm /etc/yum.repos.d/repo-file.repo
+2. Adding a repo.
+	a. To add a repo by creating the .repo file yourself in /etc/yum.repos.d
+		1. [[./hermes-fedora-beta.repo|example.repo]]
+		2. sudo dnf config-manager --add-repo /etc/yum.repos.d/example.repo
+	b. To add a locally hosted repo
+		1. Logon to the rpm repository hosting machine
+			a. ssh mgrant@hermes
+		2. Make sure the directory structure exists
+			a. sudo mkdir -p /srv/repos/package/rpm/fedora/30/beta/no-arch
+			b. sudo mkdir -p /srv/repos/package/rpm/fedora/30/beta/x86_64
+		3. Build the repository
+			a. sudo createrepo_c -v /srv/repos/package/rpm/fedora/30/beta
+		4. Sign the repository
+			a. sudo gpg --armor --verbose --detach-sign --default-key "mgrant@hermes.mgent.home" /srv/repos/package/rpm/fedora/30/beta/repodata/repomd.xml
+			b. sudo gpg --armor --export "mgrant@hermes.mgent.home" > repomd.xml.key
+			c. sudo cp -v repomd.xml.key /srv/repos/package/rpm/fedora/30/beta/repodata
+			d. rm repomd.xml.key
+		5. Create a repo file in /srv/repos/package/rpm/fedora
+			a. [[./hermes-fedora-beta.repo|example.repo]]
+		6. Back on the client machine
+			a. sudo dnf config-manager --add-repo http://hermes.mgent.home/rpmrepos/fedora/hermes-beta.repo
+	c. To add an externally hosted repo
+		1. sudo dnf config-manager --add-repo repository_url
+	d. Then enable it
+		1. sudo dnf config-manager --set-enabled hermes-beta
+3. Then refresh
+	a. sudo dnf upgrade --refresh
+4. If using Dependency On Server At Boot
+	a. Copy the repo files to /etc/dosab

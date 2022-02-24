@@ -1,0 +1,40 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-22T08:45:10+00:00
+
+====== Java Packaging Creation Guide. ======
+Created Tuesday 22 February 2022
+
+1. Update git.
+	a. Ensure development branch commits are up-to-date.
+	b. Push development branch.
+		1. git push
+	c. Merge development branch into master.
+		1. git checkout master
+		2. git merge mg
+		3. git push
+	d. Create release tag.
+		1. git tag -a v1.0.1 -m 'Release of version 1.0.1'
+		2. git push –tags
+	e. Return to development branch.
+		1. git checkout mg
+2. Complete Java actions in Netbeans.
+	a. Clean and build project.
+	b. Generate Javadocs.
+3. Make the Java tarball.
+	a. Change to project root directory.
+	b. ./credisttar
+4. Move Java tarball to deployment server.
+	a. Change to tarball directory.
+		1. cd distribution
+	b. Copy tarball to deployment server.
+		1. scp * mgranthermes@hermes:staging
+5. Move Java tarball to deployment directory on server.
+	a. Logon to server.
+		1. ssh mgranthermes@hermes
+	b. Change to staging directory.
+		1. cd staging
+	c. Copy to deployment directory.
+		1. sudo cp -v * /srv/repos/tarball/distribution
+	d. Clean-up.
+		1. rm -v *

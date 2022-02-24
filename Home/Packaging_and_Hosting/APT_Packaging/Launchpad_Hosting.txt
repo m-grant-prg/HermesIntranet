@@ -1,0 +1,11 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-22T09:50:33+00:00
+
+====== Launchpad - Building and Hosting. ======
+Created Tuesday 22 February 2022
+
+1. In Breezy select the stable branch.
+2. Merge from trunk.
+3. Commit the changes.
+4. Push the stable branch to LaunchPad.

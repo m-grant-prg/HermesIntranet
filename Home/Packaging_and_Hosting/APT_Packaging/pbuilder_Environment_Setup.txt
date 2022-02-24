@@ -1,0 +1,150 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-22T09:49:43+00:00
+
+====== pbuilder - Setting up the Environment. ======
+Created Tuesday 22 February 2022
+
+pbuilderrc can contain everything required to create a chroot and immediately build a package including third-party, local and PPA repositories. On the other hand it can contain the bare essentials to create the chroot with everything else being added via logging in to the chroot and adding manually. Also, of course, the pbuilder command line can be used to pass a lot of configuration data.
+Fully populated pbuilderrc and minimally populated with manual addition scenarios will be talked about here. (A mix of the two is also possible, obviously).
+
+===== Some terms. =====
+* hermes is a server hosting; apt caching using apt-cacher-ng, and a local apt repository for my local development for Debian and Raspbian. hermes is not internet-visible so may not be available, so, whether to use these services is indicated to pbuilder by use of the APT_CACHER environment variable set on the pbuilder command line. (If not mentioned, the pbuilderrc script defaults to yes, i.e. use these services).
+* OpenSUSE Build Service (OBS) is a package building and hosting environment providing apt package repositories, in this case, for my software packaged for Debian and Raspbian.
+* The PPA mentioned basically provides the same package software as OBS, but for Ubuntu.
+
+===== Common command line elements. =====
+The pbuilder command line is always of the form:-
+sudo DIST=debian REL=buster ARCH=amd64 APT_CACHER=yes pbuilder ……..
+In my setup; DIST can be debian, raspbian or ubuntu, REL will be releases to be used in this setup, maybe buster, stretch or bionic, and ARCH will be amd64 of armhf.
+
+===== pbuilderrc location considerations. =====
+pbuilder always needs root privileges so it will look for .pbuilderrc in /root. This is inconvenient, so you could set up a symlink in /root to point at a .pbuilderrc somewhere in your home directory.
+
+===== Setup common to both methods =====
+1. Determine if debootstrap needs upgrading.
+	a. Debootstrap has a script for each Debian based distribution release, e.g. buster, stretch, bionic, eoan etc.
+	b. This package in a Debian stable distribution could be up to almost 2 years old and Ubuntu make 2 releases a year, so the package may not know about these latest releases. If this is the case then:-
+	c. Install a newer version from Debian backports. Generic instructions can be found [[https://backports.debian.org/Instructions/|here]].
+
+===== Fully populated pbuilderrc =====
+1. Set-up .pbuilderrc. (See an example [[./pbuilderrc-full|here]].):-
+	a. Setup the main distro repository.
+		1. MIRRORSITE should be the URL of the main repository.
+		2. COMPONENTS should be e.g. main contrib non-free.
+	b. Setup all the other repositories required. These are in 2 groups; extra official repositories and third-party / your own repositories.
+		1. Add extra official repositories to OTHERMIRROR and add the location of the repositories’ key to DEBOOTSTRAPOPTS.
+		2. Add third-party repositories to OTHERMIRROR and add the location of the repositories’ keys to APTKEYRINGS. This location cannot just be anywhere, apt-key add will not cooperate, the best place is in the trusted.gpg.d directory under /etc/apt.
+	c. If running on Debian the keyring will be installed, others not necessarily. To add the keys depends on whether they are available as a package, as they would be for Raspbian for example. So, procure keys:-
+		1. Raspbian produces a package but it is not in the Debian repositories. So get the package from their server, (N.B. Check for a later dated version).
+			a. curl -fsSLO http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.2_all.deb
+			b. sudo dpkg -i raspbian-archive-keyring_20120528.2_all.deb
+		2. Ubuntu has a package in the Debian repository so it is a simple install.
+			a. sudo apt-get install ubuntu-keyring
+		3. OBS needs to be retrieved and added to an apt keyring in the location entered in the pbuilderrc APTKEYRINGS variable.
+			a. curl -fsSL https://download.opensuse.org/repositories/home:m-grant-prg/Debian_10/Release.key | gpg --dearmor | sudo apt-key --keyring /etc/apt/trusted.gpg.d/obs-debian-keyring.gpg add -
+		4. LaunchPad keys are on the ubuntu keyserver so need to be retrieved and added to a keyring in the location entered in the pbuilderrc APTKEYRINGS variable. Two keys are required, the developer's key and the Launchpad PPA key.
+			a. sudo apt-key --keyring /etc/apt/trusted.gpg.d/mgrant-utils-ppa-keyring.gpg adv --keyserver keyserver.ubuntu.com --recv-keys d1946372ba01d17602a2ccd372ddd80b3669565c
+			b. sudo apt-key --keyring /etc/apt/trusted.gpg.d/mgrant-utils-ppa-keyring.gpg adv --keyserver keyserver.ubuntu.com --recv-keys 8294A6371AB32B66
+		5. Raspbian needs an extra repository and hence key to be retrieved and added to an apt keyring in the location entered in the pbuilderrc APTKEYRINGS variable.
+			a. curl -fsSL https://archive.raspberrypi.org/debian/raspberrypi.gpg.key | sudo apt-key --keyring /etc/apt/trusted.gpg.d/raspberrypi-keyring.gpg add -
+	d. Next we need to ensure that a few packages are installed in the base tarball. These packages are just to help editing and adding packages if / when later logged in to the chroot.
+		1. So add these packages; apt-utils, curl, dirmngr, gnupg2, software-properties-common and vim to the EXTRAPACKAGES variable.
+	e. If we want to cross build e.g. for a Raspberry Pi, then we need to use an emulator.
+		1. sudo apt-get install qemu-user-static
+		2. do a conditional check for ARM architecture, (in $ARCH), and then set DEBOOTSTRAP to qemu-debootstrap.
+	f. Aptitude is the default dependency resolver for pbuilder but it does not work when cross-building for arm, so use apt:-
+		1. PBUILDERSATISFYDEPENDSCMD=/usr/lib/pbuilder/pbuilder-satisfydepends-apt
+2. Create the directories required for pbuilder.
+	a. The pbuilder apt cache.
+		1. sudo mkdir -p /var/cache/pbuilder/aptcache/$DIST-$REL-$ARCH
+	b. The output directory,
+		1. mkdir -p ~/SWDev/pbuilder/$DIST-$REL-$ARCH-result
+	c. Create the hook directory.
+		1. mkdir -p ~/SWDev/pbuilder/hook.d
+3. Create the Hooks in the HOOKDIR which should contain the above-mentioned hook directory.
+	a. Installing m.grant.prg@gmail.com gpg key. [[./E50-trustedkeys-kbx|E50-trustedkeys-kbx.sh]]
+		1. This is my development key. This hook is a bit of a ‘why not?’ but may be useful so prevents faffing about.
+	b. Perform an apt-get update before build. [[./D60-apt-get-update|D60-apt-get-update.sh]]
+		1. Useful when working on 2 packages at the same time one of which uses the other. So you can chop and change building the packages and don’t have to keep doing a pbuilder update in-between.
+	c. Issue a warning about pbuilder’s gpg package check always failing. [[./H50-gpgv-warning|H50-gpgv-warning.sh]]
+		1. When building a package, pbuilder’s gpg check on the dsc file always fails, (don’t know why, not sure I ever did), so show a warning of known behaviour. (The next hook does something about it).
+	d. Perform a gpg check on the dsc files. [[./D40-gpgv-check-dsc|D40-gpgv-check-dsc.sh]]
+		1. Checks all dsc files in the build directory.
+4. Now create the chroot.
+	a. sudo DIST=ubuntu REL=eoan ARCH=amd64 APT_CACHER=yes pbuilder create --override-config --debootstrapopts --variant=buildd
+5. Updating the chroot.
+	a. If you wish to use the configuration of the last chroot, then use:-
+		1. sudo DIST=ubuntu REL=eoan ARCH=amd64 pbuilder update
+	b. If you wish to re-assert the pbuilderrc configuration, or toggle the APT_CACHER setting, then use:-
+		1. sudo DIST=ubuntu REL=eoan ARCH=amd64 APT_CACHER=yes pbuilder update --override-config
+	c. **NB** Using --override-config will overwrite parts of the configuration, notably the apt sources, so, any previous manual changes to these settings will be lost.
+
+===== Minimally populated pbuilderrc & manual additions =====
+1. Set-up .pbuilderrc. (See an example [[./pbuilderrc-min|here]].):-
+	a. Setup the main distro repository.
+		1. MIRRORSITE should be the URL of the main repository.
+		2. COMPONENTS should be e.g. main contrib non-free.
+	b. If running on Debian the keyring will be installed, others not necessarily. To add the keys depends on whether they are available as a package, as they would be for Raspbian for example. So, procure keys:-
+		1. Raspbian produces a package but it is not in the Debian repositories. So get the package from their server, (N.B. Check for a later dated version).
+			a. curl -fsSLO http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.2_all.deb
+			b. sudo dpkg -i raspbian-archive-keyring_20120528.2_all.deb
+		2. Ubuntu has a package in the Debian repository so it is a simple install.
+			a. sudo apt-get install ubuntu-keyring
+	c. If we want to cross build e.g. for a Raspberry Pi, then we need to use an emulator.
+		1. sudo apt-get install qemu-user-static
+		2. do a conditional check for ARM architecture, (in $ARCH), and then set DEBOOTSTRAP to qemu-debootstrap.
+	d. Aptitude is the default dependency resolver for pbuilder but it does not work when cross-building for arm, so use apt:-
+		1. PBUILDERSATISFYDEPENDSCMD=/usr/lib/pbuilder/pbuilder-satisfydepends-apt
+2. Create the directories required for pbuilder.
+	a. The pbuilder apt cache.
+		1. sudo mkdir -p /var/cache/pbuilder/aptcache/$DIST-$REL-$ARCH
+	b. The output directory,
+		1. mkdir -p ~/SWDev/pbuilder/$DIST-$REL-$ARCH-result
+	c. Create the hook directory.
+		1. mkdir -p ~/SWDev/pbuilder/hook.d
+3. Create the Hooks in the HOOKDIR which should contain the above-mentioned hook directory.
+	a. Installing m.grant.prg@gmail.com gpg key. [[./E50-trustedkeys-kbx|E50-trustedkeys-kbx.sh]]
+		1. This is my development key. This hook is a bit of a ‘why not?’ but may be useful so prevents faffing about.
+	b. Perform an apt-get update before build. [[./D60-apt-get-update|D60-apt-get-update.sh]]
+		1. Useful when working on 2 packages at the same time one of which uses the other. So you can chop and change building the packages and don’t have to keep doing a pbuilder update in-between.
+	c. Issue a warning about pbuilder’s gpg package check always failing. [[./H50-gpgv-warning|H50-gpgv-warning.sh]]
+		1. When building a package, pbuilder’s gpg check on the dsc file always fails, (don’t know why, not sure I ever did), so show a warning of known behaviour. (The next hook does something about it).
+	d. Perform a gpg check on the dsc files. [[./D40-gpgv-check-dsc|D40-gpgv-check-dsc.sh]]
+		1. Checks all dsc files in the build directory.
+4. Now create the chroot.
+	a. sudo DIST=debian REL=buster ARCH=amd64 APT_CACHER=yes pbuilder create --override-config --debootstrapopts --variant=buildd
+5. To add further official Debian repositories:-
+	a. sudo DIST=debian REL=buster ARCH=amd64 pbuilder login --save-after-login
+	b. apt-get install apt-utils curl dirmngr gnupg2 software-properties-common vim
+	c. add-apt-repository “deb https://deb.debian.org/debian-security/ buster/updates main contrib non-free”
+	d. add-apt-repository “deb https://deb.debian.org/debian buster-updates main contrib non-free”
+	e. exit
+6. To add third party repositories:-
+	a. sudo DIST=debian REL=buster ARCH=amd64 pbuilder login --save-after-login
+	b. add-apt-repository “deb http://download.opensuse.org/repositories/home:/m-grant-prg/Debian_10/ /”
+	c. curl -fsSL https://download.opensuse.org/repositories/home:m-grant-prg/Debian_10/Release.key | gpg --dearmor  | apt-key --keyring /etc/apt/trusted.gpg.d/obs-debian-keyring.gpg add -
+	d. exit
+7. To add a PPA:-
+	a. sudo DIST=ubuntu REL=bionic ARCH=amd64 pbuilder login --save-after-login
+	b. add-apt-repository ppa:m-grant-prg/utils
+	c. exit
+8. To add a local apt repository:-
+	a. sudo DIST=debian REL=buster ARCH=amd64 pbuilder login --save-after-login
+	b. add-apt-repository “deb http://hermes/aptrepos/debian buster stable beta staging”
+	c. curl -fsSL http://hermes/aptrepos/hermes.gpg | apt-key add -
+	d. exit
+9. Get my package signing key:-
+	a. sudo DIST=ubuntu REL=bionic ARCH=amd64 pbuilder login --save-after-login
+	b. gpg --verbose --no-default-keyring --keyring trustedkeys.kbx --recv-keys 20ECF9F0
+	c. find /root/.gnupg -type s | xargs rm -fv
+	d. exit
+10. Update the chroot.
+	a. sudo DIST=debian REL=buster ARCH=amd64 APT_CACHER=yes pbuilder update
+
+===== N.B. =====
+1. If you want to add a repo to an established pbuilder base package then:-
+	a. If it is a minimal pbuilderrc then follow the instructions under that heading and you are done.
+	b. If you are using a fully populated pbuilderrc then:-
+		1. Follow the instructions under that heading.
+		2. Then login to the chroot and curl the key as detailed in the minimal pbuilderrc section.

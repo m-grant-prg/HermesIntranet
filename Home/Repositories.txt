@@ -1,0 +1,18 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-21T13:34:09+00:00
+
+====== Repositories - APT, Deployment, Git and Subversion repositories. ======
+Created Monday 21 February 2022
+
+[[http://hermes/aptrepos/|APT Repositories]]
+
+[[+Git Repositories - cgit|Git Repositories - Browse via cgit]]
+
+[[+Git Repositories - gitweb|Git Repositories - Browse via gitweb]]
+
+[[http://hermes/rpmrepos/|RPM Repositories]]
+
+[[http://hermes/svn|Subversion Repositories]]
+
+[[http://hermes/tarballrepos/|Tarball Repositories]]

@@ -1,0 +1,47 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-21T14:30:29+00:00
+
+====== mgent.home IP Addressing Scheme and DHCP / DNS Setup. ======
+Created Monday 21 February 2022
+
+===== Network setup =====
+
+| Item                        <| hermes                                                                                                        <| cerberus                                                      <|
+|:-----------------------------|:---------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------|
+| Static IP                    | 198.162.62.252                                                                                                 | 192.168.62.250 and 192.168.62.251 (WLAN0)                      |
+| Netmask                      | 255.255.255.0                                                                                                  | 255.255.255.0                                                  |
+| Gateway                      | 192.168.62.254                                                                                                 | 192.168.62.254                                                 |
+| DHCP Range                   | 192.168.62.2 – 192.168.62.220                                                                                  | 192.168.62.2 – 192.168.62.220                                  |
+| Left for Static IP Addresses | 192.168.62.221 – 192.168.62.254                                                                                | 192.168.62.221 – 192.168.62.254                                |
+| DNS Name Servers             | 192.168.62.250\n192.168.62.251\n192.168.62.252\n192.168.62.254                                                 | 192.168.62.250\n192.168.62.251\n192.168.62.252\n192.168.62.254 |
+| Additional name resolution   | resolvconf                                                                                                     | resolvconf                                                     |
+| Key config files             | /etc/network/interfaces\n/etc/network/interfaces.d/enp2s0\n/etc/network/interfaces.d/enp3s0\n/etc/dnsmasq.conf | /etc/dhcpcd.conf\n/etc/dnsmasq                                 |
+	
+Additional equipment with static addresses:-
+
+| Name                     <| IP Address    <| Use                                             <|
+|:--------------------------|:---------------|:-------------------------------------------------|
+| Old Netgear Gateway DG814 | 192.168.62.253 | Ethernet switch. Not in use.                     |
+| Netgear Router DGND3700v2 | 192.168.62.254 | Switch, gateway ADSL modem / router. Not in use. |
+| BT Smart Hub 2            | 192.168.62.254 | Switch, gateway ADSL modem / router.             |
+| Brother MFC-L2710DN       | 192.168.62.240 | General printer, scanner and copier              |
+
+
+===== DHCP /DNS =====
+Hermes and Cerberus can both deliver DHCP / DNS but they are not in a failover setup. Services must be shutdown on 1 machine and started on the other:-
+
+==== Machine A ====
+{{{code: lang="sh" linenumbers="False"
+sudo sytemctl stop dnsmasq
+sudo systemctl disable dnsmasq
+}}}
+
+
+==== Machine B ====
+{{{code: lang="sh" linenumbers="False"
+sudo systemctl enable dnsmasq
+and either reboot or
+sudo systemctl start dnsmasq
+}}}
+

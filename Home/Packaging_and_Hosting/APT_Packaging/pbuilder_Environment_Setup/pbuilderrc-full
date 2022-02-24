@@ -1,0 +1,325 @@
+#! /usr/bin/env bash
+
+#########################################################################
+#									#
+# Script ID: .pbuilderrc						#
+# Based on an outline by Stein Magnus Jodal				#
+#	https://jodal.no/2015/03/08/building-arm-debs-with-pbuilder/	#
+# Author: Copyright (C) 2018-2022  Mark Grant				#
+#									#
+# Released under the GPLv3 only.					#
+# SPDX-License-Identifier: GPL-3.0-only					#
+#									#
+# Purpose:								#
+# This pbuilderrc file provides a mechanism for pbuilder to be able to	#
+# build for different distributions, releases and architectures. This	#
+# information is conveyed on the command line. E.g.			#
+#	sudo DIST=raspbian REL=stretch ARCH=armhf APT_CACHER=yes \	#
+#		pbuilder create --override-config \			#
+#		--debootstrapopts --variant=buildd			#
+#									#
+#########################################################################
+
+#########################################################################
+#									#
+# Changelog								#
+#									#
+# Date		Author	Version	Description				#
+#									#
+# 22/02/2018	MG	1.0.1	Created.				#
+# 17/05/2018	MG	1.0.2	Add staging component.			#
+#				Add AUTOCLEANAPTCACHE=yes which does an	#
+#				apt-get autoclean on the cache.		#
+# 19/10/2018	MG	1.0.3	Add Bintray to OTHERMIRROR.		#
+# 04/02/2019	MG	1.0.4	Update OTHERMIRROR for new source	#
+#				tarball repo on hermes.			#
+#				Add vim as an extra package.		#
+# 29/07/2019	MG	1.0.5	Use OS and DIST in OTHERMIRROR.		#
+#				Correct example create CL above.	#
+#				Add security & updates to OTHERMIRROR.	#
+#				Remove Ubuntu as not maintained and	#
+#				possibly misleading.			#
+#				Correct Purpose section above.		#
+#				Do not set OTHERMIRROR when creating	#
+#				the archive as it will fail due to	#
+#				missing keys.				#
+# 19/10/2019	MG	1.0.6	Change Bintray Debian repo name. Change	#
+#				Raspbian to use Bintray.		#
+# 10/11/2019	MG	1.0.7	Change example CL invocation above to	#
+#				remove unnecessary --override-config.	#
+#				Add support for Ubuntu.			#
+# 28/02/2020	MG	1.1.0	Add support for apt-cacher-ng.		#
+#				Tidy up MIRRORSITE & OTHERMIRRORS.	#
+#				Remove double logging of		#
+#				DEBOOTSTRAPOPTS.			#
+#				Correct logging of DEBOOTSTRAPOPTS.	#
+#				Prefer printf over echo.		#
+#				Add accreditation for Stein Magnus Jodal#
+#				Allow pbuilder create to use these	#
+#				OTHERMIRROR settings with		#
+#				--override-config.			#
+#				Add PPA to ubuntu OTHERMIRROR.		#
+# 03/05/2020	MG	1.1.1	Ubuntu hermes repository now exists, so	#
+#				use it.					#
+#				Correct aptkeyrings handling.		#
+#				Add extra package apt-utils.		#
+#				Add raspberrypi.org/debian keyring.	#
+# 02/06/2020	MG	1.1.2	Correct environment variables from OS,	#
+#				DIST and ARCH, to DIST, REL and ARCH.	#
+# 27/07/2020	MG	1.1.3	Add quirks for xenial.			#
+# 15/11/2020	MG	1.1.4	Add alpha component to hermes repos.	#
+# 11/01/2021	MG	1.1.5	Add a non-existent user id for the	#
+#				non-root build and a user name for use	#
+#				by fakeroot.				#
+# 09/02/2021	MG	1.1.6	Move from Bintray to OpenSUSE Build	#
+#				Service.				#
+# 24/04/2021	MG	1.1.7	Prefer curl to wget.			#
+# 21/08/2021	MG	1.1.8	Debian security suite name change from	#
+#				bullseye onwards.			#
+# 27/08/2021	MG	1.1.9	Use distro-info command to retrieve	#
+#				numeric value for release codenames.	#
+# 03/12/2021	MG	1.1.10	Tighten SPDX tag.			#
+# 17/01/2022	MG	1.1.11	Use new keyring name for OBS.		#
+# 04/02/2022	MG	1.1.12	raspberrypi.org component ui retired in	#
+#				bullseye.				#
+#									#
+#########################################################################
+
+
+#############################
+# Exit immediately on error #
+#############################
+set -e
+
+
+##################
+# Init variables #
+##################
+declare -i num_rel	# Numeric release value
+OTHERMIRROR=""
+
+
+#########################################################################
+# OpenSUSE Build Service needs a numeric string release for Debian and	#
+# Raspbian and a numeric value is needed for changes such as >= release.#
+# The following is valid for stretch onwards with a quirk for the OBS	#
+# stretch version.							#
+#########################################################################
+if [[ $DIST == "debian" || $DIST == "raspbian" ]];then
+	num_rel=$(distro-info -r --series=$REL)
+	if [[ $REL == "stretch" ]]; then
+		obs_rel="9.0"
+	else
+		obs_rel=$num_rel
+	fi
+fi
+
+
+#########################################################################
+# Determine the start of the apt list line as it is different depending	#
+# on whether apt-cacher-ng is available.				#
+#########################################################################
+if [[ $APT_CACHER == "" ]]; then
+	APT_CACHER=yes
+fi
+
+# APT_CACHER == yes implies that not only the cache is available but also the
+# local repository. A no implies the opposite.
+case $APT_CACHER in
+yes)
+	http_prefix="http://hermes.mgent.home:3142"
+	https_prefix="http://hermes.mgent.home:3142/HTTPS//"
+	;;
+no)
+	http_prefix="http:/"
+	https_prefix="https:/"
+	;;
+*)
+	printf "Unknown APT_CACHER value: %s\n" $APT_CACHER
+	exit 1
+	;;
+esac
+
+
+########################################################
+# OTHERMIRROR may be added to later so initialise here #
+########################################################
+if [[ $APT_CACHER == yes ]]; then
+	OTHERMIRROR="deb http://hermes.mgent.home/aptrepos/$DIST $REL "
+	OTHERMIRROR+="alpha beta stable staging"
+	APTKEYRINGS=("/etc/apt/trusted.gpg.d/hermes-keyring.gpg")
+fi
+
+
+##########################
+# DIST specific settings #
+##########################
+case $DIST in
+debian)
+	MIRRORSITE="$https_prefix/deb.debian.org/debian/"
+	COMPONENTS="main contrib non-free"
+	if [[ $OTHERMIRROR != "" ]]; then
+		OTHERMIRROR+="|"
+	fi
+	OTHERMIRROR+="deb $https_prefix/deb.debian.org/debian-security/ "
+	# Change of name of the security suite from bullseye onwards
+	if (( $num_rel >= 11 )); then
+		OTHERMIRROR+="$REL-security main contrib non-free"
+	else
+		OTHERMIRROR+="$REL/updates main contrib non-free"
+	fi
+	OTHERMIRROR+="|deb $https_prefix/deb.debian.org/debian $REL-updates "
+	OTHERMIRROR+="main contrib non-free"
+	DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}"
+		"--keyring=/usr/share/keyrings/debian-archive-keyring.gpg")
+
+	OTHERMIRROR+="|deb http://download.opensuse.org/repositories/home:"
+	OTHERMIRROR+="/m-grant-prg/Debian_$obs_rel/ /"
+	APTKEYRINGS=("${APTKEYRINGS[@]}"
+		"/etc/apt/trusted.gpg.d/home_m-grant-prg.gpg")
+	;;
+raspbian)
+	MIRRORSITE="$http_prefix/mirrordirector.raspbian.org/raspbian/"
+	COMPONENTS="main contrib non-free rpi"
+	if [[ $OTHERMIRROR != "" ]]; then
+		OTHERMIRROR+="|"
+	fi
+	OTHERMIRROR+="deb $http_prefix/archive.raspberrypi.org/debian/ "
+	OTHERMIRROR+="$REL main"
+	if [[ $REL == buster ]] || [[ $REL == stretch ]]; then
+		OTHERMIRROR+=" ui"
+	fi
+	DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}"
+		"--keyring=/usr/share/keyrings/raspbian-archive-keyring.gpg")
+
+	OTHERMIRROR+="|deb http://download.opensuse.org/repositories/home:"
+	OTHERMIRROR+="/m-grant-prg/Raspbian_$obs_rel/ /"
+	APTKEYRINGS=("${APTKEYRINGS[@]}"
+		"/etc/apt/trusted.gpg.d/raspberrypi-keyring.gpg"
+		"/etc/apt/trusted.gpg.d/home_m-grant-prg.gpg")
+	;;
+ubuntu)
+	MIRRORSITE="$http_prefix/uk.archive.ubuntu.com/ubuntu/"
+	COMPONENTS="main restricted universe multiverse"
+	if [[ $OTHERMIRROR != "" ]]; then
+		OTHERMIRROR+="|"
+	fi
+	OTHERMIRROR+="deb $http_prefix/uk.archive.ubuntu.com/ubuntu/ "
+	OTHERMIRROR+="$REL-security "
+	OTHERMIRROR+="main restricted universe multiverse"
+	OTHERMIRROR+="|deb $http_prefix/uk.archive.ubuntu.com/ubuntu/ "
+	OTHERMIRROR+="$REL-updates "
+	OTHERMIRROR+="main restricted universe multiverse"
+	DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}"
+		"--keyring=/usr/share/keyrings/ubuntu-archive-keyring.gpg")
+
+	OTHERMIRROR+="|deb $http_prefix/ppa.launchpad.net/m-grant-prg/utils/"
+	OTHERMIRROR+="$DIST $REL main"
+	APTKEYRINGS=("${APTKEYRINGS[@]}"
+		"/etc/apt/trusted.gpg.d/mgrant-utils-ppa-keyring.gpg")
+	;;
+*)
+	printf "Unknown DIST: %s\n" $DIST
+	exit 1
+	;;
+esac
+
+
+#############################################
+# Check we now have a value of REL and ARCH #
+#############################################
+if [ "$REL" == "" ]; then
+	printf "REL is not set\n"
+	exit 1
+fi
+
+if [ "$ARCH" == "" ]; then
+	printf "ARCH is not set\n"
+	exit 1
+fi
+
+
+#####################################################
+# We always need these packages in the base tarball #
+#####################################################
+EXTRAPACKAGES+=" apt-utils curl dirmngr gnupg2 software-properties-common vim"
+if [[ $REL == xenial ]]; then
+	EXTRAPACKAGES+=" aptitude"
+fi
+
+
+###################################
+# Deal with potential cross-build #
+###################################
+if [ "$ARCH" == "armel" ] && [ "$(dpkg --print-architecture)" != "armel" ]; then
+    DEBOOTSTRAP="qemu-debootstrap"
+fi
+if [ "$ARCH" == "armhf" ] && [ "$(dpkg --print-architecture)" != "armhf" ]; then
+    DEBOOTSTRAP="qemu-debootstrap"
+fi
+
+
+########################
+# Add the Architecture #
+########################
+DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--arch=$ARCH")
+
+
+#############################################################################
+# Non-existent user id for non-root build and user name for use by fakeroot #
+#############################################################################
+BUILDUSERID=1234
+BUILDUSERNAME=pbuilder
+
+
+####################
+# Self explanatory #
+####################
+BASETGZ="/var/cache/pbuilder/$DIST-$REL-$ARCH-base.tgz"
+
+DISTRIBUTION="$REL"
+
+PBUILDERSATISFYDEPENDSCMD=/usr/lib/pbuilder/
+if [[ $REL = xenial ]]; then
+	PBUILDERSATISFYDEPENDSCMD+=pbuilder-satisfydepends-aptitude
+else
+	PBUILDERSATISFYDEPENDSCMD+=pbuilder-satisfydepends-apt
+fi
+
+BUILDRESULT="/home/mgrantprg/SWDev/pbuilder/$DIST-$REL-$ARCH-result/"
+
+APTCACHE="/var/cache/pbuilder/aptcache/$DIST-$REL-$ARCH/"
+
+AUTOCLEANAPTCACHE=yes
+
+
+##########################################################################
+# Hook scripts are executed during chroot setup, before packaging begins #
+##########################################################################
+HOOKDIR="/home/mgrantprg/SWDev/pbuilder/hook.d/"
+
+
+#####################
+# Now log the setup #
+#####################
+psetuplog="$BUILDRESULT""pbuilderrc-setup.log"
+
+printf "Distribution = %s\n" "$DIST" > $psetuplog
+printf "Release = %s\n" "$REL" >> $psetuplog
+printf "Arch = %s\n" "$ARCH" >> $psetuplog
+printf "APT_CACHER = %s\n" "$APT_CACHER" >> $psetuplog
+printf "Mirrorsite = %s\n" "$MIRRORSITE" >> $psetuplog
+printf "Components = %s\n" "$COMPONENTS" >> $psetuplog
+printf "Othermirror = %s\n" "$OTHERMIRROR" >> $psetuplog
+printf "Aptkeyrings = %s\n" "${APTKEYRINGS[@]}" >> $psetuplog
+printf "Extrapackages = %s\n" "$EXTRAPACKAGES" >> $psetuplog
+printf "Builduserid = %s\n" "$BUILDUSERID" >> $psetuplog
+printf "Buildusername = %s\n" "$BUILDUSERNAME" >> $psetuplog
+printf "Debootstrap = %s\n" "$DEBOOTSTRAP" >> $psetuplog
+printf "Debootstrapopts = %s\n" "${DEBOOTSTRAPOPTS[@]}" >> $psetuplog
+printf "Basetgz = %s\n" "$BASETGZ" >> $psetuplog
+printf "Pbuildersatisfydependscmd = %s\n" "$PBUILDERSATISFYDEPENDSCMD" >> $psetuplog
+printf "Buildresult = %s\n" "$BUILDRESULT" >> $psetuplog
+printf "Aptcache = %s\n" "$APTCACHE" >> $psetuplog
+printf "Hookdir = %s\n" "$HOOKDIR" >> $psetuplog
+

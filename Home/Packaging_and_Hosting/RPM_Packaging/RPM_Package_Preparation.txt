@@ -1,0 +1,20 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-22T15:47:37+00:00
+
+====== RPM Package Preparation ======
+Created Tuesday 22 February 2022
+
+1. Create / update the <package-name>.spec.in file.
+	a. Ensure version and release fields are updated.
+2. Delete old sources.
+3. Download the latest source tarball.
+4. Add / remove files within osc.
+	a. osc ar
+5. Update the osc ChangeLog.
+	a. osc vc
+6. Build the package locally. e.g.
+	a. osc-build-local-package.sh
+	b. osc-build-local-package.sh Fedora_29
+		1. Will build Fedora 29.
+		2. N.B. Current key problems means you have to supply the --no-verify option.

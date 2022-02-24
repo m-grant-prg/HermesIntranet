@@ -1,0 +1,18 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-21T13:32:30+00:00
+
+====== C Doxygen Documentation ======
+Created Monday 21 February 2022
+
+[[http://hermes/doc/libmgec/api/html/index.html|MGE General C Library - API.]]
+
+[[http://hermes/doc/libmgec/int/html-int/index.html|MGE General C Library - Internal.]]
+
+[[http://hermes/doc/libmgesysutils/api/html/index.html|MGE C System Utilities Library - API.]]
+
+[[http://hermes/doc/libmgesysutils/int/html-int/index.html|MGE C System Utilities Library - Internal.]]
+
+[[http://hermes/doc/swoc/api/html/index.html|Server Wait On Clients System - API.]]
+
+[[http://hermes/doc/swoc/int/html-int/index.html|Server Wait On Clients System - Internal.]]

@@ -1,0 +1,34 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-21T13:34:38+00:00
+
+====== Valgrind Tips ======
+Created Monday 21 February 2022
+
+===== General =====
+The default valgrind tool is memcheck so a useful starting point is:-
+{{{code: lang="sh" linenumbers="False"
+valgrind --leak-check=yes --track-origins=yes ./my-program
+}}}
+
+
+===== Stackframe Size =====
+If the stackframe size is exceeded valgrind will assume a change of stack leading to a lot of such messages. To suppress all these warnings increase the stackframe size:-
+{{{code: lang="sh" linenumbers="False"
+valgrind --leak-check=yes --track-origins=yes --max-stackframe=3500000 ./my-program
+}}}
+
+
+===== libtool Wrapper scripts =====
+If for example you are running test harnesses against a library in development built with libtool, then you are running a libtool wrapper script which interferes with the normal running of valgrind. This can be avoided by running:
+{{{code: lang="sh" linenumbers="False"
+libtool --mode=execute valgrind --leak-check=yes --track-origins=yes ./my-program
+}}}
+
+
+===== Static Libraries =====
+If you are running against static libraries, valgrind can be informed by running:-
+{{{code: lang="sh" linenumbers="False"
+valgrind --leak-check=yes --track-origins=yes --soname-synonyms=somalloc=NONE ./my-program
+}}}
+

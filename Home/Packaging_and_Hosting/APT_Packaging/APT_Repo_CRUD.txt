@@ -1,0 +1,43 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-22T09:47:29+00:00
+
+====== APT Repo - Updating Distributions and Client Consumption. ======
+Created Tuesday 22 February 2022
+
+1. If you don’t already have one, a GPG key must be created.
+	a. gpg --gen-key
+2. If your key has expired or needs editing.
+	a. gpg --list-keys
+		1. Observe the pub id
+	b. gpg --edit-key pub id
+		1. gpg> expire
+			a. Follow prompts to enter an expiration length.
+		2. gpg> save
+3. If you are creating a new repository or have edited the key, then the repo’s gpg key must be installed.
+	a. Create the repo signing key.
+		1. gpg --output hermes.gpg --export mgrant@hermes.mgent.home
+	b. reprepro uses sudo so we must make the key available to it as well
+		1. gpg --export-secret-keys --output secret
+		2. sudo gpg --import secret
+		3. rm secret
+	c. Move the key to the desired location in the new repo
+		1. sudo cp -v hermes.gpg /srv/repos/package/apt
+		2. rm hermes.gpg
+4. To create a distribution within the repository.
+	a. Add the distribution information to the distributions file.
+		1. sudo vim /srv/repos/package/apt/debian/conf/distributions
+		2. Add the distribution block.
+			a. Codename: stretch
+			b. Components: local
+			c. Architectures: i386 amd64
+			d. SignWith: default
+	b. Generate all index files for the distribution.
+		1. sudo reprepro -vb /srv/repos/package/apt/debian export stretch
+5. To use the repository on a client.
+	a. Add the repository.
+		1. sudo add-apt-repository 'deb http://hermes/aptrepos/debian/ stretch local'
+	b. Get the repository’s signing key.
+		1. wget -O - http://hermes/aptrepos/debian/conf/hermes.gpg|sudo apt-key add -
+	c. And update.
+		1. sudo apt-get update

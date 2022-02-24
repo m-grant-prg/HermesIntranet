@@ -1,0 +1,41 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-22T15:47:50+00:00
+
+====== Private Hosting ======
+Created Tuesday 22 February 2022
+
+1. Change to the osc output directory.
+2. Copy the rpm file to a user-writable location and cd to it.
+3. The package must be signed by the hermes key. rpmsign must also be configured. If this is already set up then go to (4).
+	a. ssh mgrant@hermes
+	b. Find the secret key
+		1. gpg --list-secret-keys
+		2. gpg --export-secret-key 510206ECCB18744A2B93A88E17F85093B76B53C7 > private-key
+	c. Transfer the key back to client machine
+		1. sftp the file private-key
+	d. Back on client machine
+	e. gpg --import private-key
+	f. Tell rpmsign which key to use
+		1. vim ~/.rpmmacros
+		2. Ensure the following line exists
+			a. %_gpg_name Mark Grant <mgrant@hermes.mgent.home>
+	g. Retrieve hermes public key
+		1. gpg --receive-keys 17F85093B76B53C7
+4. Sign the package.
+	a. rpmsign --addsign *.rpm
+5. Copy the signed package to the server.
+	a. scp *.rpm mgrant@hermes:staging
+6. Install the rpm file in the repository.
+	a. Logon to the rpm repository hosting machine
+		1. ssh mgrant@hermes
+	b. Move to the directory used above.
+		1. cd staging
+	c. Copy the rpm to the repo.
+		1. sudo cp -v * /srv/repos/package/rpm/opensuse/leap/15.1/beta/no-arch
+		2. (Fedora e.g. sudo cp -v * /srv/repos/package/rpm/fedora/30/stable/no-arch)
+	d. Re-build the repository
+		1. sudo createrepo_c -v /srv/repos/package/rpm/opensuse/leap/15.1/beta
+		2. (Fedora e.g. sudo createrepo_c -v /srv/repos/package/rpm/fedora/30/stable)
+7. Remove the staged file.
+	a. rm -v *

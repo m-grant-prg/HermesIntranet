@@ -1,0 +1,31 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-22T15:25:53+00:00
+
+====== GitHub Hosting Of Source And Distribution Tarballs. ======
+Created Tuesday 22 February 2022
+
+1. Move to, say, a parallel build directory, project-root/atbuild
+2. Ensure git is on the correct branch and is updated
+3. Switch to master branch
+	a. git checkout master
+4. Merge from updated branch
+	a. git merge mg
+5. Push to local and GitHub repositories
+	a. git push
+	b. git push github
+6. Tag it and push tags
+	a. git tag -as v9.9.9
+	b. git push --tags
+	c. git push --tags github
+7. Make the distribution tarball
+	a. If the acmbuild package is installed
+		1. acmbuild.sh -cD ..
+	b. Or use the bootstrap.sh script
+		1. ../bootstrap.sh -cD ..
+	c. make distclean
+8. Draft the new release on GitHub
+	a. Edit the release message
+	b. Drag and drop the distribution tarball to the release assets.
+9. Publish the release on GitHub
+10. GitHub creates the source tarball automatically.

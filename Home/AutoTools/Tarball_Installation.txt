@@ -1,0 +1,47 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-21T14:08:11+00:00
+
+====== Tarball Installation ======
+Created Monday 21 February 2022
+
+1. If there is an already installed version being superseded:-
+	a. Change to the installation source directory.
+		1. cd ~/Deployments/agmaint-v1.0.8
+	b. As root or via sudo
+		1. make uninstall clean
+	c. Clean-up.
+		1. Change to the parent directory.
+			a. cd ..
+			b. rm -rI agmaint-v1.0.8*
+2. Download the deployment.
+	a. Change to an appropriate deployment directory.
+		1. cd ~/Deployments
+	b. Either download the file via the command line:-
+		1. For a source tarball.
+			a. wget http://hermes/tarballs/source/acmbuild-1.2.13+rc2.tar.gz
+		2. For a distribution tarball.
+			a. wget http://hermes/tarballs/distribution/acmbuild-1.2.13+rc2.tar.gz
+	c. Or use a browser:-
+		1. For a source tarball.
+			a. Navigate to http://hermes/tarballs/source/
+		2. For a distribution tarball.
+			a. Navigate to http://hermes/tarballs/distribution/
+		3. (Or use https://github.com/m-grant-prg/acmbuild/releases)
+		4. Right click the tarball and select 'Save Link As'
+		5. Select the appropriate deployment directory and click 'Save'.
+3. Extract the tarball.
+	a. Either extract via the command line:-
+		1. tar -xvpzf acmbuild-1.2.13+rc2.tar.gz
+	b. Or, double click the file in a File Manager window and extract
+		1. All files.
+		2. Keep existing directory structure.
+4. Install the deployment.
+	a. Change to the extracted directory.
+		1. cd acmbuild-1.2.13+rc2.tar.gz
+	b. Install
+		1. If using a source tarball
+			a. autoreconf -if
+		2. ./configure
+		3. As root or via sudo
+			a. make install clean

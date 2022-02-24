@@ -1,0 +1,21 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-02-21T14:01:49+00:00
+
+====== Setup ======
+Created Monday 21 February 2022
+
+1. Establish your project structure with configure.ac and Makefile.am’s.
+2. Move to your project root directory, (where the configure.ac and top level Makefile.am are located).
+3. Set-up project for GNU Libs and macros. (Other directory options including m4 directory for macros default to satisfactory values.)
+	a. ‘gnulib-tool --import --source-base=src/prg/c/gen/lib --no-conditional-dependencies --no-libtool configmake’
+	b. Follow any on-screen instructions.
+4. Set-up aclocal m4 macro environment (assumes m4 is the macro directory).
+	a. ‘aclocal -I m4’
+	b. Follow any on-screen instructions.
+5. Produce initial configure script.
+	a. ‘autoconf’
+	b. Follow any on-screen instructions.
+6. Sort AutoMake.
+	a. ‘automake --add-missing’
+	b. Follow any on-screen instructions.
