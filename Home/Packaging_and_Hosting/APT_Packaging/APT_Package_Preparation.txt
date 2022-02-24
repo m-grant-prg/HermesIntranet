@@ -5,37 +5,74 @@ Creation-Date: 2022-02-22T09:49:12+00:00
 ====== APT Package Preparation. ======
 Created Tuesday 22 February 2022
 
+Debian packages are created from upstream source tarballs using Breezy, pbuilder and Launchpad.
+
+===== Initial Project Setup =====
+1. Create project on Launchpad
+2. Setup the project directory
+	a. brz init-shared-repo <project-name>
+	b. cd <project-name>
+	c. Copy the source tarball here
+	d. extract tarball
+	e. brz init trunk
+	f. cd trunk
+	g. Copy contents of extracted tarball directory to trunk
+	h. dh_make -p <project-name_9.9.9> --createorig
+3. Configure debian directory
+	a. Edit the changelog
+	b. Replace / remove example files.
+	c. Configure control, watch, etc
+4. Sort out Launchpad link.
+	a. vim ./bzr/branch/branch.conf
+		1. Ensure it looks like this
+			a. push_location = bzr+ssh://bazaar.launchpad.net/~m-grant-prg/mgrant-obs-deb-keyring/trunk/
+5. Finalise Initial commit / push
+	a. brz add
+	b. brz tag <Version Number>
+	c. brz commit
+	d. brz push
+		1. (If push reports a tag conflict, resolve with brz push --overwrite)
+6. Now to create bullseye branch
+	a. cd to project root
+	b. brz branch trunk bullseye
+	c. cd bullseye
+	d. vim ./bzr/branch/branch.conf
+		1. Ensure it looks like this
+			a. parent_location = ../trunk/
+			b. submit_branch = ../trunk/
+			c. push_location = bzr+ssh://bazaar.launchpad.net/~m-grant-prg/mgrant-obs-deb-keyring/bullseye/
+
+===== Merging a New Upstream Release =====
 1. Select the Breezy trunk directory.
-2. Once per project at the start
-	a. brz dh-make alarmclock 1.0.10 ../alarmclockatdist-v1.0.10-1-g4b2d49b.tar.gz
-3. To check for and download and merge any new upstream versions with a valid watch file – the easy way.
+2. To check for and download and merge any new upstream versions with a valid watch file – the easy way.
 	a. Remove old .dsc etc files from project root directory (trunk's parent)
 	b. brz merge-upstream
 	c. Edit the trunk/debian ChangeLog file to ensure correct distribution and Author name and email address which is used for signing.
-4. To check for and download and merge any new upstream versions with a valid watch file – the manual way.
+3. To check for and download and merge any new upstream versions with a valid watch file – the manual way.
 	a. uscan (--report-status will just check, not download)
 	b. Remove old .dsc etc files from project root directory (trunk's parent)
 	c. brz merge-upstream --version 1.0.11 ../alarmclockatdist-v1.0.11.tar.gz
 	d. Edit the trunk/debian ChangeLog file to ensure correct distribution and Author name and email address which is used for signing.
-5. To check for and download and merge any new upstream versions without a valid watch file.
+4. To check for and download and merge any new upstream versions without a valid watch file.
 	a. Remove old .dsc etc files from project root directory (trunk's parent)
 	b. brz merge-upstream --version 1.0.11 http://hermes/deployments/alarmclockatdist-v1.0.11.tar.gz
 	c. Edit the trunk/debian ChangeLog file to ensure correct distribution and Author name and email address which is used for signing.
-6. Now build the .dsc etc files.
+5. Now build the .dsc etc files.
 	a. For an unsigned package:
 		1. brz builddeb -- -us -uc
-	b. For a signed package:
+	b. For a signed (without the -us -uc) source (with the -S) package:
 		1. brz builddeb -S
-7. Move to the project root directory.
-	a. cd ..
-8. As needed or once per day update the pbuilder base package. As needed in case you release a dev package which is then needed to build a lib package. If using the pbuilder apt-get update hook documented elsewhere, then once per day is adequate which prevents excessive downloading at build time when the apt-get update hook is run.
+
+===== Building the Package =====
+1. Move to the project root directory.
+2. As needed or once per day update the pbuilder base package. As needed in case you release a dev package which is then needed to build a lib package. If using the pbuilder apt-get update hook documented elsewhere, then once per day is adequate which prevents excessive downloading at build time when the apt-get update hook is run.
 	a. sudo DIST=raspbian REL=stretch ARCH=armhf APT_CACHER=yes pbuilder update --override-config
-9. Build the Debian package in chroot environment.
+3. Build the Debian package in chroot environment.
 	a. sudo DIST=raspbian REL=stretch ARCH=armhf APT_CACHER=yes pbuilder build *deb9*.dsc
-10. If supporting other Debian releases repeat from step 3 for each one.
+4. If supporting other Debian releases repeat from step 3 for each one.
 	a. If creating such a setup at this point:-
 		1. Copy a suitable branch to the new branch using Breezy.
 		2. Edit the .brz/branch/branch.conf file and remove the line declaring the source of the copy as the parent of this branch.
-11. After a successful build, use Breezy to:
+5. After a successful build, use Breezy to:
 	a. Commit the changes to the trunk branch.
 	b. Push the trunk branch to LaunchPad.
