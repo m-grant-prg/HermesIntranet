@@ -6,7 +6,9 @@ Creation-Date: 2022-02-21T13:33:41+00:00
 Created Monday 21 February 2022
 
 To avoid setting up the entire config file by hand it is easiest to use your distribution’s config file as a starting point. This step can be re-run when a new distribution kernel is installed.
-		   When building based on a new config file key kernel modules must be loaded, things like CD drivers. So,
+
+When building based on a new config file key kernel modules must be loaded, things like CD drivers. So,
+
 1. To build a kernel with a new config file.
 	a. Insert and open a CD such as the VirtualBox Guest Additions.
 	b. Attach any NAS needed.
