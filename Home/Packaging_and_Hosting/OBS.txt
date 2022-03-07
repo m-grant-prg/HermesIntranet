@@ -20,7 +20,7 @@ Created Tuesday 22 February 2022
 	a. Rename package_version-deb10u1.dsc ==> package-Debian_10.dsc
 	b. Copy package-Debian_10.dsc ==> package-Raspbian_10.dsc
 	c. Repeat a) and b) for other dists eg stretch.
-5. Build the package locally at least once to ensure *.spec.in refreshes *.spec. e.g.
+5. Build the package locally at least once to ensure *.spec.in refreshes *.spec. **N.B.** osc-build.sh without a specified target defaults the target to the platform running the command.
 	a. osc-build.sh
 6. Add / remove files within osc.
 	a. osc ar

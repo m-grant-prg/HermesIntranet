@@ -17,4 +17,4 @@ Created Tuesday 22 February 2022
 	a. osc-build-local-package.sh
 	b. osc-build-local-package.sh Fedora_29
 		1. Will build Fedora 29.
-		2. N.B. Current key problems means you have to supply the --no-verify option.
+		2. N.B. Regular key problems means you may have to supply the --no-verify option.
