@@ -5,7 +5,11 @@ Creation-Date: 2022-02-22T08:43:46+00:00
 ====== APT Packaging and Private and Public Hosting. ======
 Created Tuesday 22 February 2022
 
-[[+APT Package Preparation|APT Package Preparation.]]
+[[+APT Package Preparation Using Breezy|APT Package Preparation Using Breezy]]
+
+[[./APT_Package_Preparation_Using_git-buildpackage.txt|APT Package Preparation Using git-buildpackage]]
+
+[[./APT_Package_Preparation_Using_git-buildrecipe.txt|APT Packaging Using git-buildrecipe]]
 
 [[+APT Repo CRUD|APT Repo - Updating Distributions and Client Consumption.]]
 

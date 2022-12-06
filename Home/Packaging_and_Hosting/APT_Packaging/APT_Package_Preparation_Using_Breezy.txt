@@ -2,8 +2,8 @@ Content-Type: text/x-zim-wiki
 Wiki-Format: zim 0.6
 Creation-Date: 2022-02-22T09:49:12+00:00
 
-====== APT Package Preparation. ======
-Created Tuesday 22 February 2022
+====== APT Package Preparation Using Breezy ======
+Updated Monday 05 December 2022
 
 Debian packages are created from upstream source tarballs using Breezy, pbuilder and Launchpad.
 

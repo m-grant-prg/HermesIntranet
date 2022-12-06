@@ -1,0 +1,68 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-12-05T15:08:45+00:00
+
+====== APT Package Preparation Using git-buildpackage ======
+Created Monday 05 December 2022
+
+===== Initial Setup =====
+1. Create a git repo on hermes in the usual way but also:-
+	a. sudo vim HEAD
+		1. Replace main with upstream/latest
+2. Create the local git working copy.
+3. Download a tarball
+	a. Change the name from gip-3.29.tar.gz to gip_3.29.orig.tar.gz
+4. Import the tarball.
+	a. gbp import-orig --debian-branch=debian/latest --upstream-branch=upstream/latest ~/Downloads/gip_3.29.orig.tar.gz
+5. If upstream does not have gitignore etc
+	a. Copy the files in.
+	b. Replace .git/info/exclude with a file similar to [[./exclude|this]]
+6. git commit -as as v3.29
+7. git remote add origin
+8. git push
+	a. set tracking as suggested.
+9. Now, we don't want the main branch so:-
+	a. git switch -c upstream/latest
+	b. git branch -d main
+	c. git push -d origin main
+10. git push
+11. git remote add lp
+12. git push lp
+13. git remote add github
+	a. Get on github, settings, branches and set default branch as upstream/latest
+14. git push github
+15. git remote add upstream
+16. git fetch upstream
+
+===== New upstream release =====
+1. git fetch upstream
+2. Get the tarball and import
+	a. gbp import-orig --uscan --upstream-branch=upstream/latest --debian-branch=debian/latest --upstream-vcs-tag=v3.30
+	b. Note. Above seems to need the vcs-tag to import the history.
+3. Sort the changelog
+	a. dch -i
+	b. Edit changelog
+	c. dch -r
+4. git commit -as as v3.30-1+deb11u1
+5. gbp tag
+6. git pushes etc
+
+===== Create a new packaging branch sharing upstream/latest =====
+1. git switch upstream/latest
+2. git switch -c debian/latest
+3. Add the Debian packaging directory
+4. Add [[./gbp.conf|debian/gbp.conf]] (Ubuntu version shown, Debian does not need the tag).
+5. git add .
+6. git commit -as
+7. gbp tag
+8. git pushes and tag pushes
+
+===== New upstream release for branch sharing upstream/latest =====
+1. git merge v3.30 (the upstream tag).
+2. Sort the changelog
+	a. dch -i
+	b. Edit changelog
+	c. dch -r
+3. git commit -as as v3.30-1ubuntu22.04u1
+4. gbp tag
+5. git pushes etc

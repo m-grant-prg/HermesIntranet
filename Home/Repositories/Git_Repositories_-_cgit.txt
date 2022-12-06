@@ -3,7 +3,7 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-02-23T14:46:54+00:00
 
 ====== Git Repositories - Browse via cgit ======
-Created Wednesday 23 February 2022
+Updated Sunday 13 November 2022
 
 [[http://hermes/cgit/|All Git Repositories]]
 
@@ -16,5 +16,7 @@ Created Wednesday 23 February 2022
 [[http://hermes.mgent.home/cgit/Java|Java Repositories]]
 
 [[http://hermes.mgent.home/cgit/Misc|Miscellaneous Repositories]]
+
+[[http://hermes.mgent.home/cgit/Packaging|Packaging Repositories]]
 
 [[http://hermes.mgent.home/cgit/Windows|Windows Repositories]]
