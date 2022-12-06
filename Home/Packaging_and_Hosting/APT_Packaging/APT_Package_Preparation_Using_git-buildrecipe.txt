@@ -5,3 +5,39 @@ Creation-Date: 2022-12-05T20:12:50+00:00
 ====== APT Package Preparation Using git-buildrecipe ======
 Created Monday 05 December 2022
 
+===== Initial Setup =====
+1. Create repos for the Debian packaging
+2. If upstream does not have gitignore etc
+	a. Copy the files in.
+	b. Replace .git/info/exclude with a file similar to [[./exclude|this]]
+3. git remote add for all remotes
+4. git pushes
+5. main branch is Debian latest
+6. Other branches should be master-XX and tip-YY
+
+===== Packaging Amendments =====
+1. Make any packaging amendments
+2. git commit
+3. Push at least to Launchpad
+
+===== git-buildrecipe =====
+1. Create a directory in g-b-r
+2. In that create a work directory
+3. Create a recipe file like [[./tip.bullseye.recipe|this]]
+4. Run the recipe
+	a. gbr.sh tip.bullseye.recipe
+5. Test build it
+	a. brz builddeb -S
+	b. pbuilder
+
+===== LaunchPad =====
+1. When testing complete.
+2. Go to the main source project.
+3. Add a recipe to the master branch
+	a. Make sure it is named by release and on-demand
+	b. Recipe is on-demand
+	c. PPA is utils
+	d. First line of recipe contents should be
+		1. # git-build-recipe format 0.4 deb-version {debupstream}-1~{revtime}
+	e. Make sure the recipe contents are the equivalent of tip for master
+4. Request a build.
