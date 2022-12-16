@@ -3,36 +3,35 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-12-05T15:08:45+00:00
 
 ====== APT Package Preparation Using git-buildpackage ======
-Created Monday 05 December 2022
+Updated Friday 09 December 2022
 
 ===== Initial Setup =====
-1. Create a git repo on hermes in the usual way but also:-
-	a. sudo vim HEAD
-		1. Replace main with upstream/latest
+1. Create a git repo on hermes in the usual way but use:-
+	1. sudo git init--bare --initial-branch=upstream/latest
 2. Create the local git working copy.
+	1. Use git init --initial-branch=upstream/latest
 3. Download a tarball
-	a. Change the name from gip-3.29.tar.gz to gip_3.29.orig.tar.gz
+	1. Change the name from gip-3.29.tar.gz to gip_3.29.orig.tar.gz
 4. Import the tarball.
-	a. gbp import-orig --debian-branch=debian/latest --upstream-branch=upstream/latest ~/Downloads/gip_3.29.orig.tar.gz
-5. If upstream does not have gitignore etc
-	a. Copy the files in.
-	b. Replace .git/info/exclude with a file similar to [[./exclude|this]]
-6. git commit -as as v3.29
-7. git remote add origin
-8. git push
-	a. set tracking as suggested.
-9. Now, we don't want the main branch so:-
-	a. git switch -c upstream/latest
-	b. git branch -d main
-	c. git push -d origin main
-10. git push
-11. git remote add lp
-12. git push lp
-13. git remote add github
-	a. Get on github, settings, branches and set default branch as upstream/latest
-14. git push github
-15. git remote add upstream
-16. git fetch upstream
+	1. gbp import-orig --debian-branch=debian/latest --upstream-branch=upstream/latest ~/Downloads/gip_3.29.orig.tar.gz
+5. Get upstream.
+	1. git remote add upstream git@github.com:get-iplayer/get_iplayer.git
+	2. git switch -c upstream/latest
+	3. git fetch upstream
+6. If upstream does not have gitignore etc
+	1. Copy the files in.
+	2. Replace .git/info/exclude with a file similar to [[./exclude|this]]
+7. Setup origin
+	1. git remote add origin
+	2. git push
+	3. set tracking as suggested.
+8. Setup LaunchPad
+	a. git remote add lp
+	b. git push lp
+9. Setup GitHub
+	a. git remote add github
+	b. Get on github, settings, branches and set default branch as upstream/latest
+	c. git push github
 
 ===== New upstream release =====
 1. git fetch upstream
