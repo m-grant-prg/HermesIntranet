@@ -3,7 +3,7 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-02-22T09:49:12+00:00
 
 ====== APT Package Preparation Using Breezy ======
-Updated Monday 05 December 2022
+Updated Thursday 19 January 2023
 
 Debian packages are created from upstream source tarballs using Breezy, pbuilder and Launchpad.
 
@@ -58,10 +58,13 @@ Debian packages are created from upstream source tarballs using Breezy, pbuilder
 	b. brz merge-upstream --version 1.0.11 http://hermes/deployments/alarmclockatdist-v1.0.11.tar.gz
 	c. Edit the trunk/debian ChangeLog file to ensure correct distribution and Author name and email address which is used for signing.
 5. Now build the .dsc etc files.
-	a. For an unsigned package:
-		1. brz builddeb -- -us -uc
-	b. For a signed (without the -us -uc) source (with the -S) package:
-		1. brz builddeb -S
+	a. If your development environment has all the package dependencies installed:-
+		1. For an unsigned package:
+			a. brz builddeb -- -us -uc
+		2. For a signed (without the -us -uc) source (with the -S) package:
+			a. brz builddeb -S
+	b. If not all project dependencies are installed in your dev environment:-
+		1. brz builddeb -S --builder="debuild -d"
 
 ===== Building the Package =====
 1. Move to the project root directory.

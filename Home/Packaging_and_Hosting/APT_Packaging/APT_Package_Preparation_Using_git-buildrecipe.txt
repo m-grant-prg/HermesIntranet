@@ -3,7 +3,7 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-12-05T20:12:50+00:00
 
 ====== APT Package Preparation Using git-buildrecipe ======
-Created Monday 05 December 2022
+Updated Thursday 19 January 2023
 
 ===== Initial Setup =====
 1. Create repos for the Debian packaging
@@ -27,7 +27,14 @@ Created Monday 05 December 2022
 4. Run the recipe
 	a. gbr.sh tip.bullseye.recipe
 5. Test build it
-	a. brz builddeb -S
+	a. Now build the .dsc etc files.
+		1. If your development environment has all the package dependencies installed:-
+			1. For an unsigned package:
+				a. brz builddeb -- -us -uc
+			2. For a signed (without the -us -uc) source (with the -S) package:
+				a. brz builddeb -S
+		2. If not all project dependencies are installed in your dev environment:-
+			1. brz builddeb -S --builder="debuild -d"
 	b. pbuilder
 
 ===== LaunchPad =====

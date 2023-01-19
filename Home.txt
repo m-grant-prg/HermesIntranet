@@ -3,7 +3,8 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-02-21T13:26:38+00:00
 
 ====== Hermes Intranet ======
-Created Monday 21 February 2022
+Updated Thursday 19 January 2023
+Author - Copyright (C) 2022, 2023 Mark Grant
 
 [[+AutoTools|AutoTools - Project Setup, Packaging and Package Installation Guides.]]
 
