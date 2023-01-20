@@ -47,16 +47,28 @@ Debian packages are created from upstream source tarballs using Breezy, pbuilder
 2. To check for and download and merge any new upstream versions with a valid watch file – the easy way.
 	a. Remove old .dsc etc files from project root directory (trunk's parent)
 	b. brz merge-upstream
-	c. Edit the trunk/debian ChangeLog file to ensure correct distribution and Author name and email address which is used for signing.
+	c. Sort the changelog. Either 1 or 2 then ...
+		1. dch -v --version= // New version number eg 1.7.4-1+deb11u1
+		2. dch -i --increment // Increment the Debian release number
+		3. Edit the trunk/debian ChangeLog file to ensure correct distribution and Author name and email address which is used for signing. 
+		4. dch -r --release // Change Distribution from UNRELEASED
 3. To check for and download and merge any new upstream versions with a valid watch file – the manual way.
 	a. uscan (--report-status will just check, not download)
 	b. Remove old .dsc etc files from project root directory (trunk's parent)
 	c. brz merge-upstream --version 1.0.11 ../alarmclockatdist-v1.0.11.tar.gz
-	d. Edit the trunk/debian ChangeLog file to ensure correct distribution and Author name and email address which is used for signing.
+	d. Sort the changelog. Either 1 or 2 then ...
+		1. dch -v --version= // New version number eg 1.7.4-1+deb11u1
+		2. dch -i --increment // Increment the Debian release number
+		3. Edit the trunk/debian ChangeLog file to ensure correct distribution and Author name and email address which is used for signing. 
+		4. dch -r --release // Change Distribution from UNRELEASED
 4. To check for and download and merge any new upstream versions without a valid watch file.
 	a. Remove old .dsc etc files from project root directory (trunk's parent)
 	b. brz merge-upstream --version 1.0.11 http://hermes/deployments/alarmclockatdist-v1.0.11.tar.gz
-	c. Edit the trunk/debian ChangeLog file to ensure correct distribution and Author name and email address which is used for signing.
+	c. Sort the changelog. Either 1 or 2 then ...
+		1. dch -v --version= // New version number eg 1.7.4-1+deb11u1
+		2. dch -i --increment // Increment the Debian release number
+		3. Edit the trunk/debian ChangeLog file to ensure correct distribution and Author name and email address which is used for signing. 
+		4. dch -r --release // Change Distribution from UNRELEASED
 5. Now build the .dsc etc files.
 	a. If your development environment has all the package dependencies installed:-
 		1. For an unsigned package:
