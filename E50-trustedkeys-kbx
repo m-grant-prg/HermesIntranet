@@ -3,10 +3,14 @@
 #########################################################################
 #									#
 # Script ID: E50-trustedkeys-kbx.sh					#
-# Author: Copyright (C) 2018-2021  Mark Grant				#
+# Author: Copyright (C) 2018-2021, 2023  Mark Grant			#
+#									#
+# This file is maintained in the project at:-				#
+#	https://github.com/m-grant-prg/pbuilder-config			#
+#		new versions are merely copied to consumer projects.	#
 #									#
 # Released under the GPLv3 only.					#
-# SPDX-License-Identifier: GPL-3.0					#
+# SPDX-License-Identifier: GPL-3.0-only					#
 #									#
 # Purpose:								#
 # A hook script to prepare for gpgv.					#
@@ -45,6 +49,10 @@
 #				invoking dirmngr.			#
 # 30/07/2021	MG	1.0.9	sks-keyservers has been shutdown,	#
 #				replace with keyservers.ubuntu.com	#
+# 03/12/2021	MG	1.0.10	Tighten SPDX tag.			#
+# 23/02/2023	MG	1.0.11	Add a comment that this file is		#
+#				maintained in another project.		#
+#									#
 #									#
 #########################################################################
 
