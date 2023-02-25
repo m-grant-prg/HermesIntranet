@@ -17,6 +17,8 @@ Updated Sunday 13 November 2022
 
 [[http://hermes/gitweb/?a=project_list;pf=Misc|Miscellaneous Repositories]]
 
-[[http://hermes/gitweb/?a=project_list;pf=Packaging|Packaging Repositories]]
+[[http://hermes/gitweb/?a=project_list;pf=Packaging/Debian/GBP|Debian Git Build Package Repositories]]
+
+[[http://hermes/gitweb/?a=project_list;pf=Packaging/Debian/GBR|Debian Git Build Recipe Repositories]]
 
 [[http://hermes/gitweb/?a=project_list;pf=Windows|Windows Repositories]]

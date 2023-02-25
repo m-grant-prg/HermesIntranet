@@ -17,6 +17,8 @@ Updated Sunday 13 November 2022
 
 [[http://hermes.mgent.home/cgit/Misc|Miscellaneous Repositories]]
 
-[[http://hermes.mgent.home/cgit/Packaging|Packaging Repositories]]
+[[http://hermes.mgent.home/cgit/Packaging/Debian/GBP|Debian Git Build Package Repositories]]
+
+[[http://hermes.mgent.home/cgit/Packaging/Debian/GBR|Debian Git Build Recipe Repositories]]
 
 [[http://hermes.mgent.home/cgit/Windows|Windows Repositories]]
