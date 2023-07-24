@@ -3,7 +3,7 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-12-05T15:08:45+00:00
 
 ====== APT Package Preparation Using git-buildpackage ======
-Updated Friday 09 December 2022
+Updated Monday 24 July 2023
 
 ===== Initial Setup =====
 1. Create a git repo on hermes in the usual way but use:-
@@ -80,7 +80,10 @@ Updated Friday 09 December 2022
 	4. dch -r --release // Change Distribution from UNRELEASED
 6. git commit -as as v1.6.6-1+deb11u1
 7. gbp tag
-8. git pushes etc. Remember pristine-tar
+8. Test build
+	a. brz builddeb -S
+	b. pbuilder build
+9. git pushes etc. Remember pristine-tar
 
 ===== Create a new packaging branch sharing upstream/latest =====
 1. git switch upstream/latest
@@ -109,4 +112,7 @@ Updated Friday 09 December 2022
 	4. dch -r --release // Change Distribution from UNRELEASED
 5. git commit -as as v1.6.6-1ubuntu22.04u1
 6. gbp tag
-7. git pushes etc
+7. Test build
+	a. brz builddeb -S
+	b. pbuilder build
+8. git pushes etc
