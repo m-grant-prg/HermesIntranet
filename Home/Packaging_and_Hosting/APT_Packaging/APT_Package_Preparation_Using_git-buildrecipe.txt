@@ -17,15 +17,22 @@ Updated Tuesday 07 April 2023
 
 ===== Packaging Amendments =====
 1. Make any packaging amendments
-2. git commit
-3. Push at least to Launchpad
+2. git commit each of them
+3. Create the changelog entry
+	a. gbp dch --ignore-branch (which does a dch -i)
+		1. Need to edit the version number? A new upstream release?
+		2. Need to add a line eg Merge new upstream release?
+	b. dch -r (for the release
+	c. git commit (using v1.2.3+11+u1 format)
+4. git tag (using v1.2.3+11+u1 format)
+5. Push, tags as well, at least to Launchpad
 
 ===== git-buildrecipe =====
-1. Create a directory in g-b-r
+1. Create a directory in gbr
 2. In that create a work directory
-3. Create a recipe file like [[./tip.bullseye.recipe|this]]
+3. Create a recipe file like [[./lp.tip.bullseye.recipe|this,]] or [[./lp.tip.bookworm.recipe|this]]
 4. Run the recipe
-	a. gbr.sh tip.bullseye.recipe
+	a. gbr.sh lp.tip.bullseye.recipe
 5. Test build it
 	a. Now build the .dsc etc files.
 		1. If your development environment has all the package dependencies installed:-
@@ -45,6 +52,6 @@ Updated Tuesday 07 April 2023
 	b. Recipe is on-demand
 	c. PPA is utils
 	d. First line of recipe contents should be
-		1. # git-build-recipe format 0.4 deb-version {debupstream}-1~{revtime}
-	e. Make sure the recipe contents are the equivalent of tip for master
+		1. # git-build-recipe format 0.4 deb-version {debupstream}-1~{revtime:pkg}
+	e. Make sure the recipe contents are the equivalent of previous gbr but for master and main
 4. Request a build.

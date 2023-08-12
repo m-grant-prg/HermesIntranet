@@ -2,5 +2,5 @@
 
 lp:libmgec tip
 
-merge pkg lp:libmgec-deb-pkg tip-bullseye
+merge pkg lp:libmgec-deb-pkg tip-bookworm
 

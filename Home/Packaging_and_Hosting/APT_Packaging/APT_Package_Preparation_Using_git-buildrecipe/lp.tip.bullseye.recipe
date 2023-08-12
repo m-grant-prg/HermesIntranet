@@ -1,0 +1,6 @@
+# git-build-recipe format 0.4
+
+lp:libmgec v1.2.y-tip
+
+merge pkg lp:libmgec-deb-pkg tip-bullseye
+
