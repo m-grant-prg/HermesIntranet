@@ -33,8 +33,9 @@ Updated Saturday 12 August 2023
 3. Create a recipe file like [[./lp.tip.bullseye.recipe|this,]] or [[./lp.tip.bookworm.recipe|this]]
 4. Run the recipe
 	a. gbr.sh lp.tip.bullseye.recipe
-5. Test build it
-	a. Now build the .dsc etc files.
+5. Test build it (Debian, native)
+	a. As a native package the package build will use the merged git repos provided by gbr.sh.
+	b. Now build the .dsc etc files.
 		1. If your development environment has all the package dependencies installed:-
 			1. For unsigned files, ignoring VCS files (-i), not signing source package (-us), not signing changes file (-uc) and source package only (-S).
 				a. debuild -i -us -uc -S
@@ -42,7 +43,18 @@ Updated Saturday 12 August 2023
 				a. debuild -i -S
 		2. If not all project dependencies are installed in your dev environment (-d):-
 			1. debuild -d -i -S
-	b. pbuilder
+	c. pbuilder
+6. Test build it (Ubuntu, quilt)
+	a. As a non-native build the build will look for an upstream tarball in the parent directory. If not available it will build one using pristine-tar. It is this tarball and NOT the upstream git repo which will be used.
+	b. Now build the .dsc etc files.
+		1. If your development environment has all the package dependencies installed:-
+			1. For unsigned files, ignoring VCS files (-i), not signing source package (-us), not signing changes file (-uc) and source package only (-S).
+				a. brz builddeb -- -i -us -uc -S
+			2. For a signed source package (-S) ignoring VCS files (-i):
+				a. brz builddeb -- -i -S
+		2. If not all project dependencies are installed in your dev environment (-d):-
+			1. brz builddeb -- -d -i -S
+	c. pbuilder
 
 ===== LaunchPad =====
 1. When testing complete.
