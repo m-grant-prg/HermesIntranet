@@ -5,7 +5,7 @@ Creation-Date: 2022-02-21T13:26:38+00:00
 ====== Hermes Intranet ======
 Site Updated Monday 11 March 2024
 Page Updated Thursday 19 January 2023
-Author - Copyright (C) 2022, 2023 Mark Grant
+Author - Copyright (C) 2022-2024 Mark Grant
 
 [[+AutoTools|AutoTools - Project Setup, Packaging and Package Installation Guides.]]
 
