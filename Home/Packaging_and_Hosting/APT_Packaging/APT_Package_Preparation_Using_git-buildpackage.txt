@@ -3,7 +3,7 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-12-05T15:08:45+00:00
 
 ====== APT Package Preparation Using git-buildpackage ======
-Updated Thursday 21 March 2024
+Updated Sunday 28 April 2024
 
 ===== Initial Setup =====
 1. Create a git repo on hermes in the usual way but use:-
@@ -48,7 +48,7 @@ Updated Thursday 21 March 2024
 	d. Check watch file.
 	e. git add .
 	f. git commit -as
-	g. gbp tag --git-sign-tags
+	g. gbp tag --sign-tags
 13. Git pushes etc. Remember pristine-tar
 
 ===== New upstream release =====
@@ -79,7 +79,7 @@ Updated Thursday 21 March 2024
 	3. Edit changelog
 	4. dch -r --release // Change Distribution from UNRELEASED
 6. git commit -as as v1.6.6-1+deb11u1
-7. gbp tag --git-sign-tags
+7. gbp tag --sign-tags
 8. Test build
 	a. brz builddeb -S
 	b. pbuilder build
@@ -92,7 +92,7 @@ Updated Thursday 21 March 2024
 4. Add [[./gbp.conf|debian/gbp.conf]] (Ubuntu version shown, Debian does not need the tag).
 5. git add .
 6. git commit -as
-7. gbp tag --git-sign-tags
+7. gbp tag --sign-tags
 8. git pushes and tag pushes.
 
 ===== New upstream release for branch sharing upstream/latest =====
@@ -111,7 +111,7 @@ Updated Thursday 21 March 2024
 	3. Edit changelog
 	4. dch -r --release // Change Distribution from UNRELEASED
 5. git commit -as as v1.6.6-1ubuntu22.04u1
-6. gbp tag --git-sign-tags
+6. gbp tag --sign-tags
 7. Test build
 	a. brz builddeb -S
 	b. pbuilder build
