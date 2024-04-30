@@ -3,7 +3,7 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-12-05T15:08:45+00:00
 
 ====== APT Package Preparation Using git-buildpackage ======
-Updated Sunday 28 April 2024
+Updated Tuesday 30 April 2024
 
 ===== Initial Setup =====
 1. Create a git repo on hermes in the usual way but use:-
@@ -73,11 +73,12 @@ Updated Sunday 28 April 2024
 		1. gbp pq drop
 	4. git add debian/patches
 	5. git commit -as
-5. Sort the changelog. Either 1 or 2 then ...
-	1. dch -v --version= // New version number eg 1.7.4-1+deb11u1
-	2. dch -i --increment // Increment the Debian release number
-	3. Edit changelog
-	4. dch -r --release // Change Distribution from UNRELEASED
+5. Sort the changelog. Either 1, 2 or 3 then ...
+	1. gbp dch // Then delete upstream commits when editing changelog leaving just packaging changes
+	2. dch -v --version= // New version number eg 1.7.4-1+deb11u1
+	3. dch -i --increment // Increment the Debian release number
+	4. Edit changelog
+	5. dch -r --release // Change Distribution from UNRELEASED
 6. git commit -as as v1.6.6-1+deb11u1
 7. gbp tag --sign-tags
 8. Test build
@@ -105,11 +106,12 @@ Updated Sunday 28 April 2024
 	2. gbp pq export
 	3. git add debian/patches
 	4. git commit -as
-4. Sort the changelog. Either 1 or 2 then ...
-	1. dch -v --version= // New version number eg 1.7.4-1+deb11u1
-	2. dch -i --increment // Increment the Debian release number
-	3. Edit changelog
-	4. dch -r --release // Change Distribution from UNRELEASED
+4. Sort the changelog. Either 1, 2 or 3 then ...
+	1. gbp dch // Then delete upstream commits when editing changelog leaving just packaging changes
+	2. dch -v --version= // New version number eg 1.7.4-1+deb11u1
+	3. dch -i --increment // Increment the Debian release number
+	4. Edit changelog
+	5. dch -r --release // Change Distribution from UNRELEASED
 5. git commit -as as v1.6.6-1ubuntu22.04u1
 6. gbp tag --sign-tags
 7. Test build
