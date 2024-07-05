@@ -3,22 +3,30 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-02-23T14:46:54+00:00
 
 ====== Git Repositories - Browse via cgit ======
-Updated Sunday 13 November 2022
+Updated Friday 05 July 2024
 
 [[http://hermes/cgit/|All Git Repositories]]
 
-[[http://hermes.mgent.home/cgit/Bash|Bash Repositories]]
+[[http://hermes.mgent.home/cgit/Build-Tools|Build-Tools Repositories]]
 
-[[http://hermes.mgent.home/cgit/C|C Repositories]]
+[[http://hermes.mgent.home/cgit/DB|Database Repositories]]
+
+[[http://hermes.mgent.home/cgit/Dev-Tools|Development Tools Repositories]]
+
+[[http://hermes.mgent.home/cgit/Email-Utils|Email Utilities Repositories]]
 
 [[http://hermes.mgent.home/cgit/HTML|HTML Repositories]]
 
-[[http://hermes.mgent.home/cgit/Java|Java Repositories]]
+[[http://hermes.mgent.home/cgit/Kernel|Kernel Tool Repositories]]
 
 [[http://hermes.mgent.home/cgit/Misc|Miscellaneous Repositories]]
 
 [[http://hermes.mgent.home/cgit/Packaging/Debian/GBP|Debian Git Build Package Repositories]]
 
 [[http://hermes.mgent.home/cgit/Packaging/Debian/GBR|Debian Git Build Recipe Repositories]]
+
+[[http://hermes.mgent.home/cgit/Sys-Admin|System Administration Repositories]]
+
+[[http://hermes.mgent.home/cgit/Sys-Utils|System Utilities Repositories]]
 
 [[http://hermes.mgent.home/cgit/Windows|Windows Repositories]]
