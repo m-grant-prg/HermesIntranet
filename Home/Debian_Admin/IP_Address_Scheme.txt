@@ -3,21 +3,28 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-02-21T14:30:29+00:00
 
 ====== mgent.home IP Addressing Scheme and DHCP / DNS Setup. ======
-Updated Sunday 19 January 2025
+Updated Monday 27 January 2025
 
 ===== Network setup =====
 
-| Item                        <| hermes                                                                                                                         <| cerberus                                            <|
-|:-----------------------------|:--------------------------------------------------------------------------------------------------------------------------------|:-----------------------------------------------------|
-| Static IP                    | 198.162.1.252                                                                                                                   | 192.168.1.250                                        |
-| Netmask                      | 255.255.255.0                                                                                                                   | 255.255.255.0                                        |
-| Gateway                      | 192.168.1.254                                                                                                                   | 192.168.1.254                                        |
-| DHCP Range                   | 192.168.1.2 – 192.168.1.220                                                                                                     | 192.168.1.2 – 192.168.1.220                          |
-| Left for Static IP Addresses | 192.168.1.221 – 192.168.1.254                                                                                                   | 192.168.1.221 – 192.168.1.254                        |
-| DNS Name Servers             | 192.168.1.250\n192.168.1.252\n192.168.1.254                                                                                     | 192.168.1.250\n192.168.1.252\n192.168.1.254          |
-| Additional name resolution   | resolvconf                                                                                                                      | resolvconf                                           |
-| Key config files             | /etc/network/interfaces\n/etc/network/interfaces.d/enp2s0\n/etc/network/interfaces.d/enp3s0\n/etc/dnsmasq.d/mg-252-dnsmasq.conf | /etc/dhcpcd.conf\n/etc/dnsmasq.d/mg-250-dnsmasq.conf |
-	
+| Item                                                                 <| hermes                                                       <| cerberus                                                     <|
+|:----------------------------------------------------------------------|:--------------------------------------------------------------|:--------------------------------------------------------------|
+| Static IP                                                             | 198.162.1.252                                                 | 192.168.1.250                                                 |
+| Netmask                                                               | 255.255.255.0                                                 | 255.255.255.0                                                 |
+| Gateway                                                               | 192.168.1.254                                                 | 192.168.1.254                                                 |
+| DHCP Range                                                            | 192.168.1.2 – 192.168.1.220                                   | 192.168.1.2 – 192.168.1.220                                   |
+| Left for Static IP Addresses                                          | 192.168.1.221 – 192.168.1.254                                 | 192.168.1.221 – 192.168.1.254                                 |
+| DNS Name Servers                                                      | 192.168.1.254                                                 | 192.168.1.254                                                 |
+| Local DNS Name Server if running dnsmasq                              | 192.168.1.252                                                 | 192.168.1.250                                                 |
+| DNS Name Servers if not running dnsmasq                               | 192.168.1.250                                                 | 192.168.1.252                                                 |
+| Additional name resolution                                            | None                                                          | None                                                          |
+| Key config files - common                                             | [[./hosts\|/etc/hosts]]                                       | [[./hosts\|/etc/hosts]]                                       |
+|                                                                       | [[./interfaces\|/etc/network/interfaces]]                     | [[./interfaces\|/etc/network/interfaces]]                     |
+| Key config files - host specific                                      | [[./enp3s0\|/etc/network/interfaces.d/enp3s0]]                | [[./eth0\|/etc/network/interfaces.d/eth0]]                    |
+|                                                                       | [[./mg-252-dnsmasq.conf\|/etc/dnsmasq.d/mg-252-dnsmasq.conf]] | [[./mg-250-dnsmasq.conf\|/etc/dnsmasq.d/mg-250-dnsmasq.conf]] |
+| Key config files - host specific - with dnsmasq running on same host  | [[./dns-252-resolv.conf\|/etc/resolv.conf]]                   | [[./dns-250-resolv.conf\|/etc/resolv.conf]]                   |
+| Key config files - host specific - with dnsmasq running on other host | [[./dns-250-resolv.conf\|/etc/resolv.conf]]                   | [[./dns-252-resolv.conf\|/etc/resolv.conf]]                   |
+
 Additional equipment with static addresses:-
 
 | Name                     <| IP Address    <| Use                                             <|
@@ -32,14 +39,35 @@ Additional equipment with static addresses:-
 Hermes and Cerberus can both deliver DHCP / DNS but they are not in a failover setup. Services must be shutdown on 1 machine and started on the other:-
 
 ==== Machine A ====
+With the helper script [[./dnsmasq-stop.sh|$HOME/bin/dnsmasq-stop.sh]]:-
+{{{code: id="dnsmasq-start.sh" lang="sh" linenumbers="False"
+dnsmasq-stop.sh
+}}}
+
+and without the helper script:-
 {{{code: lang="sh" linenumbers="False"
+sudo dnsmasq-postrotate --post-rotate
+# For cerberus
+sudo sed -i -e "s/192\.168\.1\.250/192\.168\.1\.252/" /etc/resolv.conf
+# or for hermes
+sudo sed -i -e "s/192\.168\.1\.252/192\.168\.1\.250/" /etc/resolv.conf
 sudo sytemctl stop dnsmasq
 sudo systemctl disable dnsmasq
 }}}
 
 
 ==== Machine B ====
+With the helper script [[./dnsmasq-start.sh|$HOME/bin/dnsmasq-start.sh]]:-
+{{{code: id="dnsmasq-start.sh" lang="sh" linenumbers="False"
+dnsmasq-start.sh
+}}}
+
+and without the helper scropt:-
 {{{code: lang="sh" linenumbers="False"
+# For cerberus
+sudo sed -i -e "s/192\.168\.1\.252/192\.168\.1\.250/" /etc/resolv.conf
+# or for hermes
+sudo sed -i -e "s/192\.168\.1\.250/192\.168\.1\.252/" /etc/resolv.conf
 sudo systemctl enable dnsmasq
 and either reboot or
 sudo systemctl start dnsmasq
