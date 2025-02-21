@@ -3,12 +3,19 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-02-22T15:47:37+00:00
 
 ====== RPM Package Preparation ======
-Created Tuesday 22 February 2022
+Updated Friday 21 February 2025
 
-1. Create / update the <package-name>.spec.in file.
+1. Download the latest source tarball. This can be:-
+	a. Either the tarball from a debuild
+	b. Or a source tarball from a git repo
+2. Create / update the <package-name>.spec.in file.
 	a. Ensure version and release fields are updated.
-2. Delete old sources.
-3. Download the latest source tarball.
+		1. If the release is a normal release
+			a. The version will have the format vx.x.x as in the tarball
+		2. If the release is a development rc release
+			a. If the source tarball is a release candidate from a git repo it will be vx.x.x-rcx, osc will translate this to vx.x.x~rcx
+			b. Or a debuild will already have the vx.x.x~rcx format.
+3. Delete old sources.
 4. Add / remove files within osc.
 	a. osc ar
 5. Update the osc ChangeLog.
