@@ -21,7 +21,9 @@ Updated Friday 21 February 2025
 5. Update the osc ChangeLog.
 	a. osc vc
 6. Build the package locally. e.g.
-	a. osc-build-local-package.sh
-	b. osc-build-local-package.sh Fedora_29
-		1. Will build Fedora 29.
-		2. N.B. Regular key problems means you may have to supply the --no-verify option.
+	a. Build the package for the host's distribution
+		1. oscbuilder
+	b. Build for openSUSE
+		1. oscbuilder -r 15.6
+	c. Build for Fedora (signing issues need the extra parameter)
+		1. oscbuilder -r Fedora_41 -- --no-verify
