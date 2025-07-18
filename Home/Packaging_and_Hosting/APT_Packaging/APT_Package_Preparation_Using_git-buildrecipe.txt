@@ -3,7 +3,7 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-12-05T20:12:50+00:00
 
 ====== APT Package Preparation Using git-buildrecipe ======
-Updated Friday 15 March 2024
+Updated Friday 18 July 2025
 
 ===== Initial Setup =====
 1. Create repos for the Debian packaging
@@ -14,6 +14,26 @@ Updated Friday 15 March 2024
 4. git pushes
 5. main branch is Debian latest
 6. Other branches should be main-XX and tip-YY
+
+===== New Debian Release from Testing =====
+1. tip-testing and main must be at same commit - tagged release commit
+2. Checkout tip-testing
+3. Make new release branch
+	a. git checkout --orphan tip-trixie
+4. Initial commit
+5. Need a new tag for this branch
+	a. dch -i
+	b. Changelog text something like
+		1. New release of trixie
+	c. dch -r
+	d. git commit -as
+		1. v9.9.9+13+u2
+	e. git tag -as v9.9.9+13+u2
+6. Git pushes
+7. Git pushes tags
+8. git checkout -b main-trixie
+9. git pushes
+10. git checkout tip-trixie
 
 ===== Packaging Amendments =====
 1. Make any packaging amendments
