@@ -3,7 +3,7 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-12-05T15:08:45+00:00
 
 ====== APT Package Preparation Using git-buildpackage ======
-Updated Tuesday 30 April 2024
+Updated Thursday 24 July 2025
 
 ===== Initial Setup =====
 1. Create a git repo on hermes in the usual way but use:-
@@ -12,7 +12,7 @@ Updated Tuesday 30 April 2024
 	1. git init --initial-branch=upstream/latest
 3. Download a tarball
 	1. Choose a tag common to all interesting branches (master, v1.6.y etc)
-	2. Sownload the tarball
+	2. Download the tarball
 	3. Either a or b
 		a. Change the name from libmgec-1.6.4.tar.gz to libmgec_1.6.4.orig.tar.gz
 		b. ln -s libmgec-1.6.4.tar.gz libmgec_1.6.4.orig.tar.gz
@@ -21,9 +21,9 @@ Updated Tuesday 30 April 2024
 5. Add upstream remote.
 	1. git remote add upstream git@github.com:m-grant-prg/libmgec
 6. Create branches.
-	1. git switch -c upstream/latest
-	2. git switch -c upstream/v1.6.y
-	3. git switch -c debian/v1.6.y
+	1. git checkout -b upstream/latest
+	2. git checkout -b upstream/v1.6.y
+	3. git checkout -b debian/v1.6.y
 	4. etc
 7. Fetch upstream.
 	1. git fetch upstream
@@ -87,14 +87,20 @@ Updated Tuesday 30 April 2024
 9. git pushes etc. Remember pristine-tar
 
 ===== Create a new packaging branch sharing upstream/latest =====
-1. git switch upstream/latest
-2. git switch -c debian/latest
-3. Add the Debian packaging directory
-4. Add [[./gbp.conf|debian/gbp.conf]] (Ubuntu version shown, Debian does not need the tag).
+1. git checkout upstream/latest
+2. git checkout -b debian/latest
+3. Add the Debian packaging directory probably copy from Testing
+4. Add / edit [[./gbp.conf|debian/gbp.conf]] (Ubuntu version shown, Debian does not need the tag).
 5. git add .
 6. git commit -as
-7. gbp tag --sign-tags
-8. git pushes and tag pushes.
+	a. Create latest branch
+7. gbp dch
+8. dch -r
+	a. Sort changelog
+9. git commit -as
+	a. v9.99-1+deb13u2
+10. gbp tag --sign-tags
+11. git pushes and tag pushes.
 
 ===== New upstream release for branch sharing upstream/latest =====
 1. If you have patches against upstream.
