@@ -3,11 +3,9 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-02-23T14:47:25+00:00
 
 ====== Git Repositories - Browse via gitweb ======
-Updated Saturday 06 July 2024
+Updated Saturday 29 November 2025
 
 [[http://hermes/gitweb|All Git Repositories]]
-
-[[http://hermes/gitweb/?a=project_list;pf=Build-Tools|Build-Tools Repositories]]
 
 [[http://hermes/gitweb/?a=project_list;pf=DB|Database Repositories]]
 
