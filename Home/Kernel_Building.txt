@@ -3,7 +3,7 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-02-21T13:33:41+00:00
 
 ====== Kernel Build Guide. ======
-Created Monday 21 February 2022
+Updated Tuesday 03 February 2026
 
 To avoid setting up the entire config file by hand it is easiest to use your distribution’s config file as a starting point. This step can be re-run when a new distribution kernel is installed.
 
@@ -12,10 +12,10 @@ When building based on a new config file key kernel modules must be loaded, thin
 1. To build a kernel with a new config file.
 	a. Insert and open a CD such as the VirtualBox Guest Additions.
 	b. Attach any NAS needed.
-	c. kern-bld.sh -nipc /boot/config-4.4.0-36-generic -s /home/mgrantprg/SWDev/kernel/source -o /home/mgrantprg/SWDev/kernel/build linux-stable
+	c. kern-bld -nipc /boot/config-4.4.0-36-generic -s /home/mgrantprg/SWDev/kernel/source -o /home/mgrantprg/SWDev/kernel/build linux-stable
 	d. As the install option has been specified, you will be prompted for your sudo password prior to installation.
 2. To build a kernel with an exiting config file.
-	a. kern-bld.sh -uipc /boot/config-4.4.0-36-generic -s /home/mgrantprg/SWDev/kernel/source -o /home/mgrantprg/SWDev/kernel/build linux-stable
+	a. kern-bld -uipc /boot/config-4.4.0-36-generic -s /home/mgrantprg/SWDev/kernel/source -o /home/mgrantprg/SWDev/kernel/build linux-stable
 	b. As the install option has been specified, you will be prompted for your sudo password prior to installation.
 3. At the time of writing there is a dependency failure on Debian which leads to the crc32c_generic module not being included in initrd. To persistently avoid this problem add the module to the initrd modules file.
 	a. sudo vim /etc/initramfs-tools/modules
@@ -29,5 +29,5 @@ When building based on a new config file key kernel modules must be loaded, thin
 	b. Remove the old kernel modules
 		1. sudo rm -vr /lib/modules/4.7.1
 	c. Remove the old kernel files
-		1. sudo rm -v /boot/*4.7.1*
+		1. sudo rm -v /boot/*4.7.1
 	d. sudo update-grub
