@@ -3,18 +3,20 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-02-22T15:26:05+00:00
 
 ====== Private Hosting Of Source And Distribution Tarballs. ======
-Created Tuesday 22 February 2022
+Updated Tuesday 03 February 2026
 
 1. Move to, say, a parallel build directory, project-root/atbuild
 2. Ensure git is on the correct branch and is updated
 3. Make the source tarball
 	a. If the acmbuild package is installed
-		1. acmbuild.sh -cT ..
+		1. acmbuild -cT ..
 	b. Or use the bootstrap.sh script
 		1. ../bootstrap.sh -cT ..
 	c. make distclean
 4. Copy the tarball to the server
-	a. scp *.gz mgrant@hermes:staging
+	a. sftp mgrant@hermes:staging
+	b. put *.gz
+	c. Ctrl-D
 5. Install the file in the tarball repository.
 	a. Logon to the server
 		1. ssh mgrant@hermes
@@ -28,12 +30,14 @@ Created Tuesday 22 February 2022
 		1. rm -v *
 6. Make the distribution tarball
 	a. If the acmbuild package is installed
-		1. acmbuild.sh -cD ..
+		1. acmbuild -cD ..
 	b. Or use the bootstrap.sh script
 		1. ../bootstrap.sh -cD ..
 	c. make distclean
 7. Copy the tarball to the server
-	a. scp *.gz mgrant@hermes:staging
+	a. sftp mgrant@hermes:staging
+	b. put *.gz
+	c. Ctrl-D
 8. Install the file in the tarball repository.
 	a. Logon to the server
 		1. ssh mgrant@hermes
