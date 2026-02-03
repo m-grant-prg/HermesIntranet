@@ -3,28 +3,30 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-02-22T08:44:38+00:00
 
 ====== openSUSE Build Service - Building and Hosting. ======
-Created Tuesday 22 February 2022
+Updated Tuesday 03 February 2026
 
 1. Create / update the <package-name>.spec.in file.
 	a. Ensure version and release fields are updated.
-2. Delete old source files.
-	a. package-1.2.3.tar.gz
-	b. If Debian packaging is being created / hosted:-
-		1. Delete the following obsolete files:-
-			a. package-1.2.3.orig.tar.gz
-			b. package-1.2.3.debian.tar.gz
-			c. package-1.2.3.dsc
-		2. Copy in the latest version of the above files.
-3. Download the latest source tarball.
-4. Sort the dsc files (example):
-	a. Rename package_version-deb10u1.dsc ==> package-Debian_10.dsc
-	b. Copy package-Debian_10.dsc ==> package-Raspbian_10.dsc
-	c. Repeat a) and b) for other dists eg stretch.
-5. Build the package locally at least once to ensure *.spec.in refreshes *.spec. **N.B.** osc-build.sh without a specified target defaults the target to the platform running the command.
-	a. osc-build.sh
-6. Add / remove files within osc.
+2. Delete old source files not referenced by a currently supported distribution / release.
+	a. Possible for all packages package-1.2.3.tar.gz
+	b. For Fedora / openSUSE
+		1. Possible specific spec file versions eg package-Fedora_43.spec
+	c. If Debian packaging is being created / hosted:-
+		1. package_1.2.3.orig.tar.gz
+		2. package_1.2.3+deb13u1.tar.gz
+		3. package-1.2.3.dsc
+		4. Copy in the latest version of the above files including the source tarball
+		5. Sort the dsc files (example):
+			a. Rename package_version-deb10u1.dsc ==> package-Debian_10.dsc
+			b. Copy package-Debian_10.dsc ==> package-Raspbian_10.dsc
+			c. Repeat a) and b) for other dists eg stretch.
+3. Build the package locally to test differnet distribution /releases. **N.B.** oscbuilder without a specified target defaults the target to the platform running the command.
+	a. oscbuilder
+	b. Sometimes the public key is not available (particularly Fedora) so...
+		1. oscbuilder -r Fedora_43 – --no-verify
+4. Add / remove files within osc.
 	a. osc ar
-7. Update the osc ChangeLog.
+5. Update the osc ChangeLog.
 	a. osc vc
-8. Commit the package to the openSUSE Build Service
+6. Commit the package to the openSUSE Build Service
 	a. osc commit
