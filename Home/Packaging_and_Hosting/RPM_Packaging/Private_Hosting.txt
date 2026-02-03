@@ -3,7 +3,7 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-02-22T15:47:50+00:00
 
 ====== Private Hosting ======
-Created Tuesday 22 February 2022
+Updated Tuesday 03 February 2026
 
 1. Change to the osc output directory.
 2. Copy the rpm file to a user-writable location and cd to it.
@@ -25,7 +25,9 @@ Created Tuesday 22 February 2022
 4. Sign the package.
 	a. rpmsign --addsign *.rpm
 5. Copy the signed package to the server.
-	a. scp *.rpm mgrant@hermes:staging
+	a. sftp mgrant@hermes:staging
+	b. put *rpm
+	c. Ctrl-D
 6. Install the rpm file in the repository.
 	a. Logon to the rpm repository hosting machine
 		1. ssh mgrant@hermes
