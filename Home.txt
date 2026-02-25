@@ -3,7 +3,7 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-02-21T13:26:38+00:00
 
 ====== Hermes Intranet ======
-Page Updated Sunday 19 January 2025
+Page Updated Wednesday 25 February 2026
 Author - Copyright (C) 2022-2026 Mark Grant
 
 [[+AutoTools|AutoTools - Project Setup, Packaging and Package Installation Guides.]]
@@ -20,7 +20,7 @@ Author - Copyright (C) 2022-2026 Mark Grant
 
 [[+Packaging and Hosting|Packaging & Hosting for APT and RPM.]]
 
-[[+Repositories|Repositories - APT, Deployment, Git and Subversion repositories.]]
+[[+Repositories|Repositories - APT, Deployment, Git and RPM repositories.]]
 
 [[+Valgrind Tips|Valgrind Tips.]]
 
