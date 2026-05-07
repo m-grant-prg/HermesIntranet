@@ -3,7 +3,7 @@ Wiki-Format: zim 0.6
 Creation-Date: 2022-02-22T09:49:43+00:00
 
 ====== pbuilder - Setting up the Environment. ======
-Created Tuesday 22 February 2022
+Updated Thursday 07 May 2026
 
 pbuilderrc can contain everything required to create a chroot and immediately build a package including third-party, local and PPA repositories. On the other hand it can contain the bare essentials to create the chroot with everything else being added via logging in to the chroot and adding manually. Also, of course, the pbuilder command line can be used to pass a lot of configuration data.
 Fully populated pbuilderrc and minimally populated with manual addition scenarios will be talked about here. (A mix of the two is also possible, obviously).
@@ -34,20 +34,20 @@ pbuilder always needs root privileges so it will look for .pbuilderrc in /root. 
 		2. COMPONENTS should be e.g. main contrib non-free.
 	b. Setup all the other repositories required. These are in 2 groups; extra official repositories and third-party / your own repositories.
 		1. Add extra official repositories to OTHERMIRROR and add the location of the repositories’ key to DEBOOTSTRAPOPTS.
-		2. Add third-party repositories to OTHERMIRROR and add the location of the repositories’ keys to APTKEYRINGS. This location cannot just be anywhere, apt-key add will not cooperate, the best place is in the trusted.gpg.d directory under /etc/apt.
-	c. If running on Debian the keyring will be installed, others not necessarily. To add the keys depends on whether they are available as a package, as they would be for Raspbian for example. So, procure keys:-
-		1. Raspbian produces a package but it is not in the Debian repositories. So get the package from their server, (N.B. Check for a later dated version).
-			a. curl -fsSLO http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.2_all.deb
-			b. sudo dpkg -i raspbian-archive-keyring_20120528.2_all.deb
-		2. Ubuntu has a package in the Debian repository so it is a simple install.
-			a. sudo apt-get install ubuntu-keyring
-		3. OBS needs to be retrieved and added to an apt keyring in the location entered in the pbuilderrc APTKEYRINGS variable.
-			a. curl -fsSL https://download.opensuse.org/repositories/home:m-grant-prg/Debian_10/Release.key | gpg --dearmor | sudo apt-key --keyring /etc/apt/trusted.gpg.d/obs-debian-keyring.gpg add -
-		4. LaunchPad keys are on the ubuntu keyserver so need to be retrieved and added to a keyring in the location entered in the pbuilderrc APTKEYRINGS variable. Two keys are required, the developer's key and the Launchpad PPA key.
-			a. sudo apt-key --keyring /etc/apt/trusted.gpg.d/mgrant-utils-ppa-keyring.gpg adv --keyserver keyserver.ubuntu.com --recv-keys d1946372ba01d17602a2ccd372ddd80b3669565c
-			b. sudo apt-key --keyring /etc/apt/trusted.gpg.d/mgrant-utils-ppa-keyring.gpg adv --keyserver keyserver.ubuntu.com --recv-keys 8294A6371AB32B66
-		5. Raspbian needs an extra repository and hence key to be retrieved and added to an apt keyring in the location entered in the pbuilderrc APTKEYRINGS variable.
-			a. curl -fsSL https://archive.raspberrypi.org/debian/raspberrypi.gpg.key | sudo apt-key --keyring /etc/apt/trusted.gpg.d/raspberrypi-keyring.gpg add -
+		2. Add third-party repositories to OTHERMIRROR and add the location of the repositories’ keys to APTKEYRINGS. Current wisdom says this should be in /usr/share/keyrings and should have a .gpg extension as required of the APTKEYRINGS variable.
+	c. If running on Debian the keyring will be installed, others not necessarily. Required keys are for hermes, OBS, rpios, Launchpad PPA and Ubuntu. So, procure keys using the apt-key-scripts script from the agmaint package:-
+		1. Make the key retrieval scripts available for execution
+			a. sudo apt-key-scripts --install-examples
+		2. For hermes
+			a. sudo apt-key scripts --exec /etc/agmaint/trusted.sh.d/add-hermes.sh
+		3. For OBS
+			a. sudo apt-key scripts --exec /etc/agmaint/trusted.sh.d/add-obs.sh
+		4. For rpios
+			a. sudo apt-key scripts --exec /etc/agmaint/trusted.sh.d/add-raspberrypi.sh
+		5. For my Launchpad PPA
+			a. sudo apt-key scripts --exec /etc/agmaint/trusted.sh.d/add-mgrant-utils-ppa.sh
+		6. For Ubuntu the keyring should already be installed
+			a. Ensure that the ubuntu-keyring package is installed
 	d. Next we need to ensure that a few packages are installed in the base tarball. These packages are just to help editing and adding packages if / when later logged in to the chroot.
 		1. So add these packages; apt-utils, curl, dirmngr, gnupg2, software-properties-common and vim to the EXTRAPACKAGES variable.
 	e. If we want to cross build e.g. for a Raspberry Pi, then we need to use an emulator.
@@ -85,12 +85,13 @@ pbuilder always needs root privileges so it will look for .pbuilderrc in /root. 
 	a. Setup the main distro repository.
 		1. MIRRORSITE should be the URL of the main repository.
 		2. COMPONENTS should be e.g. main contrib non-free.
-	b. If running on Debian the keyring will be installed, others not necessarily. To add the keys depends on whether they are available as a package, as they would be for Raspbian for example. So, procure keys:-
-		1. Raspbian produces a package but it is not in the Debian repositories. So get the package from their server, (N.B. Check for a later dated version).
-			a. curl -fsSLO http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.2_all.deb
-			b. sudo dpkg -i raspbian-archive-keyring_20120528.2_all.deb
-		2. Ubuntu has a package in the Debian repository so it is a simple install.
-			a. sudo apt-get install ubuntu-keyring
+	b. If running on Debian the keyring will be installed, others not necessarily. Required keys are for rpios and Ubuntu. So, procure keys using the apt-key-scripts script from the agmaint package:-
+		1. Make the key retrieval scripts available for execution
+			a. sudo apt-key-scripts --install-examples
+		2. For rpios
+			a. sudo apt-key scripts --exec /etc/agmaint/trusted.sh.d/add-raspberrypi.sh
+		3. For Ubuntu the keyring should already be installed
+			a. Ensure that the ubuntu-keyring package is installed
 	c. If we want to cross build e.g. for a Raspberry Pi, then we need to use an emulator.
 		1. sudo apt-get install qemu-user-static
 		2. do a conditional check for ARM architecture, (in $ARCH), and then set DEBOOTSTRAP to qemu-debootstrap.
@@ -117,28 +118,29 @@ pbuilder always needs root privileges so it will look for .pbuilderrc in /root. 
 5. To add further official Debian repositories:-
 	a. sudo DIST=debian REL=buster ARCH=amd64 pbuilder login --save-after-login
 	b. apt-get install apt-utils curl dirmngr gnupg2 software-properties-common vim
-	c. add-apt-repository “deb https://deb.debian.org/debian-security/ buster/updates main contrib non-free”
-	d. add-apt-repository “deb https://deb.debian.org/debian buster-updates main contrib non-free”
+	c. add-apt-repository -S “deb https://deb.debian.org/debian-security/ buster/updates main contrib non-free”
+	d. add-apt-repository -S “deb https://deb.debian.org/debian buster-updates main contrib non-free”
 	e. exit
 6. To add third party repositories:-
 	a. sudo DIST=debian REL=buster ARCH=amd64 pbuilder login --save-after-login
-	b. add-apt-repository “deb http://download.opensuse.org/repositories/home:/m-grant-prg/Debian_10/ /”
-	c. curl -fsSL https://download.opensuse.org/repositories/home:m-grant-prg/Debian_10/Release.key | gpg --dearmor  | apt-key --keyring /etc/apt/trusted.gpg.d/obs-debian-keyring.gpg add -
+	b. add-apt-repository -S “deb http://download.opensuse.org/repositories/home:/m-grant-prg/Debian_10/ /”
+	c. curl -fsSL https://download.opensuse.org/repositories/home:m-grant-prg/Debian_10/Release.key | gpg --dearmor  | sudo tee /etc/apt/trusted.gpg.d/home_m-grant-prg.gpg > /dev/null
 	d. exit
 7. To add a PPA:-
 	a. sudo DIST=ubuntu REL=bionic ARCH=amd64 pbuilder login --save-after-login
-	b. add-apt-repository ppa:m-grant-prg/utils
+	b. add-apt-repository -P ppa:m-grant-prg/utils
 	c. exit
 8. To add a local apt repository:-
 	a. sudo DIST=debian REL=buster ARCH=amd64 pbuilder login --save-after-login
-	b. add-apt-repository “deb http://hermes/aptrepos/debian buster stable beta staging”
-	c. curl -fsSL http://hermes/aptrepos/hermes.gpg | apt-key add -
+	b. add-apt-repository -S “deb http://hermes/aptrepos/debian buster stable beta staging”
+	c. curl -fsSL http://hermes/aptrepos/hermes.gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/hermes.gpg > /dev/null
 	d. exit
 9. Get my package signing key:-
 	a. sudo DIST=ubuntu REL=bionic ARCH=amd64 pbuilder login --save-after-login
-	b. gpg --verbose --no-default-keyring --keyring trustedkeys.kbx --recv-keys 20ECF9F0
-	c. find /root/.gnupg -type s | xargs rm -fv
-	d. exit
+	b. sudo gpg --no-default-keyring --keyring @datarootdir@/keyrings/tmp-keyring.gpg --keyserver keyserver.ubuntu.com --recv-keys d1946372ba01d17602a2ccd372ddd80b3669565c 75d5b0010422caa19fd3d40454880941b1bf7415
+	c. sudo gpg --export --no-default-keyring --keyring @datarootdir@/keyrings/tmp-keyring.gpg --output /etc/apt/trusted.gpg.d/mgrant-utils-ppa-keyring.pgp
+	d. find /root/.gnupg -type s | xargs rm -fv
+	e. exit
 10. Update the chroot.
 	a. sudo DIST=debian REL=buster ARCH=amd64 APT_CACHER=yes pbuilder update
 
